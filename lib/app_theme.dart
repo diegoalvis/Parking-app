@@ -21,6 +21,14 @@ class AppTheme {
           accentColor: Color.fromARGB(0xFF, 0x8B, 0xC3, 0x4A),
           backgroundColor: Color.fromARGB(0xFF, 0x19, 0x76, 0xD2),
           brightness: Brightness.dark,
+          errorColor: Color.fromARGB(0xFF, 0xFF, 0x9C, 0x40),
+          inputDecorationTheme: InputDecorationTheme(
+            fillColor: Color.fromARGB(0xFF, 0x0A, 0x56, 0xA1),
+          ),
+          textTheme: TextTheme(
+              display3: TextStyle(color: Colors.white, fontWeight: FontWeight.w100),
+              display1: TextStyle(color: Colors.white, fontWeight: FontWeight.w100)
+          ),
           fontFamily: 'Roboto',
         ),
         child: child,

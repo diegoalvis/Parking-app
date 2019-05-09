@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:oneparking_citizen/util/app-icons.dart';
+import 'package:oneparking_citizen/util/app_icons.dart';
 
-void main() => runApp(MaterialApp(home: MainPage()));
+void main() => runApp(MainPage());
 
 class MainPage extends StatelessWidget {
   // This widget is the root of your application.
