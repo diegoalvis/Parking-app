@@ -6,12 +6,21 @@ void main() => runApp(MapPage());
 class MapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: new AppBar(title: new Text("Map page")),
-      body: new Text("I belongs to map Page"),
-      drawer: new Container(
-        width: 80,
-        child: new DrawerOnly(),
+    return new Container(
+      color: Colors.white,
+      child: Row(
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(child: new DrawerOnly()),
+            ],
+          ),
+          Text(
+            " Map page",
+            style: Theme.of(context).textTheme.display1,
+          )
+        ],
       ),
     );
   }

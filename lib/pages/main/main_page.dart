@@ -1,169 +1,98 @@
 import 'package:flutter/material.dart';
-import 'package:oneparking_citizen/app_theme.dart';
 import 'package:oneparking_citizen/util/app-icons.dart';
-import '../map/map_page.dart';
-import '../vehicle/vehicle_page.dart';
-import '../cash/cash_page.dart';
-import '../bill/bill_page.dart';
-import '../info/info_page.dart';
 
-void main() => runApp(MainPage());
+void main() => runApp(MaterialApp(home: MainPage()));
 
 class MainPage extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'One Parking',
-      theme: AppTheme.build(),
-      home: DrawerOnly(),
+    return new Container(
+      color: Colors.white,
+      child: Row(
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(child: new DrawerOnly()),
+            ],
+          ),
+          Text(
+            " Main page",
+            style: Theme.of(context).textTheme.display1,
+          )
+        ],
+      ),
     );
   }
 }
 
 class DrawerOnly extends StatelessWidget {
-  final bool isOpenDrawer = true;
-
   @override
   Widget build(BuildContext context) {
-    return new Container(
-      width: 80,
-      decoration: BoxDecoration(
-        color: Color.fromARGB(0xFF, 0x19, 0x76, 0xD2),
+    return Material(
+      color: Color.fromARGB(0xFF, 0x19, 0x76, 0xD2),
+      child: new Container(
+        width: 80,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            ListTile(
+              leading: new Center(
+                child: const Icon(
+                  AppIcons.logo,
+                  color: Colors.white,
+                  size: 50,
+                ),
+              ),
+              contentPadding: EdgeInsets.all(5.0),
+            ),
+            new MenuItem(AppIcons.zone, context, '/map'),
+            new MenuItem(AppIcons.vehicle, context, '/vehicle'),
+            new MenuItem(AppIcons.bill, context, '/bill'),
+            new MenuItem(AppIcons.info, context, '/info'),
+            SizedBox(height: 300),
+            Material(
+              color: Color.fromARGB(0xFF, 0x0A, 0x56, 0xA1),
+              child: ListTile(
+                leading: new Center(
+                  child: const Icon(
+                    AppIcons.logout,
+                    color: Colors.white,
+                    size: 35,
+                  ),
+                ),
+                contentPadding: EdgeInsets.all(5.0),
+                onTap: () {},
+              ),
+            ),
+          ],
+        ),
       ),
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          ListTile(
-            leading: new Center(
-              child: const Icon(
-                AppIcons.logo,
-                color: Colors.white,
-                size: 50,
-              ),
-            ),
-            contentPadding: EdgeInsets.all(5.0),
-          ),
-          new Material(
-            color: Colors.transparent,
-            child: new InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  new MaterialPageRoute(builder: (context) => MapPage()),
-                );
-              },
-              child: ListTile(
-                leading: new Center(
-                  child: const Icon(
-                    AppIcons.zone,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-                ),
-                contentPadding: EdgeInsets.all(4.0),
-              ),
-            ),
-          ),
-          new Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  new MaterialPageRoute(builder: (context) => VehiclePage()),
-                );
-              },
-              child: ListTile(
-                leading: new Center(
-                  child: const Icon(
-                    AppIcons.vehicle,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-                ),
-                contentPadding: EdgeInsets.all(4.0),
-              ),
-            ),
-          ),
-          new Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  new MaterialPageRoute(builder: (context) => CashPage()),
-                );
-              },
-              child: ListTile(
-                leading: new Center(
-                  child: const Icon(
-                    AppIcons.wallet,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-                ),
-                contentPadding: EdgeInsets.all(4.0),
-              ),
-            ),
-          ),
-          new Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  new MaterialPageRoute(builder: (context) => BillPage()),
-                );
-              },
-              child: ListTile(
-                leading: new Center(
-                  child: const Icon(
-                    AppIcons.bill,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-                ),
-                contentPadding: EdgeInsets.all(4.0),
-              ),
-            ),
-          ),
-          new Material(
-            color: Colors.transparent,
-            child: InkWell(
-              highlightColor: Colors.transparent,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  new MaterialPageRoute(builder: (context) => InfoPage()),
-                );
-              },
-              child: ListTile(
-                leading: new Center(
-                  child: const Icon(
-                    AppIcons.info,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-                ),
-                contentPadding: EdgeInsets.all(4.0),
-              ),
-            ),
-          ),
-          SizedBox(height: 240),
-          ListTile(
-            leading: new Center(
-              child: const Icon(
-                AppIcons.info,
-                color: Colors.white,
-                size: 35,
-              ),
-            ),
-            contentPadding: EdgeInsets.all(4.0),
-            onTap: () {},
-          ),
-        ],
+    );
+  }
+}
+
+class MenuItem extends StatelessWidget {
+  final IconData icon;
+  final String route;
+  final BuildContext context;
+
+  MenuItem(this.icon, this.context, this.route);
+
+  Widget build(BuildContext context) {
+    return new ListTile(
+      leading: new Center(
+        child: new Icon(
+          this.icon,
+          color: Colors.white,
+          size: 35,
+        ),
       ),
+      contentPadding: EdgeInsets.all(4.0),
+      onTap: () {
+        Navigator.of(this.context).pushNamed(this.route);
+      },
     );
   }
 }

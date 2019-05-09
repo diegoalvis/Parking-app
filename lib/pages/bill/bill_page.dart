@@ -6,10 +6,22 @@ void main() => runApp(BillPage());
 class BillPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: new AppBar(title: new Text("Bill page")),
-      body: new Text("I belongs to bill Page"),
-      drawer: new DrawerOnly(),
+    return new Container(
+      color: Colors.white,
+      child: Row(
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(child: new DrawerOnly()),
+            ],
+          ),
+          Text(
+            " Bill page",
+            style: Theme.of(context).textTheme.display1,
+          )
+        ],
+      ),
     );
   }
 }
