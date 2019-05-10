@@ -24,6 +24,11 @@ class _MapContainerState extends State<MapContainer>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Zonas",
+          style: TextStyle(color: Colors.black)),
+        backgroundColor: Colors.white,
+      ),
       body: Stack(
         children: <Widget>[
           GoogleMap(
