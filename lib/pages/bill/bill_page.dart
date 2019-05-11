@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../main/main_page.dart';
+import 'package:oneparking_citizen/util/app_icons.dart';
 
 void main() => runApp(BillPage());
 
@@ -20,6 +21,19 @@ class BillContainer extends StatefulWidget {
 class _BillContainerState extends State<BillContainer> {
   @override
   Widget build(BuildContext context) {
+
+    final thematicBreak = Column(
+      children: <Widget>[
+        Container(
+          height: 1.0,
+          color: Colors.black26,
+          margin:
+          EdgeInsets.symmetric(horizontal: 4.0,
+            vertical: 20.0
+          ),
+        ),
+      ],
+    );
 
     final pagosPendientes = Column(
       children: <Widget>[
@@ -46,6 +60,7 @@ class _BillContainerState extends State<BillContainer> {
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
                 margin: EdgeInsets.only(
@@ -79,7 +94,7 @@ class _BillContainerState extends State<BillContainer> {
                                 right: 15.0
                               ),
                               child: Icon(
-                                Icons.visibility
+                                  AppIcons.vehicle
                               ),
                             ),
                             Container(
@@ -90,6 +105,7 @@ class _BillContainerState extends State<BillContainer> {
                         
                       ),
                     ],
+                      crossAxisAlignment: CrossAxisAlignment.start
                   ),
                   alignment: Alignment.topLeft,
                 ),
@@ -103,7 +119,7 @@ class _BillContainerState extends State<BillContainer> {
                   children: <Widget>[
                     Container(
                       child: Text(
-                          "05/05/2019 ",
+                          "05/05/2019",
                         style: TextStyle(
                           fontSize: 12.0
                         ),
@@ -119,12 +135,16 @@ class _BillContainerState extends State<BillContainer> {
                     ),
 
                   ],
+                    crossAxisAlignment: CrossAxisAlignment.end
                 ),
-                alignment: Alignment.topLeft,
+                alignment: Alignment.topRight,
               ),
             ],
           ),
           alignment: Alignment.centerLeft,
+        ),
+        Container(
+          child: thematicBreak,
         ),
       ],
     );
