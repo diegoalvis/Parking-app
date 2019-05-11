@@ -22,6 +22,8 @@ class _BillContainerState extends State<BillContainer> {
   @override
   Widget build(BuildContext context) {
 
+    final sizeTextCard = 12.0;
+
     final thematicBreak = Column(
       children: <Widget>[
         Container(
@@ -75,9 +77,10 @@ class _BillContainerState extends State<BillContainer> {
                             left: 0.0
                         ),
                         child: Text(
-                          "COP 500",
+                          "\$ 500",
                           style: TextStyle(
                             color: Colors.red,
+                            fontSize: sizeTextCard
                           ),
                           textAlign: TextAlign.left,
                         ),
@@ -94,15 +97,19 @@ class _BillContainerState extends State<BillContainer> {
                                 right: 15.0
                               ),
                               child: Icon(
-                                  AppIcons.vehicle
+                                  AppIcons.vehicle,
+                                size: 16.0,
                               ),
                             ),
                             Container(
-                              child: Text("ABC 123"),
+                              child: Text("ABC 123",
+                              style: TextStyle(
+                                fontSize: sizeTextCard
+                                ),
+                              ),
                             ),
                           ],  
                         ),
-                        
                       ),
                     ],
                       crossAxisAlignment: CrossAxisAlignment.start
@@ -129,7 +136,7 @@ class _BillContainerState extends State<BillContainer> {
                       child: Text(
                           "10:35pm",
                         style: TextStyle(
-                          fontSize: 8.0
+                          fontSize: 10.0
                         ),
                       ),
                     ),
@@ -143,30 +150,155 @@ class _BillContainerState extends State<BillContainer> {
           ),
           alignment: Alignment.centerLeft,
         ),
-        Container(
-          child: thematicBreak,
-        ),
       ],
     );
 
-    final facturas = Column(
+    final facturasTitle = Column(
       children: <Widget>[
         Container(
           margin: EdgeInsets.only(
               top: 20.0,
-              left: 15.0
+              left: 15.0,
+            bottom: 10.0
           ),
           child: Text(
             "Facturas",
             style: TextStyle(
-                fontSize: 18.0,
-                fontFamily: 'Roboto',
+                fontSize: 16.0,
                 color: Colors.black54,
                 fontWeight: FontWeight.w700
             ),
             textAlign: TextAlign.left,
           ),
-        )
+          alignment: Alignment.centerLeft,
+        ),
+      ],
+    );
+
+
+    final facturas = Column(
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.only(
+              left: 15.0
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(
+                    left: 10.0
+                ),
+
+                child: new Align(
+                  child: Column(
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(
+                              left: 0.0
+                          ),
+                          child: Text(
+                            "\$ 500",
+                            style: TextStyle(
+                              color: Colors.blueAccent,
+                              fontSize: sizeTextCard
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                          alignment: Alignment.centerLeft,
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(
+                              top: 5.0
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                margin: EdgeInsets.only(
+                                    right: 15.0
+                                ),
+                                child: Icon(
+                                    Icons.access_time,
+                                  size: 16.0,
+                                ),
+                              ),
+                              Container(
+                                child: Text("35 min",
+                                style: TextStyle(
+                                  fontSize: sizeTextCard
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(
+                              top: 5.0
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                margin: EdgeInsets.only(
+                                    right: 15.0
+                                ),
+                                child: Icon(
+                                    AppIcons.vehicle,
+                                  size: 16.0,
+                                ),
+                              ),
+                              Container(
+                                child: Text("ABC 123",
+                                style: TextStyle(
+                                  fontSize: sizeTextCard
+                                ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                        ),
+                      ],
+                      crossAxisAlignment: CrossAxisAlignment.start
+                  ),
+                  alignment: Alignment.topLeft,
+                ),
+                alignment: Alignment.centerLeft,
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                    right: 25.0
+                ),
+                child: Column(
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          "05/05/2019",
+                          style: TextStyle(
+                              fontSize: 12.0
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          "10:35pm",
+                          style: TextStyle(
+                              fontSize: 10.0
+                          ),
+                        ),
+                      ),
+
+                    ],
+                    crossAxisAlignment: CrossAxisAlignment.end
+                ),
+                alignment: Alignment.topRight,
+              ),
+            ],
+          ),
+          alignment: Alignment.centerLeft,
+        ),
       ],
     );
 
@@ -185,6 +317,21 @@ class _BillContainerState extends State<BillContainer> {
           children: <Widget>[
             Container(
                 child: pagosPendientes
+            ),
+            Container(
+              child: facturasTitle,
+            ),
+            Container(
+                child: facturas
+            ),
+            Container(
+                child: thematicBreak
+            ),
+            Container(
+                child: facturas
+            ),
+            Container(
+                child: thematicBreak
             ),
             Container(
                 child: facturas
