@@ -8,25 +8,25 @@ part of 'signin.dart';
 
 SigninReq _$SigninReqFromJson(Map<String, dynamic> json) {
   return SigninReq(
-      tipo: json['tipo'] as String,
-      nombre: json['nombre'] as String,
-      cedula: json['cedula'] as String,
-      celular: json['celular'] as String,
+      type: json['type'] as String,
+      name: json['name'] as String,
+      document: json['document'] as String,
+      phone: json['phone'] as String,
       email: json['email'] as String,
-      usuario: json['usuario'] as String,
+      username: json['username'] as String,
       password: json['password'] as String,
-      discapasitado: json['discapasitado'] as bool);
+      disability: json['disability'] as bool);
 }
 
 Map<String, dynamic> _$SigninReqToJson(SigninReq instance) => <String, dynamic>{
-      'tipo': instance.tipo,
-      'nombre': instance.nombre,
-      'cedula': instance.cedula,
-      'celular': instance.celular,
+      'type': instance.type,
+      'name': instance.name,
+      'document': instance.document,
+      'phone': instance.phone,
       'email': instance.email,
-      'usuario': instance.usuario,
+      'username': instance.username,
       'password': instance.password,
-      'discapasitado': instance.discapasitado
+      'disability': instance.disability
     };
 
 SigninRes _$SigninResFromJson(Map<String, dynamic> json) {

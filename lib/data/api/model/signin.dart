@@ -4,16 +4,16 @@ part 'signin.g.dart';
 
 @JsonSerializable()
 class SigninReq{
-  String tipo;
-  String nombre;
-  String cedula;
-  String celular;
+  String type;
+  String name;
+  String document;
+  String phone;
   String email;
-  String usuario;
+  String username;
   String password;
-  bool discapasitado;
+  bool disability;
 
-  SigninReq({this.tipo, this.nombre, this.cedula, this.celular, this.email, this.usuario, this.password, this.discapasitado});
+  SigninReq({this.type, this.name, this.document, this.phone, this.email, this.username, this.password, this.disability});
 
   factory SigninReq.fromJson(Map<String, dynamic> json) => _$SigninReqFromJson(json);
   Map<String, dynamic> toJson() => _$SigninReqToJson(this);

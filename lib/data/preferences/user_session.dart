@@ -75,39 +75,12 @@ class UserSession{
     await prefs.setBool("disability", value);
   }
 
-
-  Future<int> get cash async{
-    final prefs = await preferences;
-    return prefs.getInt("cash");
-  }
-
-  void setCash(int value) async{
-    final prefs = await preferences;
-    await prefs.setInt("cash", value);
-  }
-
-
-  Future<DateTime> get lastTransaction async{
-    final prefs = await preferences;
-    String date = prefs.getString("lastTransaction");
-    return date != null ? DateTime.parse(date) : null;
-  }
-
-  void setLastTransaction(DateTime value) async{
-    final prefs = await preferences;
-    String date = value?.toIso8601String();
-    await prefs.setString("lastTransaction", date);
-  }
-
-
   void init(String token, User user){
     setToken(token);
     setId(user.id);
-    setName(user.nombre);
-    setDisability(user.discapasitado);
-    setCash(user.saldo);
-    setLastTransaction(user.ultimatransaccion);
-    setPhone(user.celular);
+    setName(user.name);
+    setDisability(user.disability);
+    setPhone(user.phone);
     setLogged(true);
   }
 

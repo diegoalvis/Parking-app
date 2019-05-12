@@ -1,5 +1,4 @@
 import "dart:async";
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:oneparking_citizen/data/api/model/login.dart';
@@ -8,7 +7,8 @@ import 'package:oneparking_citizen/data/api/model/signin.dart';
 import 'package:oneparking_citizen/util/http_util.dart';
 
 class AccountApi {
-  Dio _dio;
+
+  final Dio _dio;
 
   AccountApi(this._dio);
 
@@ -19,8 +19,8 @@ class AccountApi {
   }
 
   Future<Rspn<SigninRes>> signin(SigninReq req) async {
-    req.tipo = 'Cliente';
-    req.usuario = req.email;
+    req.type = 'citizen';
+    req.username = req.email;
     Response<Map<String, dynamic>> response = await _dio
         .post<Map<String, dynamic>>('/auth/signin', data: req.toJson());
     return validate(response, parseSigninRes);

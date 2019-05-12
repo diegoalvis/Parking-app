@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:oneparking_citizen/data/models/car.dart';
+import 'package:oneparking_citizen/data/models/vehicle.dart';
 
 part 'user.g.dart';
 
@@ -7,17 +7,15 @@ part 'user.g.dart';
 class User{
   @JsonKey(name: "_id")
   String id;
-  String nombre;
-  String cedula;
-  String celular;
-  bool discapasitado;
+  String name;
+  String document;
+  String phone;
+  bool disability;
   String email;
-  int saldo;
-  DateTime ultimatransaccion;
-  bool validado;
-  List<Car> vehiculos;
+  bool validated;
+  List<Vehicle> vehicles;
 
-  User({this.id, this.nombre, this.cedula, this.celular, this.discapasitado, this.email, this.saldo, this.ultimatransaccion, this.validado});
+  User({this.id, this.name, this.document, this.phone, this.disability, this.email, this.validated});
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);

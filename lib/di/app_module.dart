@@ -2,7 +2,7 @@ import 'package:dependencies/dependencies.dart';
 import 'package:dio/dio.dart';
 import 'package:oneparking_citizen/data/api/account_api.dart';
 import 'package:oneparking_citizen/data/db/app_database.dart';
-import 'package:oneparking_citizen/data/db/dao/car_dao.dart';
+import 'package:oneparking_citizen/data/db/dao/vehicle_dao.dart';
 import 'package:oneparking_citizen/data/preferences/user_session.dart';
 import 'package:oneparking_citizen/data/repository/account_repository.dart';
 import 'package:oneparking_citizen/util/error_codes.dart';
@@ -25,7 +25,7 @@ class AppModule implements Module {
       ..bindSingleton(Dio(BaseOptions(baseUrl: "http://13.68.223.69/api/v1")))
       ..bindLazySingleton((injector, params) => AccountApi(injector.get()))
       ..bindSingleton(AppDatabase())
-      ..bindLazySingleton((injector, params) => CarDao(injector.get()))
+      ..bindLazySingleton((injector, params) => VehicleDao(injector.get()))
       ..bindLazySingleton((injector, params) => AccountRepository(
             injector.get(),
             injector.get(),
