@@ -8,7 +8,7 @@ import 'package:oneparking_citizen/util/http_util.dart';
 class VehicleApi extends BaseApi {
   VehicleApi(Dio dio, UserSession session) : super(dio, session);
 
-  Future<Rspn<String>> add(Vehicle req) async {
+  Future<Rspn<String>> add(VehicleBase req) async {
     Response response = await post('/citizens/vehicles', body: req.toJson());
     return validateValue(response);
   }
@@ -18,7 +18,7 @@ class VehicleApi extends BaseApi {
     return validateValue(response);
   }
 
-  Future<Rspn<List<Vehicle>>> all() async {
+  Future<Rspn<List<VehicleBase>>> all() async {
     final id = await session.id;
     Response response = await get('/citizens/$id/vehicles');
     return validateList(response, parseVehicles);
@@ -26,4 +26,4 @@ class VehicleApi extends BaseApi {
 }
 
 List<Vehicle> parseVehicles(List<Map<String, dynamic>> json) =>
-    json.map((jn) => Vehicle.fromJson(jn)).toList();
+    json.map((jn) => VehicleBase.fromJson(jn)).toList();

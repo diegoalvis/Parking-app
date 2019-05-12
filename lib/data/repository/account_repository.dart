@@ -26,7 +26,7 @@ class AccountRepository {
     final user = rspn.data.user;
     _session.init(rspn.data.token, user);
     await _vehicleDao.deleteAll();
-    final cars = user.vehicles.map((c) => VehicleLocal.fromVehicle(c)).toList();
+    final cars = user.vehicles.map((c) => Vehicle.fromVehicle(c)).toList();
     await _vehicleDao.insertMany(cars);
 
     return rspn.success;

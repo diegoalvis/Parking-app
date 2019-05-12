@@ -11,12 +11,12 @@ class VehicleDao{
     _db = appDatabase.database;
   }
 
-  Future<int> insert(VehicleLocal vehicle) async{
+  Future<int> insert(Vehicle vehicle) async{
     final db = await _db;
     return await db.insert('vehicle', vehicle.toJson());
   }
   
-  Future insertMany(List<VehicleLocal> cars) async{
+  Future insertMany(List<Vehicle> cars) async{
     final db = await _db;
     final batch = db.batch();
     cars.forEach((c){
@@ -26,7 +26,7 @@ class VehicleDao{
     return await batch.commit(noResult: true);
   }
 
-  Future update(VehicleLocal vehicle) async{
+  Future update(Vehicle vehicle) async{
     final db = await _db;
     await db.update('vehicle', vehicle.toJson());
   }
@@ -41,22 +41,22 @@ class VehicleDao{
     await db.delete('vehicle');
   }
 
-  Future<List<VehicleLocal>> all() async{
+  Future<List<Vehicle>> all() async{
     final db = await _db;
     var cars = await db.query("vehicle", orderBy: 'plate');
-    return compute((v)=> v.map<VehicleLocal>((json) => VehicleLocal.fromJson(json)).toList(), cars);
+    return compute((v)=> v.map<Vehicle>((json) => Vehicle.fromJson(json)).toList(), cars);
   }
 
-  Future<VehicleLocal> selected() async{
+  Future<Vehicle> selected() async{
     final db = await _db;
     var vehicle = await db.query("vehicle", where: "selected = ?", whereArgs: [1], limit: 1);
-    return vehicle.isNotEmpty ? VehicleLocal.fromJson(vehicle.first) : null;
+    return vehicle.isNotEmpty ? Vehicle.fromJson(vehicle.first) : null;
   }
 
-  Future<VehicleLocal> next() async{
+  Future<Vehicle> next() async{
     final db = await _db;
     var vehicle = await db.query("vehicle", orderBy: "plate", limit: 1);
-    return vehicle.isNotEmpty ? VehicleLocal.fromJson(vehicle.first) : null;
+    return vehicle.isNotEmpty ? Vehicle.fromJson(vehicle.first) : null;
   }
 
 }

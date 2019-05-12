@@ -6,21 +6,22 @@ part of 'vehicle.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Vehicle _$VehicleFromJson(Map<String, dynamic> json) {
-  return Vehicle(
+VehicleBase _$VehicleBaseFromJson(Map<String, dynamic> json) {
+  return VehicleBase(
       plate: json['plate'] as String,
       brand: json['brand'] as String,
       type: json['type'] as String);
 }
 
-Map<String, dynamic> _$VehicleToJson(Vehicle instance) => <String, dynamic>{
+Map<String, dynamic> _$VehicleBaseToJson(VehicleBase instance) =>
+    <String, dynamic>{
       'plate': instance.plate,
       'brand': instance.brand,
       'type': instance.type
     };
 
-VehicleLocal _$VehicleLocalFromJson(Map<String, dynamic> json) {
-  return VehicleLocal(
+Vehicle _$VehicleFromJson(Map<String, dynamic> json) {
+  return Vehicle(
       id: json['id'] as int,
       plate: json['plate'] as String,
       brand: json['brand'] as String,
@@ -28,8 +29,7 @@ VehicleLocal _$VehicleLocalFromJson(Map<String, dynamic> json) {
     ..type = json['type'] as String;
 }
 
-Map<String, dynamic> _$VehicleLocalToJson(VehicleLocal instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$VehicleToJson(Vehicle instance) => <String, dynamic>{
       'plate': instance.plate,
       'brand': instance.brand,
       'type': instance.type,

@@ -13,17 +13,29 @@ class Point{
 }
 
 @JsonSerializable(nullable: true)
-class Zone{
+class ZoneBase{
   String type;
-  Point centerPoint;
   String code;
   String name;
   String address;
 
-  Zone({this.type, this.centerPoint, this.code, this.name, this.address});
+  ZoneBase({this.type, this.code, this.name, this.address});
 
-  factory Zone.fromJson(Map<String, dynamic> json) => _$ZoneFromJson(json);
-  Map<String, dynamic> toJson() => _$ZoneToJson(this);
+  factory ZoneBase.fromJson(Map<String, dynamic> json) => _$ZoneBaseFromJson(json);
+  Map<String, dynamic> toJson() => _$ZoneBaseToJson(this);
+
+}
+
+@JsonSerializable(nullable: true)
+class ZoneInfo extends ZoneBase{
+  @JsonKey(name: "_id")
+  String id;
+  Point centerPoint;
+  ZoneInfo({String type, String code, String name, String address, this.centerPoint})
+  :super(type:type, code:code, name:name, address:address);
+
+  factory ZoneInfo.fromJson(Map<String, dynamic> json) => _$ZoneInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$ZoneInfoToJson(this);
 }
 
 @JsonSerializable(nullable: true)
@@ -39,4 +51,18 @@ class ZoneState{
 
   factory ZoneState.fromJson(Map<String, dynamic> json) => _$ZoneStateFromJson(json);
   Map<String, dynamic> toJson() => _$ZoneStateToJson(this);
+}
+
+@JsonSerializable(nullable: true)
+class Zone extends ZoneBase{
+  int id;
+  double lat;
+  double lon;
+  String zoneId;
+
+  Zone({String type, String code, String name, String address, this.lat, this.lon, this.id, this.zoneId})
+  :super(type: type, code: code, name:name, address:address);
+
+  factory Zone.fromJson(Map<String, dynamic> json) => _$ZoneFromJson(json);
+  Map<String, dynamic> toJson() => _$ZoneToJson(this);
 }

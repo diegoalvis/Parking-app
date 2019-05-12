@@ -11,10 +11,10 @@ Setup _$SetupFromJson(Map<String, dynamic> json) {
       version: json['version'] as int,
       config: json['config'] == null
           ? null
-          : Config.fromJson(json['config'] as Map<String, dynamic>),
+          : ConfigComplete.fromJson(json['config'] as Map<String, dynamic>),
       zones: (json['zones'] as List)
           ?.map((e) =>
-              e == null ? null : Zone.fromJson(e as Map<String, dynamic>))
+              e == null ? null : ZoneInfo.fromJson(e as Map<String, dynamic>))
           ?.toList());
 }
 

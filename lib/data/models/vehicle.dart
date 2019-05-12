@@ -3,30 +3,30 @@ import 'package:json_annotation/json_annotation.dart';
 part 'vehicle.g.dart';
 
 @JsonSerializable()
-class Vehicle{
+class VehicleBase{
   String plate;
   String brand;
   String type;
 
-  Vehicle({this.plate, this.brand, this.type});
+  VehicleBase({this.plate, this.brand, this.type});
 
-  factory Vehicle.fromJson(Map<String, dynamic> json) => _$VehicleFromJson(json);
-  Map<String, dynamic> toJson() => _$VehicleToJson(this);
+  factory VehicleBase.fromJson(Map<String, dynamic> json) => _$VehicleBaseFromJson(json);
+  Map<String, dynamic> toJson() => _$VehicleBaseToJson(this);
 }
 
 @JsonSerializable(nullable: true)
-class VehicleLocal extends Vehicle{
+class Vehicle extends VehicleBase{
   int id;
   bool selected;
 
-  VehicleLocal({this.id, String plate, String brand, this.selected}):super(plate: plate, brand:brand);
+  Vehicle({this.id, String plate, String brand, this.selected}):super(plate: plate, brand:brand);
 
-  VehicleLocal.fromVehicle(Vehicle car){
+  Vehicle.fromVehicle(Vehicle car){
     selected = false;
     plate = car.plate;
     brand = car.brand;
   }
 
-  factory VehicleLocal.fromJson(Map<String, dynamic> json) => _$VehicleLocalFromJson(json);
-  Map<String, dynamic> toJson() => _$VehicleLocalToJson(this);
+  factory Vehicle.fromJson(Map<String, dynamic> json) => _$VehicleFromJson(json);
+  Map<String, dynamic> toJson() => _$VehicleToJson(this);
 }
