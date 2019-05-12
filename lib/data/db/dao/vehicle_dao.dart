@@ -43,7 +43,7 @@ class VehicleDao{
 
   Future<List<VehicleLocal>> all() async{
     final db = await _db;
-    var cars = await db.query("vehicle", orderBy: 'placa');
+    var cars = await db.query("vehicle", orderBy: 'plate');
     return compute((v)=> v.map<VehicleLocal>((json) => VehicleLocal.fromJson(json)).toList(), cars);
   }
 
@@ -55,7 +55,7 @@ class VehicleDao{
 
   Future<VehicleLocal> next() async{
     final db = await _db;
-    var vehicle = await db.query("vehicle", orderBy: "placa", limit: 1);
+    var vehicle = await db.query("vehicle", orderBy: "plate", limit: 1);
     return vehicle.isNotEmpty ? VehicleLocal.fromJson(vehicle.first) : null;
   }
 

@@ -22,10 +22,12 @@ class AppDatabase {
     await db.execute('''
     CREATE TABLE IF NOT EXISTS car(
     id INTEGER PRIMARY KEY, 
-    placa VARCHAR(10), 
-    marca VARCHAR(25), 
+    plate VARCHAR(10), 
+    brand VARCHAR(25),
+    type VARCHAR(25), 
     selected BOOLEAN DEFAULT 0
     )
     ''');
   }
 }
+
