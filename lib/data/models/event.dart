@@ -25,6 +25,14 @@ class EventInfo extends Event {
   EventInfo({DateTime fromDate, DateTime toDate, String name, String type, this.zones})
   :super(fromDate:fromDate, toDate:toDate, name:name, type:type);
 
+  Event toEvent()=> Event(
+    fromDate: fromDate,
+    toDate: toDate,
+    name: name,
+    type: type,
+    all: zones.isEmpty
+  );
+
   factory EventInfo.fromJson(Map<String, dynamic> json) => _$EventInfoFromJson(json);
 
   Map<String, dynamic> toJson() => _$EventInfoToJson(this);

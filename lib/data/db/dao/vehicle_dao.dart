@@ -44,7 +44,7 @@ class VehicleDao{
   Future<List<Vehicle>> all() async{
     final db = await _db;
     var cars = await db.query("vehicle", orderBy: 'plate');
-    return compute((v)=> v.map<Vehicle>((json) => Vehicle.fromJson(json)).toList(), cars);
+    return compute( parseList, cars);
   }
 
   Future<Vehicle> selected() async{
@@ -60,3 +60,5 @@ class VehicleDao{
   }
 
 }
+
+List<Vehicle> parseList(List<Map<String, dynamic >> json) => json.map((x)=>Vehicle.fromJson(x)).toList();

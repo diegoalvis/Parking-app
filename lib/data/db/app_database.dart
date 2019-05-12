@@ -31,7 +31,8 @@ class AppDatabase {
 
     await db.execute('''
     CREATE TABLE IF NOT EXISTS zone(
-    id INTEGER PRIMARY KEY, 
+    id INTEGER PRIMARY KEY,
+    idZone VARCHAR(555), 
     type VARCHAR(60), 
     code VARCHAR(60),
     name TEXT,
@@ -59,7 +60,13 @@ class AppDatabase {
     CREATE TABLE IF NOT EXISTS schedule(
     id INTEGER PRIMARY KEY, 
     type TEXT,
-    day INTEGER DEFAULT 0
+    mo BOOLEAN DEFAULT 0,
+    tu BOOLEAN DEFAULT 0,
+    we BOOLEAN DEFAULT 0,
+    th BOOLEAN DEFAULT 0,
+    fr BOOLEAN DEFAULT 0,
+    sa BOOLEAN DEFAULT 0,
+    su BOOLEAN DEFAULT 0,
     iniTime INTEGER,
     endTime INTEGER 
     )

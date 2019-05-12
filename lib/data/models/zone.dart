@@ -58,9 +58,9 @@ class Zone extends ZoneBase{
   int id;
   double lat;
   double lon;
-  String zoneId;
+  String idZone;
 
-  Zone({String type, String code, String name, String address, this.lat, this.lon, this.id, this.zoneId})
+  Zone({String type, String code, String name, String address, this.lat, this.lon, this.id, this.idZone})
   :super(type: type, code: code, name:name, address:address);
 
   factory Zone.fromJson(Map<String, dynamic> json) => _$ZoneFromJson(json);

@@ -6,11 +6,17 @@ part 'schedules.g.dart';
 class Schedules{
   int id;
   String type;
-  int day;
+  bool mo;
+  bool tu;
+  bool we;
+  bool th;
+  bool fr;
+  bool sa;
+  bool su;
   int initTime;
   int endTime;
 
-  Schedules({this.id, this.type, this.day, this.initTime, this.endTime});
+  Schedules({this.id, this.type, this.mo, this.tu, this.we, this.th, this.fr, this.sa, this.su, this.initTime, this.endTime});
 
   factory Schedules.fromJson(Map<String, dynamic> json) => _$SchedulesFromJson(json);
 
