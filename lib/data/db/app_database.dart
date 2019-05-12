@@ -14,7 +14,7 @@ class AppDatabase {
     return await openDatabase(
       join(await getDatabasesPath(), 'oneparking.db'),
       onCreate: _onCreate,
-      version: 1,
+      version: 2,
     );
   }
 

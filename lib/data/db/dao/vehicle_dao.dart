@@ -31,9 +31,9 @@ class VehicleDao{
     await db.update('vehicle', vehicle.toJson());
   }
 
-  Future delete(int id) async{
+  Future delete(String plate) async{
     final db = await _db;
-    await db.delete('vehicle', where: "id = ?", whereArgs: [id]);
+    await db.delete('vehicle', where: "plate = ?", whereArgs: [plate]);
   }
 
   Future deleteAll() async{
