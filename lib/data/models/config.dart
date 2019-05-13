@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:oneparking_citizen/data/models/event.dart';
+import 'package:oneparking_citizen/data/models/schedules.dart';
 
 part 'config.g.dart';
 
@@ -23,10 +24,27 @@ class TimeRange {
 
   TimeRange({this.days, this.times});
 
+  List<Schedules> toSchedules(String type){
+    final dayState = [false, false, false, false, false, false, false ];
+    days.forEach((d)=>dayState[d] = true);
+    return times.map((t)=>Schedules(type: type,
+        mo: dayState[0],
+        tu: dayState[1],
+        we: dayState[2],
+        th: dayState[3],
+        fr: dayState[4],
+        sa: dayState[5],
+        su: dayState[6],
+        endTime: t.endTime,
+        initTime: t.initTime
+    ));
+  }
+
   factory TimeRange.fromJson(Map<String, dynamic> json) =>
       _$TimeRangeFromJson(json);
 
   Map<String, dynamic> toJson() => _$TimeRangeToJson(this);
+
 }
 
 @JsonSerializable(nullable: true)

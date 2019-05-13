@@ -95,7 +95,8 @@ class AppDatabase {
 
     await db.execute('''
     CREATE TABLE IF NOT EXISTS reserve(
-    id INTEGER PRIMARY KEY, 
+    id INTEGER PRIMARY KEY,
+    idReserve VARCHAR(355), 
     date VARCHAR(255), 
     plate VARCHAR(25),
     type VARCHAR(25),

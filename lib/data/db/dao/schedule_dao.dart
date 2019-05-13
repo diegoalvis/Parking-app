@@ -25,7 +25,7 @@ class ScheduleDao {
     await db.delete('schedule');
   }
 
-  Future<Schedules> get(String type, int day) async{
+  Future<Schedules> get(String type, int day, {int min}) async{
     final db = await _db;
     String dayQuery = '';
     switch(day){
@@ -37,7 +37,12 @@ class ScheduleDao {
       case 5: dayQuery = 'sa = ?'; break;
       case 6: dayQuery = 'su = ?'; break;
     }
-    final result = await db.query('schedule', where: dayQuery + 'AND type = ?', whereArgs: [day, type] );
+    String minQuery = '';
+    if(min != null){
+      minQuery = ' AND endTime > $min AND initTime <= $min';
+    }
+
+    final result = await db.query('schedule', where: dayQuery + 'AND type = ? $minQuery', whereArgs: [day, type] );
     return result.isNotEmpty ? Schedules.fromJson(result[0]) : null;
   }
 

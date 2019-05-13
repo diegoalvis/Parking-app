@@ -75,6 +75,26 @@ class UserSession{
     await prefs.setBool("disability", value);
   }
 
+  Future <bool> get isReserving async{
+    final prefs = await preferences;
+    return prefs.getBool("reserving") ?? false;
+  }
+
+  void setReserving(bool value) async{
+    final prefs = await preferences;
+    await prefs.setBool("reserving", value);
+  }
+
+  Future <int> get version async{
+    final prefs = await preferences;
+    return prefs.getInt("version") ?? false;
+  }
+
+  void setVersion(int value) async{
+    final prefs = await preferences;
+    await prefs.setInt("version", value);
+  }
+
   void init(String token, User user){
     setToken(token);
     setId(user.id);

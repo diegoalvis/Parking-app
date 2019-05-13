@@ -9,16 +9,18 @@ part of 'reserve.dart';
 Reserve _$ReserveFromJson(Map<String, dynamic> json) {
   return Reserve(
       id: json['id'] as int,
+      idReserve: json['idReserve'] as String,
       date:
           json['date'] == null ? null : DateTime.parse(json['date'] as String),
       plate: json['plate'] as String,
       name: json['name'] as String,
-      address: json['address'] as String)
-    ..type = json['type'] as String;
+      address: json['address'] as String,
+      type: json['type'] as String);
 }
 
 Map<String, dynamic> _$ReserveToJson(Reserve instance) => <String, dynamic>{
       'id': instance.id,
+      'idReserve': instance.idReserve,
       'date': instance.date?.toIso8601String(),
       'plate': instance.plate,
       'type': instance.type,

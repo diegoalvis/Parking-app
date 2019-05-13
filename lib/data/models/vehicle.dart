@@ -2,6 +2,9 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'vehicle.g.dart';
 
+const String TYPE_CAR = 'car';
+const String TYPE_MOTORCYCLE = 'motorcycle';
+
 @JsonSerializable()
 class VehicleBase{
   String plate;
@@ -26,6 +29,8 @@ class Vehicle extends VehicleBase{
     plate = car.plate;
     brand = car.brand;
   }
+
+  VehicleBase toBaseVehicle() => VehicleBase(plate: plate, brand: brand, type: type);
 
   factory Vehicle.fromJson(Map<String, dynamic> json) => _$VehicleFromJson(json);
   Map<String, dynamic> toJson() => _$VehicleToJson(this);
