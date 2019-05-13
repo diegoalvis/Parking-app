@@ -12,6 +12,7 @@ import './pages/map/map_page.dart';
 import './pages/vehicle/vehicle_page.dart';
 import './pages/bill/bill_page.dart';
 import './pages/info/info_page.dart';
+import './pages/reserve/reserve_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.build(),
         initialRoute: '/',
         routes: {
-          '/': (context) => InfoPage(),
+          '/': (context) => ReservePage(),
           '/login': (context) => LoginPage(),
           '/register-phone': (context) => PhonePage(),
           '/register-one': (context) => RegisterOnePage(),

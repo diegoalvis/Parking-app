@@ -140,7 +140,6 @@ class _BillContainerState extends State<BillContainer> {
                         ),
                       ),
                     ),
-
                   ],
                     crossAxisAlignment: CrossAxisAlignment.end
                 ),
