@@ -11,6 +11,8 @@
         android:label="oneparking_citizen"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC32zfmqEIK7d9pN4EQODj2M2wepJTITrg"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
