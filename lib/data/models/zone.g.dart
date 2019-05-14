@@ -96,3 +96,17 @@ Map<String, dynamic> _$ZoneToJson(Zone instance) => <String, dynamic>{
       'lon': instance.lon,
       'idZone': instance.idZone
     };
+
+ZoneNovelty _$ZoneNoveltyFromJson(Map<String, dynamic> json) {
+  return ZoneNovelty(
+      type: json['type'] as String,
+      cell: json['cell'] as int,
+      reserveType: json['reserveType'] as String);
+}
+
+Map<String, dynamic> _$ZoneNoveltyToJson(ZoneNovelty instance) =>
+    <String, dynamic>{
+      'type': instance.type,
+      'cell': instance.cell,
+      'reserveType': instance.reserveType
+    };

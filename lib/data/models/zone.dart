@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:oneparking_citizen/data/models/vehicle.dart';
 
 part 'zone.g.dart';
 
@@ -98,4 +99,18 @@ class Zone extends ZoneBase {
   factory Zone.fromJson(Map<String, dynamic> json) => _$ZoneFromJson(json);
 
   Map<String, dynamic> toJson() => _$ZoneToJson(this);
+}
+
+@JsonSerializable(nullable: true)
+class ZoneNovelty{
+  String type;
+  int cell;
+  String reserveType;
+
+  ZoneNovelty({this.type, this.cell, this.reserveType});
+
+  factory ZoneNovelty.fromJson(Map<String, dynamic> json) => _$ZoneNoveltyFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ZoneNoveltyToJson(this);
+
 }
