@@ -8,19 +8,11 @@ part of 'incident.dart';
 
 IncidentUser _$IncidentUserFromJson(Map<String, dynamic> json) {
   return IncidentUser(
-      idUser: json['idUser'] as String,
-      name: json['name'] as String,
-      phone: json['phone'] as String,
-      type: json['type'] as String);
+      name: json['name'] as String, phone: json['phone'] as String);
 }
 
 Map<String, dynamic> _$IncidentUserToJson(IncidentUser instance) =>
-    <String, dynamic>{
-      'idUser': instance.idUser,
-      'name': instance.name,
-      'phone': instance.phone,
-      'type': instance.type
-    };
+    <String, dynamic>{'name': instance.name, 'phone': instance.phone};
 
 IncidentZone _$IncidentZoneFromJson(Map<String, dynamic> json) {
   return IncidentZone(

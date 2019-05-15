@@ -4,12 +4,10 @@ part 'incident.g.dart';
 
 @JsonSerializable(nullable: true)
 class IncidentUser{
-  String idUser;
   String name;
   String phone;
-  String type;
 
-  IncidentUser({this.idUser, this.name, this.phone, this.type});
+  IncidentUser({this.name, this.phone});
 
   factory IncidentUser.fromJson(Map<String, dynamic> json) => _$IncidentUserFromJson(json);
   Map<String, dynamic> toJson() => _$IncidentUserToJson(this);
