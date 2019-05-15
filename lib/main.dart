@@ -7,11 +7,12 @@ import 'package:oneparking_citizen/pages/account/phone_page.dart';
 import 'package:oneparking_citizen/pages/account/register_one_page.dart';
 import 'package:oneparking_citizen/pages/account/register_two_page.dart';
 import 'package:oneparking_citizen/pages/main/main_page.dart';
-import 'package:oneparking_citizen/pages/splash/splash-page.dart';
 import './pages/map/map_page.dart';
 import './pages/vehicle/vehicle_page.dart';
 import './pages/bill/bill_page.dart';
 import './pages/info/info_page.dart';
+import './pages/add_vehicle/add_vehicle_page.dart';
+import './pages/report/report_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.build(),
         initialRoute: '/',
         routes: {
-          '/': (context) => SplashPage(),
+          '/': (context) => ReportPage(),
           '/login': (context) => LoginPage(),
           '/register-phone': (context) => PhonePage(),
           '/register-one': (context) => RegisterOnePage(),
@@ -37,6 +38,8 @@ class MyApp extends StatelessWidget {
           '/vehicle': (BuildContext context) => VehiclePage(),
           '/bill': (BuildContext context) => BillPage(),
           '/info': (BuildContext context) => InfoPage(),
+          '/add-vehicle': (BuildContext context) => AddVehiclePage(),
+          '/report': (context) => ReportPage(),
         },
       ),
     );

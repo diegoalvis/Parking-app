@@ -80,8 +80,7 @@ class LoginFormState extends State<LoginForm> {
                       _obscure = !_obscure;
                     });
                   },
-                  child:
-                      Icon(_obscure ? Icons.visibility : Icons.visibility_off),
+                  child: Icon(_obscure ? Icons.visibility : Icons.visibility_off),
                 ),
               ),
             ),

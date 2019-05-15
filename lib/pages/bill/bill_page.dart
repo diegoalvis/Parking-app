@@ -8,14 +8,9 @@ class BillPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Container(
       color: Colors.white,
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Expanded(child: new DrawerOnly()),
-            ],
-          ),
           Text(
             " Bill page",
             style: Theme.of(context).textTheme.display1,

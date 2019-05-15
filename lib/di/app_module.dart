@@ -5,6 +5,7 @@ import 'package:oneparking_citizen/data/db/app_database.dart';
 import 'package:oneparking_citizen/data/db/dao/vehicle_dao.dart';
 import 'package:oneparking_citizen/data/preferences/user_session.dart';
 import 'package:oneparking_citizen/data/repository/account_repository.dart';
+import 'package:oneparking_citizen/pages/main/main_bloc.dart';
 import 'package:oneparking_citizen/util/error_codes.dart';
 
 class AppModule implements Module {
@@ -23,15 +24,17 @@ class AppModule implements Module {
         return dio;
       })*/
       ..bindSingleton(Dio(BaseOptions(baseUrl: "http://13.68.223.69/api/v1")))
-      ..bindSingleton('http://13.68.223.69/socket/zones', name:'url_socket')
+      ..bindSingleton('http://13.68.223.69/socket/zones', name: 'url_socket')
       ..bindLazySingleton((injector, params) => AccountApi(injector.get()))
       ..bindSingleton(AppDatabase())
       ..bindLazySingleton((injector, params) => VehicleDao(injector.get()))
+      ..bindSingleton(MainBloc())
       ..bindLazySingleton((injector, params) => AccountRepository(
             injector.get(),
             injector.get(),
             injector.get(),
             injector.get(),
           ));
+    //..bindLazySingleton((injector, params) => MainBloc();
   }
 }
