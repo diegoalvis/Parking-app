@@ -52,7 +52,7 @@ class AppDatabase {
     mcFractionPrice INTEGER,
     baseTime INTEGER,
     fractionTime INTEGER,
-    limitTime INTEGER, 
+    limitTime INTEGER
     )
     ''');
 
@@ -80,7 +80,7 @@ class AppDatabase {
     name TEXT,
     type TEXT,
     zones TEXT,
-    all BOOLEAN
+    allZones BOOLEAN
     )
     ''');
 
@@ -88,7 +88,7 @@ class AppDatabase {
     CREATE TABLE IF NOT EXISTS eventzone(
     id INTEGER PRIMARY KEY, 
     event INT,
-    idZone TEXT, 
+    idZone TEXT
     )
     ''');
 
