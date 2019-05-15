@@ -39,4 +39,7 @@ class ReserveRepository {
     _session.setReserving(false);
   }
 
+  Future<Reserve> current() async => await _dao.get();
+
+
 }
