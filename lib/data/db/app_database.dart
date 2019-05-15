@@ -84,7 +84,6 @@ class AppDatabase {
     )
     ''');
 
-
     await db.execute('''
     CREATE TABLE IF NOT EXISTS eventzone(
     id INTEGER PRIMARY KEY, 
@@ -106,4 +105,3 @@ class AppDatabase {
     ''');
   }
 }
-

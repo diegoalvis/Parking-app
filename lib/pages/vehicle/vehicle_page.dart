@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../main/main_page.dart';
+import '../add_vehicle/add_vehicle_page.dart';
 
 void main() => runApp(VehiclePage());
 
@@ -8,45 +8,40 @@ class VehiclePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Container(
       color: Colors.white,
-      child: Row(
-        children: <Widget>[
-          new DrawerOnly(),
-          new Expanded(
-            child: Column(
-              children: <Widget>[
-                new AppBar(
-                  title: Text("Vehiculos",
-                      style: TextStyle(fontSize: 22, color: Colors.grey, fontWeight: FontWeight.w400)),
-                  backgroundColor: Colors.white,
-                  automaticallyImplyLeading: false,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 30.0),
-                  child: new Text(
-                    "Desliza hacia abajo para recargar los vehiculos",
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                ),
-                new VehicleDetail("ABC 123", "Mazda", "Carro"),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: new FloatingActionButton(
-                          backgroundColor: Color.fromARGB(0xFF, 0x8B, 0xC3, 0x4A),
-                          child: Icon(
-                            Icons.add,
-                            color: Colors.white,
-                          ),
-                          onPressed: null),
-                    ),
-                  ),
-                )
-              ],
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Vehiculos",
+              style: TextStyle(fontSize: 22, color: Colors.grey, fontWeight: FontWeight.w400)),
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+        ),
+        floatingActionButton: FloatingActionButton(
+            backgroundColor: Color.fromARGB(0xFF, 0x8B, 0xC3, 0x4A),
+            child: Icon(
+              Icons.add,
+              color: Colors.white,
             ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddVehiclePage()),
+              );
+            }),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              new Padding(
+                padding: EdgeInsets.only(top: 30.0),
+                child: new Text(
+                  "Desliza hacia abajo para recargar los vehiculos",
+                  style: Theme.of(context).textTheme.caption,
+                ),
+              ),
+              new VehicleDetail("ABC 123", "Mazda", "Carro"),
+              new VehicleDetail("ABC 123", "Mazda", "Carro"),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -70,7 +65,7 @@ class VehicleDetail extends StatelessWidget {
               Center(
                 child: Icon(
                   Icons.check,
-                  color: Color.fromARGB(0xFF, 0x19, 0x76, 0xD2),
+                  color: Theme.of(context).primaryColor,
                   size: 30.0,
                 ),
               ),
@@ -92,19 +87,17 @@ class VehicleDetail extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .caption
-                              .merge(TextStyle(color: Color.fromARGB(0xFF, 0x19, 0x76, 0xD2)))),
+                              .merge(TextStyle(color: Theme.of(context).primaryColor))),
                     ),
                   ],
                 ),
               ),
-              Align(
+              Container(
                 alignment: Alignment.topRight,
-                child: Container(
-                  child: Icon(
-                    Icons.clear,
-                    color: Colors.grey,
-                    size: 20.0,
-                  ),
+                child: Icon(
+                  Icons.clear,
+                  color: Colors.black38,
+                  size: 20.0,
                 ),
               ),
             ],
