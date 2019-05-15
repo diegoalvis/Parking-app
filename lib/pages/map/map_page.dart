@@ -50,7 +50,7 @@ class _MapContainerState extends State<MapContainer>{
     mapController.addMarker(
         MarkerOptions(
           position: LatLng(6.151374, -75.614445),
-          infoWindowText: InfoWindowText("TItulo", "Zona Parqueadero")
+          infoWindowText: InfoWindowText("Oneparking", "Zona Parqueadero")
         ),
     );
   }
