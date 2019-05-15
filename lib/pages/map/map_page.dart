@@ -32,11 +32,11 @@ class _MapContainerState extends State<MapContainer>{
       body: Stack(
         children: <Widget>[
           GoogleMap(
-              onMapCreated: onMapCreated,
+            onMapCreated: onMapCreated,
             options: GoogleMapOptions(
               cameraPosition: CameraPosition(
                   target: LatLng(6.151379, -75.615247),
-                zoom: 15.0
+                zoom: 17.0
               )
             ),
           )
@@ -45,9 +45,13 @@ class _MapContainerState extends State<MapContainer>{
     );
   }
 
-  void onMapCreated(controller) {
-    setState(() {
-      mapController = controller;
-    });
+  void onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+    mapController.addMarker(
+        MarkerOptions(
+          position: LatLng(6.151374, -75.614445),
+          infoWindowText: InfoWindowText("TItulo", "Zona Parqueadero")
+        ),
+    );
   }
 }

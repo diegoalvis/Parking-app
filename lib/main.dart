@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.build(),
         initialRoute: '/',
         routes: {
-          '/': (context) => InfoPage(),
+          '/': (context) => MapPage(),
           '/login': (context) => LoginPage(),
           '/register-phone': (context) => PhonePage(),
           '/register-one': (context) => RegisterOnePage(),

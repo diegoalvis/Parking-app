@@ -11,6 +11,8 @@
         android:label="oneparking_citizen"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC32zfmqEIK7d9pN4EQODj2M2wepJTITrg"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -25,8 +27,6 @@
             <meta-data
                 android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
                 android:value="true" />
-            <meta-data android:name="com.google.android.geo.API_KEY"
-                android:value="AIzaSyCBcVyr-URyzaBBcdfikCxwCpFgBahSXmw"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
