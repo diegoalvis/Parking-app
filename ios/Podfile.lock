@@ -7,6 +7,14 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
+  - google_maps_flutter (0.0.1):
+    - Flutter
+    - GoogleMaps
+  - GoogleMaps (2.7.0):
+    - GoogleMaps/Maps (= 2.7.0)
+  - GoogleMaps/Base (2.7.0)
+  - GoogleMaps/Maps (2.7.0):
+    - GoogleMaps/Base
   - image_cropper (0.0.1):
     - Flutter
     - TOCropViewController (~> 2.3.8)
@@ -25,6 +33,7 @@ PODS:
 DEPENDENCIES:
   - adhara_socket_io (from `.symlinks/plugins/adhara_socket_io/ios`)
   - Flutter (from `.symlinks/flutter/ios`)
+  - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
@@ -33,6 +42,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - FMDB
+    - GoogleMaps
     - Socket.IO-Client-Swift
     - Starscream
     - TOCropViewController
@@ -42,6 +52,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/adhara_socket_io/ios"
   Flutter:
     :path: ".symlinks/flutter/ios"
+  google_maps_flutter:
+    :path: ".symlinks/plugins/google_maps_flutter/ios"
   image_cropper:
     :path: ".symlinks/plugins/image_cropper/ios"
   image_picker:
@@ -55,6 +67,8 @@ SPEC CHECKSUMS:
   adhara_socket_io: 5175561f05cb22391f694c95d58ae961f4d92ea2
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  google_maps_flutter: 924970f41ec509a201b593548db005efb2a09ee9
+  GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
   image_cropper: 189eec25d148f56694f670438e9458323ba2880a
   image_picker: a211f28b95a560433c00f5cd3773f4710a20404d
   shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
