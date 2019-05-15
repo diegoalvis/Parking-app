@@ -13,6 +13,7 @@ import './pages/bill/bill_page.dart';
 import './pages/info/info_page.dart';
 import './pages/add_vehicle/add_vehicle_page.dart';
 import './pages/report/report_page.dart';
+import './pages/reserve/reserve_page.dart';
 
 void main() => runApp(MyApp());
 

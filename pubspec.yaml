@@ -29,6 +29,7 @@ dependencies:
   equatable: ^0.2.3
   flutter:
     sdk: flutter
+  google_maps_flutter: ^0.0.3
   image_picker: "^0.4.5"
   image_cropper: ^0.0.4
 
