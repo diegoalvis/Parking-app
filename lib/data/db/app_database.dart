@@ -23,7 +23,8 @@ class AppDatabase {
     CREATE TABLE IF NOT EXISTS car(
     id INTEGER PRIMARY KEY, 
     placa VARCHAR(10), 
-    marca VARCHAR(25), 
+    marca VARCHAR(25),
+    tipo VARCHAR(10), 
     selected BOOLEAN DEFAULT 0
     )
     ''');

@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:oneparking_citizen/util/app_icons.dart';
+import 'package:dependencies_flutter/dependencies_flutter.dart';
+import 'package:oneparking_citizen/pages/main/main_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../vehicle/vehicle_page.dart';
+import '../map/map_page.dart';
+import '../bill/bill_page.dart';
+import '../info/info_page.dart';
 
 void main() => runApp(MainPage());
 
 class MainPage extends StatelessWidget {
-  // This widget is the root of your application.
+  MainBloc _bloc;
+
   @override
   Widget build(BuildContext context) {
-    return new Container(
+    _bloc = InjectorWidget.of(context).get<MainBloc>();
+    return Container(
       color: Colors.white,
       child: Row(
         children: <Widget>[
@@ -17,9 +26,27 @@ class MainPage extends StatelessWidget {
               Expanded(child: new DrawerOnly()),
             ],
           ),
-          Text(
-            " Main page",
-            style: Theme.of(context).textTheme.display1,
+          Expanded(
+            child: Container(
+              child: BlocBuilder(
+                bloc: _bloc,
+                builder: (context, state) {
+                  switch (state) {
+                    case 1:
+                      return MapPage();
+                      break;
+                    case 2:
+                      return VehiclePage();
+                      break;
+                    case 3:
+                      return BillPage();
+                      break;
+                    default:
+                      return InfoPage();
+                  }
+                },
+              ),
+            ),
           )
         ],
       ),
@@ -33,7 +60,7 @@ class DrawerOnly extends StatelessWidget {
     return Material(
       color: Color.fromARGB(0xFF, 0x19, 0x76, 0xD2),
       child: new Container(
-        width: 80,
+        width: 50,
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
@@ -42,15 +69,15 @@ class DrawerOnly extends StatelessWidget {
                 child: const Icon(
                   AppIcons.logo,
                   color: Colors.white,
-                  size: 50,
+                  size: 35,
                 ),
               ),
               contentPadding: EdgeInsets.all(5.0),
             ),
-            new MenuItem(AppIcons.zone, context, '/map'),
-            new MenuItem(AppIcons.vehicle, context, '/vehicle'),
-            new MenuItem(AppIcons.bill, context, '/bill'),
-            new MenuItem(AppIcons.info, context, '/info'),
+            new MenuItem(AppIcons.zone, context, 1),
+            new MenuItem(AppIcons.vehicle, context, 2),
+            new MenuItem(AppIcons.bill, context, 3),
+            new MenuItem(AppIcons.info, context, 4),
             SizedBox(height: 300),
             Material(
               color: Color.fromARGB(0xFF, 0x0A, 0x56, 0xA1),
@@ -59,7 +86,7 @@ class DrawerOnly extends StatelessWidget {
                   child: const Icon(
                     AppIcons.logout,
                     color: Colors.white,
-                    size: 35,
+                    size: 25,
                   ),
                 ),
                 contentPadding: EdgeInsets.all(5.0),
@@ -75,23 +102,26 @@ class DrawerOnly extends StatelessWidget {
 
 class MenuItem extends StatelessWidget {
   final IconData icon;
-  final String route;
+  final int index;
   final BuildContext context;
 
-  MenuItem(this.icon, this.context, this.route);
+  MenuItem(this.icon, this.context, this.index);
+
+  MainBloc _bloc;
 
   Widget build(BuildContext context) {
-    return new ListTile(
-      leading: new Center(
-        child: new Icon(
+    _bloc = InjectorWidget.of(context).get<MainBloc>();
+    return ListTile(
+      leading: Center(
+        child: Icon(
           this.icon,
           color: Colors.white,
-          size: 35,
+          size: 25,
         ),
       ),
       contentPadding: EdgeInsets.all(4.0),
       onTap: () {
-        Navigator.of(this.context).pushNamed(this.route);
+        _bloc.dispatch(this.index);
       },
     );
   }
