@@ -12,15 +12,18 @@ class TablePrices extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final table = Table(
       children: [
         TableRow(
           children: [
             TableCell(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         new Icon(
@@ -28,8 +31,17 @@ class TablePrices extends StatelessWidget {
                           size: 16.0,
                           color: Colors.transparent,
                         ),
-                        new Text("Base"),
-                        new Text("Fracción"),
+                        new Text("Base",
+                        style: TextStyle(
+                          color: Colors.grey
+                        ),
+                        ),
+                        new Text("Fracción",
+                        style: TextStyle(
+                          color: Colors.grey
+                          ),
+                        textAlign: TextAlign.left,
+                        ),
                       ],
                     ),
                     alignment: Alignment.centerLeft,
@@ -42,14 +54,23 @@ class TablePrices extends StatelessWidget {
                         AppIcons.vehicle,
                         size: 16.0,
                       ),
-                      new Text(this.baseCar,
-                        style: TextStyle(
+                      Container(
+                        child: new Text(this.baseCar,
+                          style: TextStyle(
                             fontSize: 16.0,
-                            color: Colors.black54,
-                            fontWeight: FontWeight.w700
+                            color: Color.fromARGB(0xFF, 0x55, 0x96, 0xD6),
+
+                          ),
+                        ),
+                        alignment: Alignment.centerLeft,
+                      ),
+
+                      new Text(this.fractionCar,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Color.fromARGB(0xFF, 0x55, 0x96, 0xD6),
                         ),
                       ),
-                      new Text(this.fractionCar),
                     ],
                   ),
                   Row(
@@ -59,8 +80,18 @@ class TablePrices extends StatelessWidget {
                         Icons.motorcycle,
                         size: 16.0,
                       ),
-                      new Text(this.baseMoto),
-                      new Text(this.fractionMoto),
+                      new Text(this.baseMoto,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Color.fromARGB(0xFF, 0x55, 0x96, 0xD6),
+                        ),
+                      ),
+                      new Text(this.fractionMoto,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Color.fromARGB(0xFF, 0x55, 0x96, 0xD6),
+                        ),
+                      ),
                     ],
                   )
                 ],
