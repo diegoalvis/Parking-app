@@ -39,6 +39,11 @@ class ReserveRepository {
     _session.setReserving(false);
   }
 
+  Future forceStop() async{
+    await _dao.remove();
+    _session.setReserving(false);
+  }
+
   Future<Reserve> current() async => await _dao.get();
 
 
