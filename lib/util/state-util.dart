@@ -9,7 +9,9 @@ class LoadingState extends BaseState{
   @override
   String toString() => 'state-loading';
 }
-class SuccessState extends BaseState{
+class SuccessState<T> extends BaseState{
+  T data;
+  SuccessState({this.data});
   @override
   String toString() => 'state-success';
 }

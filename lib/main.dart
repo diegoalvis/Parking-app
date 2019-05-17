@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
           '/info': (BuildContext context) => InfoPage(),
           '/add-vehicle': (BuildContext context) => AddVehiclePage(),
           '/report': (context) => ReportPage(),
+          '/reserve': (context) => ReservePage(),
         },
       ),
     );

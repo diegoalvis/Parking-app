@@ -18,10 +18,6 @@ class ReserveApi extends BaseApi{
     Response res = await post('citizen/reserve/stop/$id');
     return validate(res, parseReserveStopRes);
   }
-
-
-
-
 }
 
 ReserveRes parseReserveRes(Map<String, dynamic> json) => ReserveRes.fromJson(json);
