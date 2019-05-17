@@ -14,6 +14,13 @@ class AddVehiclePageState extends State<AddVehiclePage> {
   final _licensePlateCtrl = TextEditingController();
 
   @override
+  void dispose() {
+    _tradeMarkCtrl.dispose();
+    _licensePlateCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -124,4 +131,27 @@ class AddVehiclePageState extends State<AddVehiclePage> {
       }
     });
   }
+}
+
+class InputField extends StatelessWidget {
+  final FocusNode focusNode;
+  final Function(String value) validator;
+  final String label;
+
+  InputField(this.focusNode, this.validator, this.label);
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
+        child: TextFormField(
+          keyboardType: TextInputType.text,
+          focusNode: focusNode,
+          validator: validator,
+          decoration: InputDecoration(
+            labelText: this.label,
+            border: new OutlineInputBorder(
+                borderRadius: const BorderRadius.all(const Radius.circular(30.0))),
+          ),
+        ),
+      );
 }

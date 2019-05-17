@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import '../add_vehicle/add_vehicle_page.dart';
 
-void main() => runApp(VehiclePage());
-
 class VehiclePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Container(
+    return Container(
       color: Colors.white,
       child: Scaffold(
         appBar: AppBar(
@@ -15,7 +13,7 @@ class VehiclePage extends StatelessWidget {
           automaticallyImplyLeading: false,
         ),
         floatingActionButton: FloatingActionButton(
-            backgroundColor: Color.fromARGB(0xFF, 0x8B, 0xC3, 0x4A),
+            backgroundColor: Theme.of(context).accentColor,
             child: Icon(
               Icons.add,
               color: Colors.white,
@@ -29,7 +27,7 @@ class VehiclePage extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              new Padding(
+              Padding(
                 padding: EdgeInsets.only(top: 30.0),
                 child: new Text(
                   "Desliza hacia abajo para recargar los vehiculos",
