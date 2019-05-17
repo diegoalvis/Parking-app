@@ -10,8 +10,7 @@ class VehiclePage extends StatelessWidget {
       color: Colors.white,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Vehiculos",
-              style: TextStyle(fontSize: 22, color: Colors.grey, fontWeight: FontWeight.w400)),
+          title: Text("Vehiculos", style: TextStyle(color: Colors.black)),
           backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
         ),

@@ -20,12 +20,10 @@ import './pages/reserve/reserve_page.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Color.fromARGB(0xFF, 0x0A, 0x56, 0xA1),
+      statusBarColor: Color.fromARGB(0xFF, 0x0A, 0x56, 0xA1),
     ));
     return InjectorWidget.bind(
       bindFunc: (binder) {
@@ -36,7 +34,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.build(),
         initialRoute: '/',
         routes: {
-          '/': (context) => SplashPage(),
+          '/': (context) => MainPage(),
           '/login': (context) => LoginPage(),
           '/register-phone': (context) => PhonePage(),
           '/register-one': (context) => RegisterOnePage(),
