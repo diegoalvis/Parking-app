@@ -8,7 +8,7 @@ import 'package:oneparking_citizen/pages/account/phone_page.dart';
 import 'package:oneparking_citizen/pages/account/register_one_page.dart';
 import 'package:oneparking_citizen/pages/account/register_two_page.dart';
 import 'package:oneparking_citizen/pages/main/main_page.dart';
-import 'package:oneparking_citizen/pages/splash/splash-page.dart';
+import 'package:oneparking_citizen/pages/splash/splash_page.dart';
 import './pages/map/map_page.dart';
 import './pages/vehicle/vehicle_page.dart';
 import './pages/bill/bill_page.dart';
