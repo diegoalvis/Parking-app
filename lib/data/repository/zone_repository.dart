@@ -2,6 +2,7 @@ import 'package:oneparking_citizen/data/api/zone_api.dart';
 import 'package:oneparking_citizen/data/db/dao/config_dao.dart';
 import 'package:oneparking_citizen/data/db/dao/event_dao.dart';
 import 'package:oneparking_citizen/data/db/dao/schedule_dao.dart';
+import 'package:oneparking_citizen/data/db/dao/zone_dao.dart';
 import 'package:oneparking_citizen/data/models/config.dart';
 import 'package:oneparking_citizen/data/models/event.dart';
 import 'package:oneparking_citizen/data/models/zone.dart';
@@ -12,8 +13,9 @@ class ZoneRepository {
   ScheduleDao _scheduleDao;
   EventDao _eventDao;
   ErrorCodes _errors;
+  ZoneDao _zoneDao;
 
-  ZoneRepository(this._api, this._eventDao, this._scheduleDao, this._errors);
+  ZoneRepository(this._api, this._eventDao, this._scheduleDao, this._zoneDao, this._errors);
 
   Future<ZoneDes> getState(String idZone, String type) async {
     final event = await _eventDao.get(idZone);
@@ -31,6 +33,8 @@ class ZoneRepository {
 
     return ZoneDes(des: State.active, state: rspn.data);
   }
+
+  Future<List<Zone>> getZones() async => await _zoneDao.all();
 }
 
 enum State { active, event, timeout }
