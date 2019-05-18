@@ -80,9 +80,9 @@ class UserSession{
     return prefs.getBool("reserving") ?? false;
   }
 
-  void setReserving(bool value) async{
+  Future<bool> setReserving(bool value) async {
     final prefs = await preferences;
-    await prefs.setBool("reserving", value);
+    return prefs.setBool("reserving", value);
   }
 
   Future <int> get version async{

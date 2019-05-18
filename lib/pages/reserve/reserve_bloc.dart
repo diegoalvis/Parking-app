@@ -5,19 +5,24 @@ import 'package:oneparking_citizen/util/state-util.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ReserveBloc extends Bloc<ReserveEvent, BaseState> {
+  static const STOP_INTENTS = 3;
+
   ReserveRepository _repository;
+
+  int retryIntents = STOP_INTENTS;
 
   final _valueSubject = PublishSubject<int>();
   Stream<int> get valueStream => _valueSubject.stream;
 
-  ReserveBloc(this._repository) {
-    dispatch(ReserveEvent(ReserveEventType.getActive));
-  }
+  final _errorSubject = PublishSubject<String>();
+  Stream<String> get errorStream => _errorSubject.stream;
 
+  ReserveBloc(this._repository);
 
   @override
   void dispose() {
     _valueSubject.close();
+    _errorSubject.close();
     super.dispose();
   }
 
@@ -34,7 +39,12 @@ class ReserveBloc extends Bloc<ReserveEvent, BaseState> {
           yield SuccessState(data: reserve);
           break;
         case ReserveEventType.stop:
-          yield LoadingState();
+          retryIntents--;
+          if (retryIntents == 0) {
+            yield FinishReserveState();
+            break;
+          }
+          //yield LoadingState();
           await _repository.stop();
           yield FinishReserveState();
           break;
@@ -44,6 +54,10 @@ class ReserveBloc extends Bloc<ReserveEvent, BaseState> {
           break;
       }
     } on Exception catch (e) {
+      if (e is StopReserveException) {
+        _errorSubject.sink.add(e.cause);
+        return;
+      }
       yield ErrorState(errorMessage(e));
       await Future.delayed(Duration(seconds: 1));
       yield InitialState();

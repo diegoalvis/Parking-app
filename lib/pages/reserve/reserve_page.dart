@@ -40,7 +40,6 @@ class _ReserveContainerState extends State<ReserveContainer> {
     _bloc = InjectorWidget.of(context).get<ReserveBloc>();
     Reserve reserve;
     Duration parkingTime;
-    int values = 0;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -49,66 +48,92 @@ class _ReserveContainerState extends State<ReserveContainer> {
         ),
         backgroundColor: Colors.white,
       ),
-      body: Material(
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 30.0),
-          child: BlocBuilder(
-            bloc: _bloc,
-            builder: (context, state) {
-              if (state is SuccessState<Reserve>) {
-                reserve = state.data;
-                //parkingTime = DateTime.now().difference(reserve.date);
-                parkingTime = Duration(minutes: 29, seconds: 54);
-              }
-              if (state is LoadingState) {
-                return Center(child: CircularProgressIndicator());
-              }
+      body: Builder(
+        builder: (BuildContext context) {
+          _bloc.errorStream.listen((msg) => Scaffold.of(context).showSnackBar(SnackBar(content: Text(msg))));
+          return Material(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 30.0),
+              child: BlocBuilder(
+                bloc: _bloc,
+                builder: (context, state) {
+                  if (state is InitialState) {
+                    _bloc.dispatch(ReserveEvent(ReserveEventType.getActive));
+                  }
+                  if (state is SuccessState<Reserve>) {
+                    reserve = state.data;
+                    //parkingTime = DateTime.now().difference(reserve.date);
+                    parkingTime = Duration(minutes: 29, seconds: 54);
+                  }
+                  if (state is LoadingState) {
+                    return Center(child: CircularProgressIndicator());
+                  }
 
-              //color: Color.fromRGBO(229, 229, 229, 1),
-
-              return Column(
-                children: [
-                  Expanded(
-                    child: Container(
-                      color: Color.fromRGBO(229, 229, 229, 1),
-                      child: parkingTime == null
-                          ? SizedBox()
-                          : Column(
-                              children: <Widget>[
-                                Expanded(
-                                  child: CounterDown(
-                                      initialTime: parkingTime,
-                                      value: values,
-                                      onTimeIncremented: (minutes) {
-                                        _bloc.dispatch(ReserveEvent(ReserveEventType.getValue, data: minutes));
-                                      }),
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          color: Color.fromRGBO(229, 229, 229, 1),
+                          child: parkingTime == null
+                              ? SizedBox()
+                              : Column(
+                                  children: <Widget>[
+                                    Expanded(child: buildTimeWidget(state, parkingTime)),
+                                    Expanded(
+                                      child: StreamBuilder<int>(
+                                          stream: _bloc.valueStream,
+                                          initialData: 0,
+                                          builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                                            return Text(
+                                              "\$ ${snapshot.data}",
+                                              style: TextStyle(fontSize: 30.0, color: Colors.blue),
+                                            );
+                                          }),
+                                    ),
+                                  ],
                                 ),
-                                Expanded(
-                                  child: StreamBuilder<int>(
-                                      stream: _bloc.valueStream,
-                                      initialData: 0,
-                                      builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-                                        return Text(
-                                          "\$ ${snapshot.data}",
-                                          style: TextStyle(fontSize: 30.0, color: Colors.blue),
-                                        );
-                                      }),
-                                ),
-                              ],
-                            ),
-                    ),
-                  ),
-                  DescriptionPlace(icon: Icons.motorcycle, titleDescription: "Placa", content: reserve?.plate ?? ""),
-                  Divider(),
-                  DescriptionPlace(icon: Icons.place, titleDescription: "Nombre de la Zona", content: reserve?.address ?? ""),
-                ],
-              );
-            },
-          ),
-        ),
+                        ),
+                      ),
+                      DescriptionPlace(icon: Icons.motorcycle, titleDescription: "Placa", content: reserve?.plate ?? ""),
+                      Divider(),
+                      DescriptionPlace(icon: Icons.place, titleDescription: "Nombre de la Zona", content: reserve?.address ?? ""),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: StopButton(
+                          onPressed:
+                              state is FinishReserveState ? null : () => _bloc.dispatch(ReserveEvent(ReserveEventType.stop)),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          );
+        },
       ),
-      floatingActionButton: StopButton(),
     );
+  }
+
+  Widget buildTimeWidget(BaseState state, Duration parkingTime) {
+    if (state is SuccessState<Reserve>) {
+      final reserve = state.data;
+      if (reserve == null) {
+        return Center(
+            child: Text("Ud no tiene reservas en este momento", textAlign: TextAlign.center, style: TextStyle(fontSize: 18.0)));
+      }
+    } else if (state is FinishReserveState) {
+      return Center(
+          child: Text("Reserva finalizada.\nDirijase hacia el asistente en via para pagar.",
+              textAlign: TextAlign.center, style: TextStyle(fontSize: 18.0)));
+    }
+
+    return CounterDown(
+        stop: state is FinishReserveState,
+        initialTime: parkingTime,
+        onTimeIncremented: (minutes) {
+          _bloc.dispatch(ReserveEvent(ReserveEventType.getValue, data: minutes));
+        });
   }
 }

@@ -5,13 +5,18 @@ import 'package:flutter/material.dart';
 class CounterDown extends StatelessWidget {
   final Duration initialTime;
   final Function(int) onTimeIncremented;
-  final int value;
+  final bool stop;
 
-  const CounterDown({Key key, this.initialTime, this.onTimeIncremented, this.value}) : super(key: key);
+  const CounterDown({Key key, this.initialTime, this.onTimeIncremented, this.stop}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return TimerText(Dependencies(onTimeIncremented, initialTime?.inMinutes ?? 0, (initialTime?.inSeconds ?? 0) % 60));
+    return TimerText(Dependencies(
+      onTimeIncremented,
+      initialTime?.inMinutes,
+      (initialTime?.inSeconds ?? 0) % 60,
+      stop,
+    ));
   }
 }
 
@@ -32,20 +37,23 @@ class Dependencies {
   final Stopwatch stopwatch = Stopwatch();
   final int timerMillisecondsRefreshRate = 30;
   final Function onTimeIncremented;
-  int initialMinutes = 0;
-  int initialSeconds = 0;
+  final stop;
+  int initialMinutes;
+  int initialSeconds;
 
-  Dependencies(this.onTimeIncremented, this.initialMinutes, this.initialSeconds) {
-    stopwatch.start();
+  Dependencies(this.onTimeIncremented, this.initialMinutes, this.initialSeconds, this.stop) {
+    if (stop) {
+      stopwatch.stop();
+    } else {
+      stopwatch.start();
+    }
   }
 }
 
 class TimerText extends StatefulWidget {
   final Dependencies dependencies;
 
-  TimerText(this.dependencies) {
-    print(dependencies);
-  }
+  TimerText(this.dependencies);
 
   TimerTextState createState() => TimerTextState(dependencies: dependencies);
 }

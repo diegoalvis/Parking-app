@@ -40,9 +40,9 @@ class ReserveRepository {
 
   Future<Reserve> getCurrentReserve() async {
     // TODO: fetch data from server
-    //reserve = _reserveDao.get();
-    reserve = Reserve(plate: "DIEGO", date: DateTime.now(), address: "Test direccion");
-    return Future.value(Reserve(plate: "DIEGO", date: DateTime.now(), address: "Test direccion"));
+    reserve = await _reserveDao.get();
+    reserve = Reserve(idReserve: "1", plate: "DIEGO", date: DateTime.now(), address: "Test direccion");
+    return Future.value(reserve);
   }
 
   Future start(String idZone, String name, String address, String code, bool disability) async {
@@ -58,9 +58,12 @@ class ReserveRepository {
   }
 
   Future stop() async {
-    final reserve = await _reserveDao.get();
-    final rspn = await _api.reserveStop(reserve.idReserve);
-    if (!rspn.success) _errors.validateError(rspn.error);
+    final reserve = await getCurrentReserve();
+    if (reserve != null) {
+      throw StopReserveException(cause: "No se pudo detener la reserva");
+    }
+    //final rspn = await _api.reserveStop(reserve.idReserve);
+    //if (!rspn.success) _errors.validateError(rspn.error);
     await _reserveDao.remove();
     _session.setReserving(false);
   }
@@ -71,4 +74,10 @@ class ReserveRepository {
   }
 
   Future<Reserve> current() async => await _reserveDao.get();
+}
+
+
+class StopReserveException implements Exception{
+  String cause;
+  StopReserveException({this.cause});
 }
