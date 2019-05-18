@@ -7,6 +7,7 @@ import 'package:oneparking_citizen/pages/account/login_page.dart';
 import 'package:oneparking_citizen/pages/account/phone_page.dart';
 import 'package:oneparking_citizen/pages/account/register_one_page.dart';
 import 'package:oneparking_citizen/pages/account/register_two_page.dart';
+import 'package:oneparking_citizen/pages/main/loader/loader_page.dart';
 import 'package:oneparking_citizen/pages/main/main_page.dart';
 import 'package:oneparking_citizen/pages/splash/splash_page.dart';
 import './pages/map/map_page.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
           '/register-phone': (context) => PhonePage(),
           '/register-one': (context) => RegisterOnePage(),
           '/register-two': (context) => RegisterTwoPage(),
+          '/loader': (context) => LoaderPage(),
           '/main': (context) => MainPage(),
           '/map': (BuildContext context) => MapPage(),
           '/vehicle': (BuildContext context) => VehiclePage(),

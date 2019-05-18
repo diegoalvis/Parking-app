@@ -26,7 +26,7 @@ class SplashPageState extends State<SplashPage> {
     await Future.delayed(Duration(seconds: 2));
     bool logged = await _session.logged;
     //Navigator.pushReplacementNamed(context, logged ? '/main' : '/login');
-    Navigator.pushReplacementNamed(context, "/reserve");
+    Navigator.pushReplacementNamed(context, "/loader");
   }
 }
 

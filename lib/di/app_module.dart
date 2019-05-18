@@ -2,13 +2,18 @@ import 'package:dependencies/dependencies.dart';
 import 'package:dio/dio.dart';
 import 'package:oneparking_citizen/data/api/account_api.dart';
 import 'package:oneparking_citizen/data/api/reserve_api.dart';
+import 'package:oneparking_citizen/data/api/setup_api.dart';
 import 'package:oneparking_citizen/data/db/app_database.dart';
 import 'package:oneparking_citizen/data/db/dao/config_dao.dart';
+import 'package:oneparking_citizen/data/db/dao/event_dao.dart';
 import 'package:oneparking_citizen/data/db/dao/reserve_dao.dart';
+import 'package:oneparking_citizen/data/db/dao/schedule_dao.dart';
 import 'package:oneparking_citizen/data/db/dao/vehicle_dao.dart';
+import 'package:oneparking_citizen/data/db/dao/zone_dao.dart';
 import 'package:oneparking_citizen/data/preferences/user_session.dart';
 import 'package:oneparking_citizen/data/repository/account_repository.dart';
 import 'package:oneparking_citizen/data/repository/reserve_repository.dart';
+import 'package:oneparking_citizen/data/repository/setup_repository.dart';
 import 'package:oneparking_citizen/pages/main/main_bloc.dart';
 import 'package:oneparking_citizen/util/error_codes.dart';
 
@@ -27,15 +32,31 @@ class AppModule implements Module {
         );
         return dio;
       })*/
+      // Api
       ..bindSingleton(Dio(BaseOptions(baseUrl: "http://13.68.223.69/api/v1")))
       ..bindSingleton('http://13.68.223.69/socket/zones', name: 'url_socket')
       ..bindLazySingleton((injector, params) => AccountApi(injector.get()))
       ..bindLazySingleton((injector, params) => ReserveApi(injector.get(), injector.get()))
+      ..bindLazySingleton((injector, params) => SetupApi(injector.get(), injector.get()))
+      // Database
       ..bindSingleton(AppDatabase())
+      ..bindLazySingleton((injector, params) => ZoneDao(injector.get()))
+      ..bindLazySingleton((injector, params) => ConfigDao(injector.get()))
+      ..bindLazySingleton((injector, params) => EventDao(injector.get()))
+      ..bindLazySingleton((injector, params) => ScheduleDao(injector.get()))
       ..bindLazySingleton((injector, params) => VehicleDao(injector.get()))
       ..bindLazySingleton((injector, params) => ReserveDao(injector.get()))
-      ..bindLazySingleton((injector, params) => ConfigDao(injector.get()))
       ..bindSingleton(MainBloc())
+      // Repository
+      ..bindLazySingleton((injector, params) => SetupRepository(
+            injector.get(),
+            injector.get(),
+            injector.get(),
+            injector.get(),
+            injector.get(),
+            injector.get(),
+            injector.get(),
+          ))
       ..bindLazySingleton((injector, params) => AccountRepository(
             injector.get(),
             injector.get(),
