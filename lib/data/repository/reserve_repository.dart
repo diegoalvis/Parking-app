@@ -20,21 +20,21 @@ class ReserveRepository {
 
   ReserveRepository(this._session, this._api, this._reserveDao, this._errors, this._vehicleDao, this._configDao);
 
-  Future<int> getValue() async {
-    final config = await _configDao.get();
+  Future<int> getValue(final int parkingTimeInMinutes) async {
+    var config = await _configDao.get();
     final reserve = this.reserve ?? await _reserveDao.get();
     if (reserve == null) {
       return 0;
     }
 
-    final parkingTime = DateTime.now().difference(reserve.date).inMinutes;
-    if (parkingTime < config.limitTime) {
+    config = Config(limitTime: 29, baseTime: 30, basePrice: 2000, fractionTime: 1, fractionPrice: 700);
+    if (parkingTimeInMinutes < config.limitTime) {
       return 0;
-    } else if (parkingTime < config.baseTime) {
+    } else if (parkingTimeInMinutes <= config.baseTime) {
       return config.basePrice;
     } else {
-      final additionalTime = parkingTime - config.baseTime;
-      return (config.basePrice + (additionalTime * config.fractionPrice / config.fractionTime)).round();
+      final additionalTime = parkingTimeInMinutes - config.baseTime;
+      return (config.basePrice + ((additionalTime / config.fractionTime).round()) * config.fractionPrice).round();
     }
   }
 

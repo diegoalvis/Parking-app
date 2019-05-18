@@ -4,9 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oneparking_citizen/data/models/reserve.dart';
 import 'package:oneparking_citizen/util/state-util.dart';
 import 'package:oneparking_citizen/util/widget_util.dart';
+
+import './widgets/counter_down.dart';
 import './widgets/description_place.dart';
 import './widgets/stop_button.dart';
-import './widgets/counter_down.dart';
 import 'reserve_bloc.dart';
 
 class ReservePage extends StatelessWidget {
@@ -26,10 +27,20 @@ class ReserveContainer extends StatefulWidget {
 }
 
 class _ReserveContainerState extends State<ReserveContainer> {
+  ReserveBloc _bloc;
+
+  @override
+  void dispose() {
+    _bloc?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final _bloc = InjectorWidget.of(context).get<ReserveBloc>();
+    _bloc = InjectorWidget.of(context).get<ReserveBloc>();
+    Reserve reserve;
+    Duration parkingTime;
+    int values = 0;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -45,27 +56,49 @@ class _ReserveContainerState extends State<ReserveContainer> {
           child: BlocBuilder(
             bloc: _bloc,
             builder: (context, state) {
-              Reserve reserve;
-              Duration parkingTime;
-              if (state is SuccessState<Reserve>) {
-                reserve = state.data;
-              }
               if (state is SuccessState<Reserve>) {
                 reserve = state.data;
                 //parkingTime = DateTime.now().difference(reserve.date);
-                parkingTime = Duration(minutes: 28, seconds: 42);
+                parkingTime = Duration(minutes: 29, seconds: 54);
               }
-              if (state is LoadingState)
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
+              if (state is LoadingState) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              //color: Color.fromRGBO(229, 229, 229, 1),
 
               return Column(
-                children: <Widget>[
+                children: [
                   Expanded(
-                      child: Container(
-                          color: Color.fromRGBO(229, 229, 229, 1),
-                          child: CounterDown(initialTime: parkingTime))),
+                    child: Container(
+                      color: Color.fromRGBO(229, 229, 229, 1),
+                      child: parkingTime == null
+                          ? SizedBox()
+                          : Column(
+                              children: <Widget>[
+                                Expanded(
+                                  child: CounterDown(
+                                      initialTime: parkingTime,
+                                      value: values,
+                                      onTimeIncremented: (minutes) {
+                                        _bloc.dispatch(ReserveEvent(ReserveEventType.getValue, data: minutes));
+                                      }),
+                                ),
+                                Expanded(
+                                  child: StreamBuilder<int>(
+                                      stream: _bloc.valueStream,
+                                      initialData: 0,
+                                      builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                                        return Text(
+                                          "\$ ${snapshot.data}",
+                                          style: TextStyle(fontSize: 30.0, color: Colors.blue),
+                                        );
+                                      }),
+                                ),
+                              ],
+                            ),
+                    ),
+                  ),
                   DescriptionPlace(icon: Icons.motorcycle, titleDescription: "Placa", content: reserve?.plate ?? ""),
                   Divider(),
                   DescriptionPlace(icon: Icons.place, titleDescription: "Nombre de la Zona", content: reserve?.address ?? ""),

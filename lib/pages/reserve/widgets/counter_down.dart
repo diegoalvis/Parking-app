@@ -1,34 +1,17 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
+
+import 'package:flutter/material.dart';
 
 class CounterDown extends StatelessWidget {
   final Duration initialTime;
+  final Function(int) onTimeIncremented;
+  final int value;
 
-  const CounterDown({Key key, this.initialTime}) : super(key: key);
+  const CounterDown({Key key, this.initialTime, this.onTimeIncremented, this.value}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TimerText(
-              dependencies: Dependencies(),
-              initialMinutes: initialTime.inMinutes,
-              initialSeconds: initialTime.inSeconds % 60,
-            )
-          ],
-        ),
-        Text(
-          "\$ 1.500",
-          style: TextStyle(fontSize: 30.0, color: Colors.blue),
-        )
-      ],
-    );
+    return TimerText(Dependencies(onTimeIncremented, initialTime?.inMinutes ?? 0, (initialTime?.inSeconds ?? 0) % 60));
   }
 }
 
@@ -48,29 +31,29 @@ class Dependencies {
   final List<ValueChanged<ElapsedTime>> timerListeners = <ValueChanged<ElapsedTime>>[];
   final Stopwatch stopwatch = Stopwatch();
   final int timerMillisecondsRefreshRate = 30;
+  final Function onTimeIncremented;
+  int initialMinutes = 0;
+  int initialSeconds = 0;
 
-  Dependencies() {
+  Dependencies(this.onTimeIncremented, this.initialMinutes, this.initialSeconds) {
     stopwatch.start();
   }
 }
 
 class TimerText extends StatefulWidget {
   final Dependencies dependencies;
-  final int initialMinutes;
-  final int initialSeconds;
 
-  TimerText({this.dependencies, this.initialMinutes, this.initialSeconds});
+  TimerText(this.dependencies) {
+    print(dependencies);
+  }
 
-  TimerTextState createState() =>
-      TimerTextState(dependencies: dependencies, initialMinutes: initialMinutes, initialSeconds: initialSeconds);
+  TimerTextState createState() => TimerTextState(dependencies: dependencies);
 }
 
 class TimerTextState extends State<TimerText> {
   final Dependencies dependencies;
-  final int initialMinutes;
-  final int initialSeconds;
 
-  TimerTextState({this.initialMinutes, this.initialSeconds, this.dependencies});
+  TimerTextState({this.dependencies});
 
   Timer timer;
   int milliseconds;
@@ -90,8 +73,11 @@ class TimerTextState extends State<TimerText> {
 
   void callback(Timer timer) {
     if (milliseconds != dependencies.stopwatch.elapsedMilliseconds) {
-      final duration = Duration(minutes: initialMinutes, seconds: initialSeconds);
+      final duration = Duration(minutes: dependencies.initialMinutes, seconds: dependencies.initialSeconds);
       milliseconds = dependencies.stopwatch.elapsedMilliseconds + duration.inMilliseconds;
+      if ((milliseconds ~/ 1000) % 10 == 0) {
+        dependencies?.onTimeIncremented(Duration(milliseconds: milliseconds).inMinutes);
+      }
       final int hundreds = (milliseconds / 10).truncate();
       final int seconds = (hundreds / 100).truncate();
       final int minutes = (seconds / 60).truncate();
