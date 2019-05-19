@@ -24,18 +24,7 @@ class AddVehiclePageState extends State<AddVehiclePage> {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(left: 30, top: 30, bottom: 10),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  "Marca",
-                  style: Theme.of(context).textTheme.caption,
-                  textAlign: TextAlign.left,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
+              padding: const EdgeInsets.only(left: 20, top: 60, bottom: 20, right: 20),
               child: TextFormField(
                 keyboardType: TextInputType.text,
                 focusNode: _focusTradeMark,
@@ -49,17 +38,6 @@ class AddVehiclePageState extends State<AddVehiclePage> {
                   _focusTradeMark.unfocus();
                   FocusScope.of(context).requestFocus(_focusLicensePlate);
                 },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 30, top: 15, bottom: 10),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  "Placa",
-                  style: Theme.of(context).textTheme.caption,
-                  textAlign: TextAlign.left,
-                ),
               ),
             ),
             Padding(

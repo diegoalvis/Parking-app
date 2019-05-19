@@ -1,18 +1,23 @@
+import 'package:dependencies_flutter/dependencies_flutter.dart';
 import 'package:flutter/material.dart';
-import '../main/main_page.dart';
-import 'package:oneparking_citizen/util/app_icons.dart';
-import './widgets/description_place.dart';
-import './widgets/button_bottom.dart';
-import './widgets/counter_down.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:oneparking_citizen/data/models/reserve.dart';
+import 'package:oneparking_citizen/util/state-util.dart';
+import 'package:oneparking_citizen/util/widget_util.dart';
 
-void main() => runApp(ReservePage());
+import './widgets/counter_down.dart';
+import './widgets/description_place.dart';
+import './widgets/stop_button.dart';
+import 'reserve_bloc.dart';
 
 class ReservePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp (
-      debugShowCheckedModeBanner: false,
-      home: ReserveContainer(),
+    return InjectorWidget.bind(
+      bindFunc: (binder) {
+        binder.bindSingleton(ReserveBloc(InjectorWidget.of(context).get()));
+      },
+      child: ReserveContainer(),
     );
   }
 }
@@ -22,63 +27,113 @@ class ReserveContainer extends StatefulWidget {
 }
 
 class _ReserveContainerState extends State<ReserveContainer> {
+  ReserveBloc _bloc;
+
+  @override
+  void dispose() {
+    _bloc?.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    final sizeTextCard = 12.0;
-
-    final thematicBreak = Column(
-      children: <Widget>[
-        Container(
-          height: 1.0,
-          color: Colors.black26,
-          margin:
-          EdgeInsets.symmetric(horizontal: 4.0,
-              vertical: 20.0
-          ),
-        ),
-      ],
-    );
-
+    _bloc = InjectorWidget.of(context).get<ReserveBloc>();
+    Reserve reserve;
+    Duration parkingTime;
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Reserva",
-            style: TextStyle(
-                color: Colors.black
-            ),
-          ),
-          backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text(
+          "Reserva",
+          style: TextStyle(color: Colors.black),
         ),
-        body: Material(
-          color: Color.fromRGBO(229, 229, 229, 1),
-          child: Column(
-            children: <Widget>[
-            Container(
-              child: CounterDown(),
-            ),
-            Container(
-              color: Colors.white,
-              child: DescriptionPlace(icon: Icons.motorcycle, titleDescription: "Placa", content:"ABC 102"),
-            ),
-            Container(
-              color: Colors.white,
-              child: Divider(
-                height: 15.0,
-              ),
-            ),
-            Container(
-              color: Colors.white,
-              child: DescriptionPlace(icon: Icons.place, titleDescription: "Nombre de la Zona", content:"Dirección"),
-              ),
-            Container(
-              color: Colors.white,
-              child: ButtonBottom(),
-            )
-            ],
-          ),
+        backgroundColor: Colors.white,
+      ),
+      body: Builder(
+        builder: (BuildContext context) {
+          _bloc.errorStream.listen((msg) => Scaffold.of(context).showSnackBar(SnackBar(content: Text(msg))));
+          return Material(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 30.0),
+              child: BlocBuilder(
+                bloc: _bloc,
+                builder: (context, state) {
+                  if (state is InitialState) {
+                    _bloc.dispatch(ReserveEvent(ReserveEventType.getActive));
+                  }
+                  if (state is SuccessState<Reserve>) {
+                    reserve = state.data;
+                    //parkingTime = DateTime.now().difference(reserve.date);
+                    parkingTime = Duration(minutes: 29, seconds: 54);
+                  }
+                  if (state is LoadingState) {
+                    return Center(child: CircularProgressIndicator());
+                  }
 
-        ),
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          color: Color.fromRGBO(229, 229, 229, 1),
+                          child: parkingTime == null
+                              ? SizedBox()
+                              : Column(
+                                  children: <Widget>[
+                                    Expanded(child: buildTimeWidget(state, parkingTime)),
+                                    Expanded(
+                                      child: StreamBuilder<int>(
+                                          stream: _bloc.valueStream,
+                                          initialData: 0,
+                                          builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                                            return Text(
+                                              "\$ ${snapshot.data}",
+                                              style: TextStyle(fontSize: 30.0, color: Colors.blue),
+                                            );
+                                          }),
+                                    ),
+                                  ],
+                                ),
+                        ),
+                      ),
+                      DescriptionPlace(icon: Icons.motorcycle, titleDescription: "Placa", content: reserve?.plate ?? ""),
+                      Divider(),
+                      DescriptionPlace(icon: Icons.place, titleDescription: "Nombre de la Zona", content: reserve?.address ?? ""),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: StopButton(
+                          onPressed:
+                              state is FinishReserveState ? null : () => _bloc.dispatch(ReserveEvent(ReserveEventType.stop)),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          );
+        },
+      ),
     );
+  }
 
+  Widget buildTimeWidget(BaseState state, Duration parkingTime) {
+    if (state is SuccessState<Reserve>) {
+      final reserve = state.data;
+      if (reserve == null) {
+        return Center(
+            child: Text("Ud no tiene reservas en este momento", textAlign: TextAlign.center, style: TextStyle(fontSize: 18.0)));
+      }
+    } else if (state is FinishReserveState) {
+      return Center(
+          child: Text("Reserva finalizada.\nDirijase hacia el asistente en via para pagar.",
+              textAlign: TextAlign.center, style: TextStyle(fontSize: 18.0)));
+    }
+
+    return CounterDown(
+        stop: state is FinishReserveState,
+        initialTime: parkingTime,
+        onTimeIncremented: (minutes) {
+          _bloc.dispatch(ReserveEvent(ReserveEventType.getValue, data: minutes));
+        });
   }
 }

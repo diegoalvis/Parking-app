@@ -7,8 +7,9 @@ import 'package:oneparking_citizen/pages/account/login_page.dart';
 import 'package:oneparking_citizen/pages/account/phone_page.dart';
 import 'package:oneparking_citizen/pages/account/register_one_page.dart';
 import 'package:oneparking_citizen/pages/account/register_two_page.dart';
+import 'package:oneparking_citizen/pages/main/loader/loader_page.dart';
 import 'package:oneparking_citizen/pages/main/main_page.dart';
-import 'package:oneparking_citizen/pages/splash/splash-page.dart';
+import 'package:oneparking_citizen/pages/splash/splash_page.dart';
 import './pages/map/map_page.dart';
 import './pages/vehicle/vehicle_page.dart';
 import './pages/bill/bill_page.dart';
@@ -20,12 +21,10 @@ import './pages/reserve/reserve_page.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Color.fromARGB(0xFF, 0x0A, 0x56, 0xA1),
+      statusBarColor: Color.fromARGB(0xFF, 0x0A, 0x56, 0xA1),
     ));
     return InjectorWidget.bind(
       bindFunc: (binder) {
@@ -41,6 +40,7 @@ class MyApp extends StatelessWidget {
           '/register-phone': (context) => PhonePage(),
           '/register-one': (context) => RegisterOnePage(),
           '/register-two': (context) => RegisterTwoPage(),
+          '/loader': (context) => LoaderPage(),
           '/main': (context) => MainPage(),
           '/map': (BuildContext context) => MapPage(),
           '/vehicle': (BuildContext context) => VehiclePage(),
@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
           '/info': (BuildContext context) => InfoPage(),
           '/add-vehicle': (BuildContext context) => AddVehiclePage(),
           '/report': (context) => ReportPage(),
+          '/reserve': (context) => ReservePage(),
         },
       ),
     );

@@ -57,47 +57,49 @@ class MainPage extends StatelessWidget {
 class DrawerOnly extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return  Material(
-        color: Color.fromARGB(0xFF, 0x19, 0x76, 0xD2),
-        child: new Container(
-          width: 50,
-          margin: EdgeInsets.only(top: 20),
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              ListTile(
-                leading: new Center(
-                  child: const Icon(
-                    AppIcons.logo,
+    return Material(
+      color: Color.fromARGB(0xFF, 0x19, 0x76, 0xD2),
+      child: new Container(
+        width: 50,
+        margin: EdgeInsets.only(top: 25),
+        child: Column(
+          //padding: EdgeInsets.zero,
+          children: <Widget>[
+            ListTile(
+              leading: Container(
+                alignment: Alignment.center,
+                child: Icon(
+                  AppIcons.logo,
+                  color: Colors.white,
+                  size: 35,
+                ),
+              ),
+              contentPadding: EdgeInsets.all(5.0),
+            ),
+            new MenuItem(AppIcons.zone, context, 1),
+            new MenuItem(AppIcons.vehicle, context, 2),
+            new MenuItem(AppIcons.bill, context, 3),
+            new MenuItem(AppIcons.info, context, 4),
+            Spacer(),
+            Material(
+              color: Color.fromARGB(0xFF, 0x0A, 0x56, 0xA1),
+              child: ListTile(
+                leading: Container(
+                  alignment: Alignment.center,
+                  child: Icon(
+                    AppIcons.logout,
                     color: Colors.white,
-                    size: 35,
+                    size: 25,
                   ),
                 ),
                 contentPadding: EdgeInsets.all(5.0),
+                onTap: () {},
               ),
-              new MenuItem(AppIcons.zone, context, 1),
-              new MenuItem(AppIcons.vehicle, context, 2),
-              new MenuItem(AppIcons.bill, context, 3),
-              new MenuItem(AppIcons.info, context, 4),
-              SizedBox(height: 300),
-              Material(
-                color: Color.fromARGB(0xFF, 0x0A, 0x56, 0xA1),
-                child: ListTile(
-                  leading: new Center(
-                    child: const Icon(
-                      AppIcons.logout,
-                      color: Colors.white,
-                      size: 25,
-                    ),
-                  ),
-                  contentPadding: EdgeInsets.all(5.0),
-                  onTap: () {},
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 }
 
@@ -113,7 +115,8 @@ class MenuItem extends StatelessWidget {
   Widget build(BuildContext context) {
     _bloc = InjectorWidget.of(context).get<MainBloc>();
     return ListTile(
-      leading: Center(
+      leading: Container(
+        alignment: Alignment.center,
         child: Icon(
           this.icon,
           color: Colors.white,

@@ -2,7 +2,7 @@ import 'package:oneparking_citizen/data/db/app_database.dart';
 import 'package:oneparking_citizen/data/models/config.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-class ConfigDao{
+class ConfigDao {
 
   Future<Database> _db;
 

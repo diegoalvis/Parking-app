@@ -1,30 +1,81 @@
 PODS:
+  - adhara_socket_io (0.0.1):
+    - Flutter
+    - Socket.IO-Client-Swift
+    - Starscream (<= 3.0.5)
   - Flutter (1.0.0)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
+  - google_maps_flutter (0.0.1):
+    - Flutter
+    - GoogleMaps
+  - GoogleMaps (2.7.0):
+    - GoogleMaps/Maps (= 2.7.0)
+  - GoogleMaps/Base (2.7.0)
+  - GoogleMaps/Maps (2.7.0):
+    - GoogleMaps/Base
+  - image_cropper (0.0.1):
+    - Flutter
+    - TOCropViewController (~> 2.3.8)
+  - image_picker (0.0.1):
+    - Flutter
+  - shared_preferences (0.0.1):
+    - Flutter
+  - Socket.IO-Client-Swift (13.4.0):
+    - Starscream (~> 3.0.2)
   - sqflite (0.0.1):
     - Flutter
     - FMDB (~> 2.7.2)
+  - Starscream (3.0.5)
+  - TOCropViewController (2.3.8)
 
 DEPENDENCIES:
+  - adhara_socket_io (from `.symlinks/plugins/adhara_socket_io/ios`)
   - Flutter (from `.symlinks/flutter/ios`)
+  - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
+  - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
+  - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - FMDB
+    - GoogleMaps
+    - Socket.IO-Client-Swift
+    - Starscream
+    - TOCropViewController
 
 EXTERNAL SOURCES:
+  adhara_socket_io:
+    :path: ".symlinks/plugins/adhara_socket_io/ios"
   Flutter:
     :path: ".symlinks/flutter/ios"
+  google_maps_flutter:
+    :path: ".symlinks/plugins/google_maps_flutter/ios"
+  image_cropper:
+    :path: ".symlinks/plugins/image_cropper/ios"
+  image_picker:
+    :path: ".symlinks/plugins/image_picker/ios"
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
 
 SPEC CHECKSUMS:
+  adhara_socket_io: 5175561f05cb22391f694c95d58ae961f4d92ea2
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  google_maps_flutter: 924970f41ec509a201b593548db005efb2a09ee9
+  GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
+  image_cropper: 189eec25d148f56694f670438e9458323ba2880a
+  image_picker: a211f28b95a560433c00f5cd3773f4710a20404d
+  shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
+  Socket.IO-Client-Swift: 2b2720f14c92ff1237ced09bc2f2da2022624fee
   sqflite: ff1d9da63c06588cc8d1faf7256d741f16989d5a
+  Starscream: faf918b2f2eff7d5dd21180646bf015a669673bd
+  TOCropViewController: 0a075f02c253e88095143bbac7b013fc6fba5090
 
 PODFILE CHECKSUM: ebd43b443038e611b86ede96e613bd6033c49497
 
