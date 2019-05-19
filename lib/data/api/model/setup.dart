@@ -5,7 +5,7 @@ import 'package:oneparking_citizen/data/models/zone.dart';
 part 'setup.g.dart';
 
 @JsonSerializable(nullable: true)
-class Setup{
+class Setup {
   int version;
   ConfigComplete config;
   List<ZoneInfo> zones;
@@ -13,6 +13,6 @@ class Setup{
   Setup({this.version, this.config, this.zones});
 
   factory Setup.fromJson(Map<String, dynamic> json) => _$SetupFromJson(json);
-  Map<String, dynamic> toJson() => _$SetupToJson(this);
 
+  Map<String, dynamic> toJson() => _$SetupToJson(this);
 }
