@@ -67,7 +67,7 @@ class AppDatabase {
     fr BOOLEAN DEFAULT 0,
     sa BOOLEAN DEFAULT 0,
     su BOOLEAN DEFAULT 0,
-    iniTime INTEGER,
+    initTime INTEGER,
     endTime INTEGER 
     )
     ''');

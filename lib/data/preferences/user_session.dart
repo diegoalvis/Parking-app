@@ -87,7 +87,7 @@ class UserSession{
 
   Future <int> get version async{
     final prefs = await preferences;
-    return prefs.getInt("version") ?? false;
+    return prefs.getInt("version") ?? -1;
   }
 
   void setVersion(int value) async{

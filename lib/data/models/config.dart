@@ -37,7 +37,7 @@ class TimeRange {
         su: dayState[6],
         endTime: t.endTime,
         initTime: t.initTime
-    ));
+    )).toList();
   }
 
   factory TimeRange.fromJson(Map<String, dynamic> json) =>
