@@ -6,7 +6,7 @@ const String TYPE_CAR = 'car';
 const String TYPE_MOTORCYCLE = 'motorcycle';
 
 @JsonSerializable()
-class VehicleBase{
+class VehicleBase {
   String plate;
   String brand;
   String type;
@@ -18,16 +18,18 @@ class VehicleBase{
 }
 
 @JsonSerializable(nullable: true)
-class Vehicle extends VehicleBase{
+class Vehicle extends VehicleBase {
   int id;
   bool selected;
 
-  Vehicle({this.id, String plate, String brand, this.selected}):super(plate: plate, brand:brand);
+  Vehicle({this.id, String plate, String brand, String type, this.selected})
+      : super(plate: plate, brand: brand, type: type);
 
-  Vehicle.fromVehicle(Vehicle car){
+  Vehicle.fromVehicle(Vehicle car) {
     selected = false;
     plate = car.plate;
     brand = car.brand;
+    type = car.type;
   }
 
   VehicleBase toBaseVehicle() => VehicleBase(plate: plate, brand: brand, type: type);

@@ -8,6 +8,8 @@ import 'package:oneparking_citizen/data/repository/account_repository.dart';
 import 'package:oneparking_citizen/pages/main/main_bloc.dart';
 import 'package:oneparking_citizen/util/error_codes.dart';
 import 'package:oneparking_citizen/data/repository/vehicle_repository.dart';
+import 'package:oneparking_citizen/data/api/vehicle_api.dart';
+//import 'package:oneparking_citizen/pages/vehicle/vehicle_bloc.dart';
 
 class AppModule implements Module {
   @override
@@ -30,12 +32,14 @@ class AppModule implements Module {
       ..bindSingleton(AppDatabase())
       ..bindLazySingleton((injector, params) => VehicleDao(injector.get()))
       ..bindSingleton(MainBloc())
+      //..bindLazySingleton((injector, params) => VehicleBloc(injector.get()))
       ..bindLazySingleton((injector, params) => AccountRepository(
             injector.get(),
             injector.get(),
             injector.get(),
             injector.get(),
           ))
-      ..bindLazySingleton((injector, params) => VehicleRepository(injector.get(), injector.get()));
+      ..bindLazySingleton((injector, params) => VehicleRepository(injector.get(), injector.get()))
+      ..bindLazySingleton((injector, params) => VehicleApi(injector.get(), injector.get()));
   }
 }
