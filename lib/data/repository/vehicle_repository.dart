@@ -14,7 +14,7 @@ class VehicleRepository{
   Future<String> add(VehicleBase vehicle) async{
     final rspn = await _api.add(vehicle);
     if (!rspn.success) _errors.validateError(rspn.error);
-    await _dao.insert(Vehicle.fromVehicle(vehicle));
+    await _dao.insert(vehicle.toLocal());
     return rspn.data;
   }
 
@@ -26,7 +26,7 @@ class VehicleRepository{
     final rspn = await _api.all();
     if (!rspn.success) _errors.validateError(rspn.error);
     await _dao.deleteAll();
-    final vehicles = rspn.data.map((x)=> Vehicle.fromVehicle(x)).toList();
+    final vehicles = rspn.data.map((x)=> x.toLocal()).toList();
     vehicles[0].selected = true;
     await _dao.insertMany(vehicles);
     return await _dao.all();

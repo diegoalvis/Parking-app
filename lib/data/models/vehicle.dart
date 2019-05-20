@@ -13,6 +13,8 @@ class VehicleBase {
 
   VehicleBase({this.plate, this.brand, this.type});
 
+  Vehicle toLocal() => Vehicle(plate:this.plate, brand:this.brand, type:this.type, selected:false);
+
   factory VehicleBase.fromJson(Map<String, dynamic> json) => _$VehicleBaseFromJson(json);
   Map<String, dynamic> toJson() => _$VehicleBaseToJson(this);
 }
@@ -24,13 +26,6 @@ class Vehicle extends VehicleBase {
 
   Vehicle({this.id, String plate, String brand, String type, this.selected})
       : super(plate: plate, brand: brand, type: type);
-
-  Vehicle.fromVehicle(Vehicle car) {
-    selected = false;
-    plate = car.plate;
-    brand = car.brand;
-    type = car.type;
-  }
 
   VehicleBase toBaseVehicle() => VehicleBase(plate: plate, brand: brand, type: type);
 
