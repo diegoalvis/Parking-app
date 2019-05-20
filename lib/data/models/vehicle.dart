@@ -13,7 +13,7 @@ class VehicleBase {
 
   VehicleBase({this.plate, this.brand, this.type});
 
-  Vehicle toLocal() => Vehicle(plate:this.plate, brand:this.brand, type:this.type, selected:false);
+  Vehicle toLocal() => Vehicle(plate:this.plate, brand:this.brand, type:this.type, selected:0);
 
   factory VehicleBase.fromJson(Map<String, dynamic> json) => _$VehicleBaseFromJson(json);
   Map<String, dynamic> toJson() => _$VehicleBaseToJson(this);
@@ -22,7 +22,7 @@ class VehicleBase {
 @JsonSerializable(nullable: true)
 class Vehicle extends VehicleBase {
   int id;
-  bool selected;
+  int selected;
 
   Vehicle({this.id, String plate, String brand, String type, this.selected})
       : super(plate: plate, brand: brand, type: type);

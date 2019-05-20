@@ -25,8 +25,8 @@ Vehicle _$VehicleFromJson(Map<String, dynamic> json) {
       id: json['id'] as int,
       plate: json['plate'] as String,
       brand: json['brand'] as String,
-      selected: json['selected'] as bool)
-    ..type = json['type'] as String;
+      type: json['type'] as String,
+      selected: json['selected'] as int);
 }
 
 Map<String, dynamic> _$VehicleToJson(Vehicle instance) => <String, dynamic>{

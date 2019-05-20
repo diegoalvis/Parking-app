@@ -27,7 +27,7 @@ class VehicleRepository{
     if (!rspn.success) _errors.validateError(rspn.error);
     await _dao.deleteAll();
     final vehicles = rspn.data.map((x)=> x.toLocal()).toList();
-    vehicles[0].selected = true;
+    vehicles[0].selected = 1;
     await _dao.insertMany(vehicles);
     return await _dao.all();
   }
@@ -36,9 +36,9 @@ class VehicleRepository{
     final rspn = await _api.remove(vehicle.plate);
     if (!rspn.success) _errors.validateError(rspn.error);
     await _dao.delete(vehicle.plate);
-    if(vehicle.selected){
+    if(vehicle.selected == 1){
       final next = await _dao.next();
-      next.selected = true;
+      next.selected = 1;
       await _dao.update(next);
     }
     return rspn.data;
@@ -46,9 +46,9 @@ class VehicleRepository{
 
   Future<int> select(Vehicle vehicle) async{
     Vehicle selected = await _dao.selected();
-    selected.selected = false;
+    selected.selected = 0;
     await _dao.update(selected);
-    vehicle.selected = true;
+    vehicle.selected = 1;
     await _dao.update(vehicle);
     return vehicle.id;
   }
