@@ -65,16 +65,18 @@ class DrawerOnly extends StatelessWidget {
         child: Column(
           //padding: EdgeInsets.zero,
           children: <Widget>[
-            ListTile(
-              leading: Container(
-                alignment: Alignment.center,
-                child: Icon(
-                  AppIcons.logo,
-                  color: Colors.white,
-                  size: 35,
+            GestureDetector(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Icon(
+                    AppIcons.logo,
+                    color: Colors.white,
+                    size: 35,
+                  ),
                 ),
               ),
-              contentPadding: EdgeInsets.all(5.0),
+              onTap: () {},
             ),
             new MenuItem(AppIcons.zone, context, 1),
             new MenuItem(AppIcons.vehicle, context, 2),
@@ -83,16 +85,17 @@ class DrawerOnly extends StatelessWidget {
             Spacer(),
             Material(
               color: Color.fromARGB(0xFF, 0x0A, 0x56, 0xA1),
-              child: ListTile(
-                leading: Container(
-                  alignment: Alignment.center,
-                  child: Icon(
-                    AppIcons.logout,
-                    color: Colors.white,
-                    size: 25,
+              child: GestureDetector(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10, top: 20, bottom: 20, right: 10),
+                    child: Icon(
+                      AppIcons.logout,
+                      color: Colors.white,
+                      size: 25,
+                    ),
                   ),
                 ),
-                contentPadding: EdgeInsets.all(5.0),
                 onTap: () {},
               ),
             ),
@@ -114,16 +117,17 @@ class MenuItem extends StatelessWidget {
 
   Widget build(BuildContext context) {
     _bloc = InjectorWidget.of(context).get<MainBloc>();
-    return ListTile(
-      leading: Container(
-        alignment: Alignment.center,
-        child: Icon(
-          this.icon,
-          color: Colors.white,
-          size: 25,
+    return GestureDetector(
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10, top: 20, bottom: 20, right: 10),
+          child: Icon(
+            this.icon,
+            color: Colors.white,
+            size: 25,
+          ),
         ),
       ),
-      contentPadding: EdgeInsets.all(4.0),
       onTap: () {
         _bloc.dispatch(this.index);
       },

@@ -42,7 +42,7 @@ Future<Rspn<T>> validateList<T>(Response response, ComputeCallback<List<Map<Stri
 }
 
 Future<Rspn<T>> validateValue<T>(Response response) async {
-  if (response.statusCode == 202) {
+  if ((response.statusCode >= 200 && response.statusCode < 300) || response.statusCode == 304) {
     final body = response.data;
     bool success = body["success"] as bool;
     int error = body["error"] as int;

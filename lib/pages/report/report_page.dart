@@ -137,7 +137,7 @@ class ReportPageState extends State<ReportPage> {
 
   String _validateObs(String value) {
     if (value == '')
-      return 'La placa del vehiculo es obligatoria';
+      return 'Las observaciones son obligatorias';
     else
       return null;
   }
