@@ -14,7 +14,7 @@ class VehicleApi extends BaseApi {
   }
 
   Future<Rspn<String>> remove(String plate) async {
-    Response response = await delete('/citizens/vehicles/$plate');
+    Response response = await delete('/citizens/vehicles/${Uri.encodeComponent(plate)}');
     return validateValue(response);
   }
 
