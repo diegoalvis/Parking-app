@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oneparking_citizen/data/models/reserve.dart';
 import 'package:oneparking_citizen/util/state-util.dart';
-import 'package:oneparking_citizen/util/widget_util.dart';
 
 import './widgets/counter_down.dart';
 import './widgets/description_place.dart';

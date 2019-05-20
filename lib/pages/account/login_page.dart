@@ -107,7 +107,7 @@ class LoginFormState extends State<LoginForm> {
             builder: (context, state) {
               if (state is SuccessState) {
                 onWidgetDidBuild(() {
-                  Navigator.pushReplacementNamed(context, "/main");
+                  Navigator.pushReplacementNamed(context, "/loader");
                 });
               }
 

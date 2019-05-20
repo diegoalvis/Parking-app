@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'schedules.g.dart';
 
 @JsonSerializable(nullable: true)
-class Schedules{
+class Schedules {
   int id;
   String type;
   int mo;
