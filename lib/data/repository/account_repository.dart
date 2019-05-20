@@ -19,7 +19,7 @@ class AccountRepository {
 
   Future<bool> login(String email, String password) async {
     final rspn = await _accountApi.login(
-        LoginReq(username: email, password: password, roles: ['Cliente']));
+        LoginReq(username: email, password: password, roles: ['citizen']));
 
     if (!rspn.success) _errors.validateError(rspn.error);
 
