@@ -10,13 +10,13 @@ Schedules _$SchedulesFromJson(Map<String, dynamic> json) {
   return Schedules(
       id: json['id'] as int,
       type: json['type'] as String,
-      mo: json['mo'] as bool,
-      tu: json['tu'] as bool,
-      we: json['we'] as bool,
-      th: json['th'] as bool,
-      fr: json['fr'] as bool,
-      sa: json['sa'] as bool,
-      su: json['su'] as bool,
+      mo: json['mo'] as int,
+      tu: json['tu'] as int,
+      we: json['we'] as int,
+      th: json['th'] as int,
+      fr: json['fr'] as int,
+      sa: json['sa'] as int,
+      su: json['su'] as int,
       initTime: json['initTime'] as int,
       endTime: json['endTime'] as int);
 }

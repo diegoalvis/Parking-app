@@ -6,13 +6,13 @@ part 'schedules.g.dart';
 class Schedules {
   int id;
   String type;
-  bool mo;
-  bool tu;
-  bool we;
-  bool th;
-  bool fr;
-  bool sa;
-  bool su;
+  int mo;
+  int tu;
+  int we;
+  int th;
+  int fr;
+  int sa;
+  int su;
   int initTime;
   int endTime;
 

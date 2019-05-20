@@ -25,8 +25,8 @@ class TimeRange {
   TimeRange({this.days, this.times});
 
   List<Schedules> toSchedules(String type){
-    final dayState = [false, false, false, false, false, false, false ];
-    days.forEach((d)=>dayState[d] = true);
+    final dayState = [0, 0, 0, 0, 0, 0, 0 ];
+    days.forEach((d)=>dayState[d] = 1);
     return times.map((t)=>Schedules(type: type,
         mo: dayState[0],
         tu: dayState[1],
