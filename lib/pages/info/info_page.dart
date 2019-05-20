@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oneparking_citizen/data/models/config.dart';
 import 'package:oneparking_citizen/data/repository/info_repository.dart';
 import 'package:oneparking_citizen/util/state-util.dart';
-
 import './widgets/day_hour_column.dart';
 import './widgets/table_prices.dart';
 import './widgets/title_section.dart';
@@ -46,32 +45,33 @@ class _InfoContainerState extends State<InfoContainer> {
             bloc: _bloc,
             builder: (context, state) {
               Info info;
+              if (state is InitialState) {
+                _bloc.dispatch(InfoEvent.fetchData);
+              }
               if (state is SuccessState<Info>) {
-                state.data = info;
+                info = state.data;
               }
               return info == null
                   ? Center(child: Text("No hay informacion disponible"))
-                  : SingleChildScrollView(
-                      child: Container(
-                        color: Theme.of(context).canvasColor,
-                        child: Column(
-                          children: <Widget>[
-                            Padding(
-                                padding: EdgeInsets.only(top: 15.0, left: 25.0, right: 25.0),
-                                child: Text(
-                                    "Los precios por el uso de espacio publico se establecieron por Concejo de Sabaneta en el estatuto tributario 041 del 2018",
-                                    style: TextStyle(fontSize: 14.0),
-                                    textAlign: TextAlign.center)),
-                            Divider(height: 36, color: Colors.black),
-                            buildPriceSection(info.config),
-                            Divider(height: 36, color: Colors.black),
-                            buildSection("Zonas comerciales", info.businessSchedules),
-                            Divider(height: 36, color: Colors.black),
-                            buildSection("Zonas residenciales", info.residentialSchedules)
-                          ],
-                        ),
-                      ),
-                    );
+                  : Column(
+                    children: <Widget>[
+                      Padding(
+                          padding: EdgeInsets.only(top: 15.0, left: 25.0, right: 25.0),
+                          child: Text(
+                              "Los precios por el uso de espacio publico se establecieron por Concejo de Sabaneta en el estatuto tributario 041 del 2018",
+                              style: TextStyle(fontSize: 14.0),
+                              textAlign: TextAlign.center)),
+                      Divider(height: 36, color: Colors.black),
+                      buildPriceSection(info.config),
+                      Divider(height: 36, color: Colors.black),
+                      TitleSection(textTitle: "Zonas comerciales"),
+                      buildSection(info.businessSchedules),
+                      Divider(height: 36, color: Colors.black),
+                      TitleSection(textTitle: "Zonas residenciales"),
+                      buildSection(info.residentialSchedules),
+                      Spacer()
+                    ],
+                  );
             }));
   }
 
@@ -95,18 +95,15 @@ class _InfoContainerState extends State<InfoContainer> {
         ],
       );
 
-  Widget buildSection(String nameSection, List<ScheduleInfo> info) {
-    return Column(
-      children: <Widget>[
-        TitleSection(textTitle: nameSection),
-        ListView.builder(
-          itemCount: info.length,
-          itemBuilder: (context, index) => DayHourColumn(
-                days: info[index].label,
-                times: info[index].times,
-              ),
-        ),
-      ],
+  Widget buildSection(List<ScheduleInfo> info) {
+    return Flexible(
+      child: ListView.builder(
+        itemCount: info.length,
+        itemBuilder: (context, index) => DayHourColumn(
+              days: info[index].label,
+              times: info[index].times,
+            ),
+      ),
     );
   }
 }

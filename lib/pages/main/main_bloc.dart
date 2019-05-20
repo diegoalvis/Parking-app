@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 
 class MainBloc extends Bloc<int, int> {
   @override
-  int get initialState => 2;
+  int get initialState => 1;
 
   @override
   Stream<int> mapEventToState(int event) async* {

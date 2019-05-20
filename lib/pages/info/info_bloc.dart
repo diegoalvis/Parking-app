@@ -13,10 +13,15 @@ class InfoBloc extends Bloc<InfoEvent, BaseState> {
 
   @override
   Stream<BaseState> mapEventToState(InfoEvent event) async* {
-    try {} on Exception catch (e) {
+    try {
+      if (event == InfoEvent.fetchData) {
+        final info = await _repository.get();
+        yield SuccessState<Info>(data: info);
+      }
+    } on Exception catch (e) {
       yield ErrorState(errorMessage(e));
       await Future.delayed(Duration(seconds: 1));
-      yield InitialState();
+      //yield InitialState();
     }
   }
 }

@@ -19,6 +19,7 @@ class LoaderBloc extends Bloc<LoaderEvent, BaseState> {
     try {
       if (event == LoaderEvent.fetchData) {
         final isCurrentVersion = await _repository.isCurrentVersion();
+        await _repository.setupCurrentVersion();
         if (isCurrentVersion) {
           yield SuccessState();
         } else {

@@ -31,5 +31,6 @@ class BaseApi{
   Future<Options> _mkAuth(UserSession session) async{
     final token = await session.token;
     return Options(headers: {'Authorization': token});
+    //return Options(headers: {'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjZTFhZWUzMWE1ODQ2NmQ2N2I3ZjI0NCIsImlhdCI6MTU1ODI5NDI0M30.-QQB5tainSoAuclOEHTYDyeT-r7hM19PFOTPzFxsOD8"});
   }
 }

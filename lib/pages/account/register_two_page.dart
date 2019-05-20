@@ -138,7 +138,7 @@ class RegisterTwoFormState extends State<RegisterTwoForm> {
             bloc: _bloc,
             builder: (context, state) {
               if(state is SuccessState){
-                onWidgetDidBuild(() { Navigator.pushReplacementNamed(context, "/main"); });
+                onWidgetDidBuild(() { Navigator.pushReplacementNamed(context, "/loader"); });
               }
 
               if (state is LoadingState) {

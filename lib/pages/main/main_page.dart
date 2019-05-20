@@ -66,13 +66,10 @@ class DrawerOnly extends StatelessWidget {
           //padding: EdgeInsets.zero,
           children: <Widget>[
             ListTile(
-              leading: Container(
-                alignment: Alignment.center,
-                child: Icon(
-                  AppIcons.logo,
-                  color: Colors.white,
-                  size: 35,
-                ),
+              leading: Icon(
+                AppIcons.logo,
+                color: Colors.white,
+                size: 35,
               ),
               contentPadding: EdgeInsets.all(5.0),
             ),
@@ -84,13 +81,10 @@ class DrawerOnly extends StatelessWidget {
             Material(
               color: Color.fromARGB(0xFF, 0x0A, 0x56, 0xA1),
               child: ListTile(
-                leading: Container(
-                  alignment: Alignment.center,
-                  child: Icon(
-                    AppIcons.logout,
-                    color: Colors.white,
-                    size: 25,
-                  ),
+                leading: Icon(
+                  AppIcons.logout,
+                  color: Colors.white,
+                  size: 25,
                 ),
                 contentPadding: EdgeInsets.all(5.0),
                 onTap: () {},
@@ -115,13 +109,10 @@ class MenuItem extends StatelessWidget {
   Widget build(BuildContext context) {
     _bloc = InjectorWidget.of(context).get<MainBloc>();
     return ListTile(
-      leading: Container(
-        alignment: Alignment.center,
-        child: Icon(
-          this.icon,
-          color: Colors.white,
-          size: 25,
-        ),
+      leading: Icon(
+        this.icon,
+        color: Colors.white,
+        size: 25,
       ),
       contentPadding: EdgeInsets.all(4.0),
       onTap: () {
