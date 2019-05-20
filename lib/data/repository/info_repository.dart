@@ -45,13 +45,13 @@ class InfoRepository {
 
   Map<String, dynamic> _getLabel(Schedules schedule) {
     List<int> days = [];
-    if (schedule.mo) days.add(0);
-    if (schedule.tu) days.add(1);
-    if (schedule.we) days.add(2);
-    if (schedule.th) days.add(3);
-    if (schedule.fr) days.add(4);
-    if (schedule.sa) days.add(5);
-    if (schedule.su) days.add(6);
+    if (schedule.mo == 1) days.add(0);
+    if (schedule.tu == 1) days.add(1);
+    if (schedule.we == 1) days.add(2);
+    if (schedule.th == 1) days.add(3);
+    if (schedule.fr == 1) days.add(4);
+    if (schedule.sa == 1) days.add(5);
+    if (schedule.su == 1) days.add(6);
 
     String label = _dayByIndex(days[0]);
     if (days.length > 1) {

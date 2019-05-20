@@ -29,20 +29,20 @@ class ScheduleDao {
     final db = await _db;
     String dayQuery = '';
     switch(day){
-      case 0: dayQuery = 'mo = ?'; break;
-      case 1: dayQuery = 'tu = ?'; break;
-      case 2: dayQuery = 'we = ?'; break;
-      case 3: dayQuery = 'th = ?'; break;
-      case 4: dayQuery = 'fr = ?'; break;
-      case 5: dayQuery = 'sa = ?'; break;
-      case 6: dayQuery = 'su = ?'; break;
+      case 0: dayQuery = 'mo = 1'; break;
+      case 1: dayQuery = 'tu = 1'; break;
+      case 2: dayQuery = 'we = 1'; break;
+      case 3: dayQuery = 'th = 1'; break;
+      case 4: dayQuery = 'fr = 1'; break;
+      case 5: dayQuery = 'sa = 1'; break;
+      case 6: dayQuery = 'su = 1'; break;
     }
     String minQuery = '';
     if(min != null){
       minQuery = ' AND endTime > $min AND initTime <= $min';
     }
 
-    final result = await db.query('schedule', where: dayQuery + 'AND type = ? $minQuery', whereArgs: [day, type] );
+    final result = await db.query('schedule', where: dayQuery + " AND type = '$type' $minQuery");
     return result.isNotEmpty ? Schedules.fromJson(result[0]) : null;
   }
 
