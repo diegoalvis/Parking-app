@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dependencies_flutter/dependencies_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,8 +30,14 @@ class _MapContainerState extends State<MapContainer>{
 
   MapBloc _bloc;
   GoogleMapController mapController;
-  List<Zone> zones = [];
+  List<Zone> zones;
+  Completer<GoogleMapController> _controller = Completer();
   bool flagZones = false;
+
+  static final CameraPosition _initialPosition = CameraPosition(
+    target: LatLng(6.151379, -75.615247),
+    zoom: 17.0,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -53,13 +61,11 @@ class _MapContainerState extends State<MapContainer>{
           return Stack(
             children: <Widget>[
               GoogleMap(
-                options: GoogleMapOptions(
-                    cameraPosition: CameraPosition(
-                        target: LatLng(6.151379, -75.615247),
-                        zoom: 17.0
-                    )
-                ),
-                onMapCreated: _onMapCreated,
+                mapType: MapType.normal,
+                initialCameraPosition: _initialPosition,
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
               )
             ],
           );
@@ -67,26 +73,5 @@ class _MapContainerState extends State<MapContainer>{
       ),
     );
   }
-
-  void _onMapCreated(GoogleMapController controller) {
-
-    Future.delayed(const Duration(milliseconds: 5000), () {
-      setState(() {
-        mapController = controller;
-        if(this.flagZones == true) {
-          for(var i = 0 ; i < this.zones.length ; i++) {
-            mapController.addMarker(
-              MarkerOptions(
-                  position: LatLng(zones[i].lat, - zones[i].lon)
-              ),
-            );
-          }
-        }
-      });
-    });
-
-
-  }
-
 
 }
