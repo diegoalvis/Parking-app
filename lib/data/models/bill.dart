@@ -7,9 +7,8 @@ class ZoneBill{
   String idZone;
   String code;
   int cell;
-  int time;
 
-  ZoneBill({this.idZone, this.code, this.cell, this.time});
+  ZoneBill({this.idZone, this.code, this.cell});
 
   factory ZoneBill.fromJson(Map<String, dynamic> json) => _$ZoneBillFromJson(json);
   Map<String, dynamic> toJson() => _$ZoneBillToJson(this);
@@ -22,8 +21,10 @@ class Bill{
   String type;
   int value;
   ZoneBill zone;
+  int time;
 
-  Bill({this.createdAt, this.vehiclePlate, this.type, this.value, this.zone});
+
+  Bill({this.createdAt, this.vehiclePlate, this.type, this.value, this.zone, this.time});
 
   factory Bill.fromJson(Map<String, dynamic> json) => _$BillFromJson(json);
   Map<String, dynamic> toJson() => _$BillToJson(this);

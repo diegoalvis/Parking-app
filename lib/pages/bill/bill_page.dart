@@ -122,10 +122,10 @@ class _BillContainerState extends State<BillContainer> {
                         : Row(
                             children: <Widget>[
                               Padding(
-                                padding: EdgeInsets.only(right: 15.0),
+                                padding: EdgeInsets.only(right: 14.0),
                                 child: Icon(Icons.access_time, size: 16.0),
                               ),
-                              Text("${bill.createdAt} min", style: TextStyle(fontSize: sizeTextCard)),
+                              Text("${bill.time ~/ 60} min", style: TextStyle(fontSize: sizeTextCard)),
                             ],
                           ),
                     SizedBox(height: 4),
@@ -154,10 +154,11 @@ class _BillContainerState extends State<BillContainer> {
         alignment: Alignment.topRight,
         margin: EdgeInsets.only(right: 25.0),
         child: Column(
+
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            Text("05/05/2019", style: TextStyle(fontSize: 12.0)),
-            Text("10:35pm", style: TextStyle(fontSize: 10.0)),
+            Text("${dateTime.day}/${dateTime.month}/${dateTime.year}", style: TextStyle(fontSize: 12.0)),
+            Text("${TimeOfDay(hour: dateTime.hour, minute: dateTime.minute).format(context)}", style: TextStyle(fontSize: 10.0)),
           ],
         ),
       );
