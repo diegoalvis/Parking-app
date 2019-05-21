@@ -85,13 +85,18 @@ class _MapContainerState extends State<MapContainer>{
         final Marker marker = Marker(
           markerId: markerId,
           position: LatLng(zones[i].lat, zones[i].lon),
+          onTap: () {
+            _onMarkerTapped(zones[i]);
+          },
         );
         // adding a new marker to map
         markers[markerId] = marker;
       }
     }
+  }
 
-
+  _onMarkerTapped(Zone zoneTapped) {
+    var zone = zoneTapped;
   }
 
 }
