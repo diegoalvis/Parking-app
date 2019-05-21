@@ -10,12 +10,12 @@ class BillApi extends BaseApi {
 
   Future<Rspn<List<Bill>>> all({int limit: 0, int skip: 0}) async {
     final id = await session.id;
-    Response res = await get('citizens/$id/transactions', query: {'limit': limit, 'skip': skip});
+    Response res = await get('/citizens/$id/transactions', query: {'limit': limit, 'skip': skip});
     return validateList(res, parseBill);
   }
 
   Future<Rspn<List<Debt>>> allDebt() async {
-    Response res = await get('debts/self');
+    Response res = await get('/debts/self');
     return validateList(res, parseDebt);
   }
 }

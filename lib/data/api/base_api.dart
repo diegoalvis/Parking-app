@@ -9,7 +9,10 @@ class BaseApi {
 
   Future<Response<Map<String, dynamic>>> get(String path, {Map<String, dynamic> query}) async {
     final auth = await _mkAuth(session);
-    return await _dio.get<Map<String, dynamic>>(path, queryParameters: query, options: auth);
+    return await _dio.get<Map<String, dynamic>>(path, queryParameters: query, options: auth)
+        .catchError((e) {
+          print(e);
+    });
   }
 
   Future<Response<Map<String, dynamic>>> post(String path, {Map<String, dynamic> body}) async {

@@ -10,13 +10,15 @@ ZoneBill _$ZoneBillFromJson(Map<String, dynamic> json) {
   return ZoneBill(
       idZone: json['idZone'] as String,
       code: json['code'] as String,
-      cell: json['cell'] as String);
+      cell: json['cell'] as int,
+      time: json['time'] as int);
 }
 
 Map<String, dynamic> _$ZoneBillToJson(ZoneBill instance) => <String, dynamic>{
       'idZone': instance.idZone,
       'code': instance.code,
-      'cell': instance.cell
+      'cell': instance.cell,
+      'time': instance.time
     };
 
 Bill _$BillFromJson(Map<String, dynamic> json) {

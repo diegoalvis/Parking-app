@@ -30,7 +30,7 @@ Future<Rspn<T>> validateList<T>(Response response, ComputeCallback<List<Map<Stri
 
     T data;
     if (body["data"] != null) {
-      data = await compute<List<Map<String, dynamic>>, T>(callback, body["data"]);
+      data = await compute<List<Map<String, dynamic>>, T>(callback, (body["data"] as List).cast<Map<String, dynamic>>());
     }
 
     return Rspn(success: success, data: data, error: error);

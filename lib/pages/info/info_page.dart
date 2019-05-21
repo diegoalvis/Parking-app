@@ -9,8 +9,6 @@ import './widgets/table_prices.dart';
 import './widgets/title_section.dart';
 import 'info_bloc.dart';
 
-void main() => runApp(InfoPage());
-
 class InfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
