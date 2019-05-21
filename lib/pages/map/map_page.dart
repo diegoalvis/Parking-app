@@ -37,7 +37,7 @@ class _MapContainerState extends State<MapContainer>{
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
   static final CameraPosition _initialPosition = CameraPosition(
-    target: LatLng(6.151379, -75.615247),
+    target: LatLng(6.151849, -75.616466),
     zoom: 17.0,
   );
 
@@ -70,6 +70,19 @@ class _MapContainerState extends State<MapContainer>{
                   _controller.complete(controller);
                 },
                 markers: Set<Marker>.of(markers.values),
+              ),
+              Positioned(
+                bottom: 50,
+                right: 10,
+                child:
+                FloatingActionButton(
+                    backgroundColor: Theme.of(context).accentColor,
+                    child: Icon(
+                      Icons.location_on,
+                      color: Colors.white,
+                    ),
+                    onPressed: trackGeolocation
+                ),
               )
             ],
           );
@@ -97,6 +110,10 @@ class _MapContainerState extends State<MapContainer>{
 
   _onMarkerTapped(Zone zoneTapped) {
     var zone = zoneTapped;
+  }
+
+  trackGeolocation() {
+
   }
 
 }
