@@ -9,10 +9,6 @@ class DayHourColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final init = Duration(minutes: this.times[0].init);
-    final end = Duration(minutes: this.times[0].end);
-    final initialTime = TimeOfDay(hour: init.inHours, minute: init.inMinutes % 60).format(context);
-    final endTime = TimeOfDay(hour: end.inHours, minute: end.inMinutes % 60).format(context);
     return Column(
       children: <Widget>[
         Container(
@@ -27,15 +23,25 @@ class DayHourColumn extends StatelessWidget {
           alignment: Alignment.centerLeft,
         ),
         Container(
-          margin: EdgeInsets.only(left: 15.0, bottom: 15.0),
-          child: Text(
-            "$initialTime a $endTime",
-            style: TextStyle(fontSize: 13.0, color: Colors.black54),
-            textAlign: TextAlign.left,
-          ),
           alignment: Alignment.centerLeft,
+          margin: EdgeInsets.only(top: 8.0, left: 15.0, bottom: 15.0),
+          child: Column(
+            children: times.map((scheduleTime) => buildTimeScheduleItem(context, scheduleTime)).toList(),
+          ),
         )
       ],
+    );
+  }
+
+  Widget buildTimeScheduleItem(BuildContext context, ScheduleTime scheduleTime) {
+    final init = Duration(minutes: scheduleTime.init);
+    final end = Duration(minutes: scheduleTime.end);
+    final initialTime = TimeOfDay(hour: init.inHours, minute: init.inMinutes % 60).format(context);
+    final endTime = TimeOfDay(hour: end.inHours, minute: end.inMinutes % 60).format(context);
+    return Text(
+      "$initialTime a $endTime",
+      style: TextStyle(fontSize: 13.0, color: Colors.black54),
+      textAlign: TextAlign.left,
     );
   }
 }
