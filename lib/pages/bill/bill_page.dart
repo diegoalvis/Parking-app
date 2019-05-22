@@ -31,6 +31,10 @@ class _BillContainerState extends State<BillContainer> {
   Widget build(BuildContext context) {
     _bloc = InjectorWidget.of(context).get<BillBloc>();
 
+    Future<Null> _onRefresh() async {
+      _bloc.dispatch(BillEvent.fetchData);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -51,41 +55,43 @@ class _BillContainerState extends State<BillContainer> {
           }
           if (state is SuccessState<BillInfo>) {
             info = state.data;
-            if ((info?.bills?.length ?? 0) == 0 && (info?.debts?.length ?? 0) == 0) {
-            return  Center(child: Text("No tiene facturas hasta el momento."));
-            }
           }
 
-          return info == null
-              ? Center(child: Text("No hay informacion disponible"))
-              : ListView(
-                  children: <Widget>[
-                    (info.debts?.length ?? 0) > 0
-                        ? Container(
-                            alignment: Alignment.centerLeft,
-                            margin: EdgeInsets.only(top: 20.0, left: 15.0),
-                            child: Text(
-                              "Pagos Pendientes",
-                              style: TextStyle(fontSize: 16.0, color: Colors.black54, fontWeight: FontWeight.w700),
-                              textAlign: TextAlign.left,
-                            ),
-                          )
-                        : SizedBox(),
-                    Column(children: info.debts.map((debt) => buildBillList(debt: debt)).toList()),
-                    (info.bills?.length ?? 0) > 0
-                        ? Container(
-                            alignment: Alignment.centerLeft,
-                            margin: EdgeInsets.only(top: 20.0, left: 15.0),
-                            child: Text(
-                              "Facturas",
-                              style: TextStyle(fontSize: 16.0, color: Colors.black54, fontWeight: FontWeight.w700),
-                              textAlign: TextAlign.left,
-                            ),
-                          )
-                        : SizedBox(),
-                    Column(children: info.bills.map((bill) => buildBillList(bill: bill)).toList()),
-                  ],
-                );
+          return RefreshIndicator(
+              onRefresh: _onRefresh,
+              child: info == null
+                  ? ListView(children: <Widget>[SizedBox(height: 200), Center(child: Text("No hay informacion disponible"))])
+                  : (info?.bills?.length ?? 0) == 0 && (info?.debts?.length ?? 0) == 0
+                      ? ListView(
+                          children: <Widget>[SizedBox(height: 200), Center(child: Text("No tiene facturas hasta el momento"))])
+                      : ListView(
+                          children: <Widget>[
+                            (info?.debts?.length ?? 0) > 0
+                                ? Container(
+                                    alignment: Alignment.centerLeft,
+                                    margin: EdgeInsets.only(top: 20.0, left: 15.0),
+                                    child: Text(
+                                      "Pagos Pendientes",
+                                      style: TextStyle(fontSize: 16.0, color: Colors.black54, fontWeight: FontWeight.w700),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  )
+                                : SizedBox(),
+                            Column(children: info.debts.map((debt) => buildBillList(debt: debt)).toList()),
+                            (info.bills?.length ?? 0) > 0
+                                ? Container(
+                                    alignment: Alignment.centerLeft,
+                                    margin: EdgeInsets.only(top: 20.0, left: 15.0),
+                                    child: Text(
+                                      "Facturas",
+                                      style: TextStyle(fontSize: 16.0, color: Colors.black54, fontWeight: FontWeight.w700),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  )
+                                : SizedBox(),
+                            Column(children: info.bills.map((bill) => buildBillList(bill: bill)).toList()),
+                          ],
+                        ));
         },
       ),
     );
@@ -153,7 +159,6 @@ class _BillContainerState extends State<BillContainer> {
         alignment: Alignment.topRight,
         margin: EdgeInsets.only(right: 25.0),
         child: Column(
-
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             Text("${dateTime.day}/${dateTime.month}/${dateTime.year}", style: TextStyle(fontSize: 12.0)),

@@ -2,7 +2,6 @@ import 'package:oneparking_citizen/data/api/account_api.dart';
 import 'package:oneparking_citizen/data/api/model/login.dart';
 import 'package:oneparking_citizen/data/api/model/signin.dart';
 import 'package:oneparking_citizen/data/db/dao/vehicle_dao.dart';
-import 'package:oneparking_citizen/data/models/vehicle.dart';
 import 'package:oneparking_citizen/data/models/user.dart';
 import 'package:oneparking_citizen/data/preferences/user_session.dart';
 import 'package:oneparking_citizen/util/error_codes.dart';
@@ -14,8 +13,7 @@ class AccountRepository {
   ErrorCodes _errors;
   SigninReq signinReq = SigninReq();
 
-  AccountRepository(
-      this._session, this._accountApi, this._vehicleDao, this._errors);
+  AccountRepository(this._session, this._accountApi, this._vehicleDao, this._errors);
 
   Future<bool> login(String email, String password) async {
     final rspn = await _accountApi.login(LoginReq(username: email, password: password, roles: ['citizen']));
@@ -65,7 +63,7 @@ class AccountRepository {
     signinReq.password = password;
   }
 
-  void clearSign(){
+  void clearSign() {
     signinReq = SigninReq();
   }
 }
