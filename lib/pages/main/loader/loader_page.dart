@@ -35,11 +35,13 @@ class LoaderContainer extends StatelessWidget with InjectorWidgetMixin {
           }
 
           return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Spacer(),
               CircularProgressIndicator(),
-              Text("Cargando...", style: TextStyle(fontSize: 18, color: Colors.black)),
-              Spacer(),
+              Padding(
+                padding: EdgeInsets.only(top: 20),
+                child: Text("Cargando Configuración...", style: TextStyle(fontSize: 18, color: Colors.black)),
+              ),
             ],
           );
         },
