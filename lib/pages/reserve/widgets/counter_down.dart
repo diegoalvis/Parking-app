@@ -13,7 +13,8 @@ class CounterDown extends StatelessWidget {
   Widget build(BuildContext context) {
     return TimerText(Dependencies(
       onTimeIncremented,
-      initialTime?.inMinutes,
+      initialTime?.inHours,
+      (initialTime?.inMinutes ?? 0) % 60,
       (initialTime?.inSeconds ?? 0) % 60,
       stop,
     ));
@@ -21,27 +22,28 @@ class CounterDown extends StatelessWidget {
 }
 
 class ElapsedTime {
-  final int hundreds;
   final int seconds;
   final int minutes;
+  final int hours;
 
   ElapsedTime({
-    this.hundreds,
     this.seconds,
     this.minutes,
+    this.hours,
   });
 }
 
 class Dependencies {
   final List<ValueChanged<ElapsedTime>> timerListeners = <ValueChanged<ElapsedTime>>[];
   final Stopwatch stopwatch = Stopwatch();
-  final int timerMillisecondsRefreshRate = 30;
+  final int timerMillisecondsRefreshRate = 1000;
   final Function onTimeIncremented;
   final stop;
+  int initialHours;
   int initialMinutes;
   int initialSeconds;
 
-  Dependencies(this.onTimeIncremented, this.initialMinutes, this.initialSeconds, this.stop) {
+  Dependencies(this.onTimeIncremented, this.initialHours, this.initialMinutes, this.initialSeconds, this.stop) {
     if (stop) {
       stopwatch.stop();
     } else {
@@ -81,18 +83,18 @@ class TimerTextState extends State<TimerText> {
 
   void callback(Timer timer) {
     if (milliseconds != dependencies.stopwatch.elapsedMilliseconds) {
-      final duration = Duration(minutes: dependencies.initialMinutes, seconds: dependencies.initialSeconds);
+      final duration = Duration(hours: dependencies.initialHours,  minutes: dependencies.initialMinutes, seconds: dependencies.initialSeconds);
       milliseconds = dependencies.stopwatch.elapsedMilliseconds + duration.inMilliseconds;
       if ((milliseconds ~/ 1000) % 10 == 0) {
         dependencies?.onTimeIncremented(Duration(milliseconds: milliseconds).inMinutes);
       }
-      final int hundreds = (milliseconds / 10).truncate();
-      final int seconds = (hundreds / 100).truncate();
+      final int seconds = (milliseconds / 1000).truncate();
       final int minutes = (seconds / 60).truncate();
+      final int hours = (minutes / 60).truncate();
       final ElapsedTime elapsedTime = ElapsedTime(
-        hundreds: hundreds,
         seconds: seconds,
         minutes: minutes,
+        hours: hours,
       );
       for (final listener in dependencies.timerListeners) {
         listener(elapsedTime);
@@ -109,7 +111,7 @@ class TimerTextState extends State<TimerText> {
           child: MinutesAndSeconds(dependencies),
         ),
         RepaintBoundary(
-          child: Center(child: Hundreds(dependencies: dependencies)),
+          child: Center(child: Seconds(dependencies: dependencies)),
         ),
       ],
     );
@@ -121,15 +123,15 @@ class MinutesAndSeconds extends StatefulWidget {
 
   MinutesAndSeconds(this.dependencies);
 
-  MinutesAndSecondsState createState() => MinutesAndSecondsState(dependencies);
+  HoursAndMinutesState createState() => HoursAndMinutesState(dependencies);
 }
 
-class MinutesAndSecondsState extends State<MinutesAndSeconds> {
+class HoursAndMinutesState extends State<MinutesAndSeconds> {
   final Dependencies dependencies;
   int minutes = 0;
-  int seconds = 0;
+  int hours = 0;
 
-  MinutesAndSecondsState(this.dependencies);
+  HoursAndMinutesState(this.dependencies);
 
   @override
   void initState() {
@@ -138,9 +140,46 @@ class MinutesAndSecondsState extends State<MinutesAndSeconds> {
   }
 
   void onTick(ElapsedTime elapsed) {
-    if (elapsed.minutes != minutes || elapsed.seconds != seconds) {
+    if (elapsed.minutes != minutes || elapsed.hours != hours) {
       setState(() {
         minutes = elapsed.minutes;
+        hours = elapsed.hours;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    String hoursStr = (hours).toString().padLeft(2, '0');
+    String minutesStr = (minutes % 60).toString().padLeft(2, '0');
+    return Text('$hoursStr:$minutesStr', style: TextStyle(color: Colors.black, fontSize: 80.0));
+  }
+}
+
+class Seconds extends StatefulWidget {
+  Seconds({this.dependencies});
+
+  final Dependencies dependencies;
+
+  SecondsState createState() => SecondsState(dependencies: dependencies);
+}
+
+class SecondsState extends State<Seconds> {
+  SecondsState({this.dependencies});
+
+  final Dependencies dependencies;
+
+  int seconds = 0;
+
+  @override
+  void initState() {
+    dependencies.timerListeners.add(onTick);
+    super.initState();
+  }
+
+  void onTick(ElapsedTime elapsed) {
+    if (elapsed.seconds != seconds) {
+      setState(() {
         seconds = elapsed.seconds;
       });
     }
@@ -148,44 +187,7 @@ class MinutesAndSecondsState extends State<MinutesAndSeconds> {
 
   @override
   Widget build(BuildContext context) {
-    String minutesStr = (minutes).toString().padLeft(2, '0');
     String secondsStr = (seconds % 60).toString().padLeft(2, '0');
-    return Text('$minutesStr:$secondsStr.', style: TextStyle(color: Colors.black, fontSize: 80.0));
-  }
-}
-
-class Hundreds extends StatefulWidget {
-  Hundreds({this.dependencies});
-
-  final Dependencies dependencies;
-
-  HundredsState createState() => HundredsState(dependencies: dependencies);
-}
-
-class HundredsState extends State<Hundreds> {
-  HundredsState({this.dependencies});
-
-  final Dependencies dependencies;
-
-  int hundreds = 0;
-
-  @override
-  void initState() {
-    dependencies.timerListeners.add(onTick);
-    super.initState();
-  }
-
-  void onTick(ElapsedTime elapsed) {
-    if (elapsed.hundreds != hundreds) {
-      setState(() {
-        hundreds = elapsed.hundreds;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    String hundredsStr = (hundreds % 100).toString().padLeft(2, '0');
-    return Text(hundredsStr, style: TextStyle(fontSize: 50.0));
+    return Text(secondsStr, style: TextStyle(fontSize: 50.0));
   }
 }

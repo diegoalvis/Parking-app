@@ -71,6 +71,6 @@ class AppModule implements Module {
       ..bindLazySingleton((injector, params) => VehicleRepository(injector.get(), injector.get()))
       ..bindLazySingleton(
           (injector, params) => ZoneRepository(injector.get(), injector.get(), injector.get(), injector.get(), injector.get()))
-      ..bindLazySingleton((injector, params) => MainBloc());
+      ..bindLazySingleton((injector, params) => MainBloc(injector.get()));
   }
 }

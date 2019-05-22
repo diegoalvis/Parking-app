@@ -104,7 +104,8 @@ class UserSession{
     setLogged(true);
   }
 
-  void clear() async{
+  // Logout
+  Future clear() async {
     final prefs = await preferences;
     prefs.clear();
   }

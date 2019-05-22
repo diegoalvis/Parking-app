@@ -15,6 +15,7 @@ class InfoBloc extends Bloc<InfoEvent, BaseState> {
   Stream<BaseState> mapEventToState(InfoEvent event) async* {
     try {
       if (event == InfoEvent.fetchData) {
+        yield LoadingState();
         final info = await _repository.get();
         yield SuccessState<Info>(data: info);
       }

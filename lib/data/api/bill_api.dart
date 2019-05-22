@@ -8,7 +8,7 @@ import 'package:oneparking_citizen/util/http_util.dart';
 class BillApi extends BaseApi {
   BillApi(Dio dio, UserSession session) : super(dio, session);
 
-  Future<Rspn<List<Bill>>> all({int limit: 0, int skip: 0}) async {
+  Future<Rspn<List<Bill>>> all({int limit: 50, int skip: 0}) async {
     final id = await session.id;
     Response res = await get('/citizens/$id/transactions', query: {'limit': limit, 'skip': skip});
     return validateList(res, parseBill);

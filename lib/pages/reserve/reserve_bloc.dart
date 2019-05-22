@@ -35,21 +35,29 @@ class ReserveBloc extends Bloc<ReserveEvent, BaseState> {
       switch (event.event) {
         case ReserveEventType.getActive:
           yield LoadingState();
-          final reserve = await _repository.getCurrentReserve();
-          yield SuccessState(data: reserve);
+          final reserve = await _repository.current();
+          if (reserve == null || reserve.date == null) {
+            yield NoReservesState();
+          } else {
+            yield SuccessState(data: reserve);
+            final time = DateTime.now().difference(reserve.date);
+            //final time = Duration(hours: 3, minutes: 59, seconds: 52);
+            final value = await _repository.getValue(timeInMinutes: time.inMinutes);
+            _valueSubject.sink.add(value);
+          }
           break;
         case ReserveEventType.stop:
           retryIntents--;
           if (retryIntents == 0) {
+            await _repository.forceStop();
             yield FinishReserveState();
             break;
           }
-          //yield LoadingState();
           await _repository.stop();
           yield FinishReserveState();
           break;
         case ReserveEventType.getValue:
-          final value = await _repository.getValue(event.data as int);
+          final value = await _repository.getValue(timeInMinutes: event.data as int);
           _valueSubject.sink.add(value);
           break;
       }
@@ -77,4 +85,9 @@ class ReserveEvent<T> {
 class FinishReserveState extends BaseState {
   @override
   String toString() => 'state-finish-reserve';
+}
+
+class NoReservesState extends BaseState {
+  @override
+  String toString() => 'state-no-reserves';
 }

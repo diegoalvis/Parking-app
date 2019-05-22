@@ -10,12 +10,12 @@ class ReserveApi extends BaseApi{
   ReserveApi(Dio dio, UserSession session) : super(dio, session);
 
   Future<Rspn<ReserveRes>> reserve(ReserveReq req) async{
-    Response res = await post('citizen/reserve', body: req.toJson());
+    Response res = await post('/citizen/reserve', body: req.toJson());
     return validate(res, parseReserveRes);
   }
 
   Future<Rspn<ReserveStopRes>> reserveStop(String id) async{
-    Response res = await post('citizen/reserve/stop/$id');
+    Response res = await post('/citizen/reserve/stop/$id');
     return validate(res, parseReserveStopRes);
   }
 }

@@ -1,8 +1,11 @@
+import 'package:dependencies/dependencies.dart';
 import 'package:flutter/material.dart';
+import 'package:oneparking_citizen/data/preferences/user_session.dart';
 import 'package:oneparking_citizen/util/app_icons.dart';
 import 'package:dependencies_flutter/dependencies_flutter.dart';
 import 'package:oneparking_citizen/pages/main/main_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:oneparking_citizen/util/widget_util.dart';
 import '../vehicle/vehicle_page.dart';
 import '../map/map_page.dart';
 import '../bill/bill_page.dart';
@@ -28,21 +31,26 @@ class MainPage extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              child: BlocBuilder(
+              child: BlocBuilder<MainEvent, MainState>(
                 bloc: _bloc,
                 builder: (context, state) {
                   switch (state) {
-                    case 1:
+                    case MainState.showMap:
                       return MapPage();
                       break;
-                    case 2:
+                    case MainState.showVehicles:
                       return VehiclePage();
                       break;
-                    case 3:
+                    case MainState.showBills:
                       return BillPage();
                       break;
-                    default:
+                    case MainState.showInfo:
                       return InfoPage();
+                      break;
+                    case MainState.logout:
+                      onWidgetDidBuild(() => Navigator.pushReplacementNamed(context, '/login'));
+                      return SizedBox();
+                      break;
                   }
                 },
               ),
@@ -57,6 +65,7 @@ class MainPage extends StatelessWidget {
 class DrawerOnly extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final _bloc = InjectorWidget.of(context).get<MainBloc>();
     return Material(
       color: Color.fromARGB(0xFF, 0x19, 0x76, 0xD2),
       child: new Container(
@@ -78,10 +87,10 @@ class DrawerOnly extends StatelessWidget {
               ),
               onTap: () {},
             ),
-            new MenuItem(AppIcons.zone, context, 1),
-            new MenuItem(AppIcons.vehicle, context, 2),
-            new MenuItem(AppIcons.bill, context, 3),
-            new MenuItem(AppIcons.info, context, 4),
+            new MenuItem(AppIcons.zone, MainEvent.showMap),
+            new MenuItem(AppIcons.vehicle,MainEvent.showVehicles),
+            new MenuItem(AppIcons.bill, MainEvent.showBills),
+            new MenuItem(AppIcons.info, MainEvent.showInfo),
             Spacer(),
             Material(
               color: Color.fromARGB(0xFF, 0x0A, 0x56, 0xA1),
@@ -96,7 +105,7 @@ class DrawerOnly extends StatelessWidget {
                     ),
                   ),
                 ),
-                onTap: () {},
+                onTap: () => _bloc.dispatch(MainEvent.logout),
               ),
             ),
           ],
@@ -108,10 +117,9 @@ class DrawerOnly extends StatelessWidget {
 
 class MenuItem extends StatelessWidget {
   final IconData icon;
-  final int index;
-  final BuildContext context;
+  final MainEvent event;
 
-  MenuItem(this.icon, this.context, this.index);
+  MenuItem(this.icon, this.event);
 
   MainBloc _bloc;
 
@@ -129,7 +137,7 @@ class MenuItem extends StatelessWidget {
         ),
       ),
       onTap: () {
-        _bloc.dispatch(this.index);
+        _bloc.dispatch(this.event);
       },
     );
   }

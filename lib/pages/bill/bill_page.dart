@@ -5,7 +5,6 @@ import 'package:oneparking_citizen/data/models/bill.dart';
 import 'package:oneparking_citizen/data/repository/bill_repository.dart';
 import 'package:oneparking_citizen/util/app_icons.dart';
 import 'package:oneparking_citizen/util/state-util.dart';
-
 import 'bill_bloc.dart';
 
 class BillPage extends StatelessWidget {

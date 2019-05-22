@@ -20,29 +20,20 @@ class ReserveRepository {
 
   ReserveRepository(this._session, this._api, this._reserveDao, this._errors, this._vehicleDao, this._configDao);
 
-  Future<int> getValue(final int parkingTimeInMinutes) async {
+  Future<int> getValue({final int timeInMinutes}) async {
     var config = await _configDao.get();
     final reserve = this.reserve ?? await _reserveDao.get();
     if (reserve == null) {
       return 0;
     }
-
-    config = Config(limitTime: 29, baseTime: 30, basePrice: 2000, fractionTime: 1, fractionPrice: 700);
-    if (parkingTimeInMinutes < config.limitTime) {
+    if (timeInMinutes < config.limitTime) {
       return 0;
-    } else if (parkingTimeInMinutes <= config.baseTime) {
+    } else if (timeInMinutes <= config.baseTime) {
       return config.basePrice;
     } else {
-      final additionalTime = parkingTimeInMinutes - config.baseTime;
+      final additionalTime = timeInMinutes - config.baseTime;
       return (config.basePrice + ((additionalTime / config.fractionTime).round()) * config.fractionPrice).round();
     }
-  }
-
-  Future<Reserve> getCurrentReserve() async {
-    // TODO: fetch data from server
-    reserve = await _reserveDao.get();
-    reserve = Reserve(idReserve: "1", plate: "DIEGO", date: DateTime.now(), address: "Test direccion");
-    return Future.value(reserve);
   }
 
   Future start(String idZone, String name, String address, String code, bool disability) async {
@@ -58,12 +49,12 @@ class ReserveRepository {
   }
 
   Future stop() async {
-    final reserve = await getCurrentReserve();
-    if (reserve != null) {
+//    final reserve = await _reserveDao.get();
+    if (reserve == null) {
       throw StopReserveException(cause: "No se pudo detener la reserva");
     }
-    //final rspn = await _api.reserveStop(reserve.idReserve);
-    //if (!rspn.success) _errors.validateError(rspn.error);
+    final rspn = await _api.reserveStop(reserve.idReserve);
+    if (!rspn.success) _errors.validateError(rspn.error);
     await _reserveDao.remove();
     _session.setReserving(false);
   }
@@ -73,7 +64,11 @@ class ReserveRepository {
     _session.setReserving(false);
   }
 
-  Future<Reserve> current() async => await _reserveDao.get();
+  Future<Reserve> current() async {
+    //reserve = await Reserve(idReserve: "1", plate: "DIEGO", date: DateTime.now(), address: "Test direccion");
+    //return reserve;
+    return await _reserveDao.get();
+  }
 }
 
 

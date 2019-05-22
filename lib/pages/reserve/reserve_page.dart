@@ -2,6 +2,8 @@ import 'package:dependencies_flutter/dependencies_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oneparking_citizen/data/models/reserve.dart';
+import 'package:oneparking_citizen/data/models/vehicle.dart';
+import 'package:oneparking_citizen/util/app_icons.dart';
 import 'package:oneparking_citizen/util/state-util.dart';
 
 import './widgets/counter_down.dart';
@@ -60,10 +62,14 @@ class _ReserveContainerState extends State<ReserveContainer> {
                   if (state is InitialState) {
                     _bloc.dispatch(ReserveEvent(ReserveEventType.getActive));
                   }
+                  if (state is NoReservesState) {
+                    goToSplash();
+                    return Center(child: Text("No posee reservas en el momento."));
+                  }
                   if (state is SuccessState<Reserve>) {
                     reserve = state.data;
-                    //parkingTime = DateTime.now().difference(reserve.date);
-                    parkingTime = Duration(minutes: 29, seconds: 54);
+                    parkingTime = DateTime.now().difference(reserve?.date);
+                    //parkingTime = Duration(hours: 3, minutes: 59, seconds: 52);
                   }
                   if (state is LoadingState) {
                     return Center(child: CircularProgressIndicator());
@@ -94,7 +100,10 @@ class _ReserveContainerState extends State<ReserveContainer> {
                                 ),
                         ),
                       ),
-                      DescriptionPlace(icon: Icons.motorcycle, titleDescription: "Placa", content: reserve?.plate ?? ""),
+                      DescriptionPlace(
+                          icon: reserve?.type == TYPE_MOTORCYCLE ? Icons.motorcycle : AppIcons.vehicle,
+                          titleDescription: "Placa",
+                          content: reserve?.plate ?? ""),
                       Divider(),
                       DescriptionPlace(icon: Icons.place, titleDescription: "Nombre de la Zona", content: reserve?.address ?? ""),
                       Align(
@@ -134,5 +143,10 @@ class _ReserveContainerState extends State<ReserveContainer> {
         onTimeIncremented: (minutes) {
           _bloc.dispatch(ReserveEvent(ReserveEventType.getValue, data: minutes));
         });
+  }
+
+  void goToSplash() async {
+    await Future.delayed(Duration(seconds: 2));
+    Navigator.pushReplacementNamed(context, '/');
   }
 }

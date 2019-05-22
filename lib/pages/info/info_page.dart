@@ -46,6 +46,9 @@ class _InfoContainerState extends State<InfoContainer> {
               if (state is InitialState) {
                 _bloc.dispatch(InfoEvent.fetchData);
               }
+              if (state is LoadingState) {
+                return Center(child: CircularProgressIndicator());
+              }
               if (state is SuccessState<Info>) {
                 info = state.data;
               }
@@ -98,5 +101,4 @@ class _InfoContainerState extends State<InfoContainer> {
           )
         ],
       );
-
 }
