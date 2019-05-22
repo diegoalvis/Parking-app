@@ -58,6 +58,7 @@ class LoginFormState extends State<LoginForm> {
             focusNode: _focusEmail,
             decoration: InputDecoration(filled: true, labelText: 'Email'),
             textInputAction: TextInputAction.next,
+            controller: _emailCtrl,
             validator: _validateEmail,
             onFieldSubmitted: (v) {
               _focusEmail.unfocus();
@@ -70,6 +71,7 @@ class LoginFormState extends State<LoginForm> {
               keyboardType: TextInputType.text,
               focusNode: _focusPass,
               obscureText: _obscure,
+              controller: _passCtrl,
               validator: _validatePass,
               decoration: InputDecoration(
                 filled: true,
