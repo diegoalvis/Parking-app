@@ -1,4 +1,3 @@
-import 'package:oneparking_citizen/data/api/model/rspn.dart';
 import 'package:oneparking_citizen/data/api/setup_api.dart';
 import 'package:oneparking_citizen/data/db/dao/config_dao.dart';
 import 'package:oneparking_citizen/data/db/dao/event_dao.dart';
@@ -43,6 +42,7 @@ class SetupRepository {
     await _config.remove();
     await _config.insert(config.toConfig());
 
+    await _schedule.removeAll();
     final business = _prepareSchedule(config.businessSchedule, TYPE_BUSINESS);
     await _schedule.insertMany(business);
 
