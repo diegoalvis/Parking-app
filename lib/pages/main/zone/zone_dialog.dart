@@ -249,15 +249,15 @@ class ZoneDetail extends StatelessWidget {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    if (_state.carCells == null || _state.carCells == 0)
+                    if (_state.carCells != null && _state.carCells != 0)
                       Expanded(
                         child: CellUsed(
                           Icons.directions_car,
                           "${_state.carCells - _state.usedCarCells}/${_state.carCells}",
                         ),
                       ),
-                    if (_state.motorcycleCells == null ||
-                        _state.motorcycleCells == 0)
+                    if (_state.motorcycleCells != null &&
+                        _state.motorcycleCells != 0)
                       Expanded(
                         child: CellUsed(
                           Icons.motorcycle,
@@ -266,8 +266,8 @@ class ZoneDetail extends StatelessWidget {
                       ),
                   ],
                 ),
-                if (_state.disabilityCells == null ||
-                    _state.disabilityCells == 0)
+                if (_state.disabilityCells != null &&
+                    _state.disabilityCells != 0)
                   Padding(
                       padding: EdgeInsets.only(top: 10, bottom: 10),
                       child: CellUsed(
@@ -288,6 +288,7 @@ class ZoneDetail extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(left: 20),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
                         "${_vehicle.plate}",
