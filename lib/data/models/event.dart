@@ -18,6 +18,9 @@ class Event {
   Map<String, dynamic> toJson() => _$EventToJson(this);
 }
 
+const String EVENT_FREE = 'free';
+const String EVENT_FORBIDDEN = 'forbidden';
+
 @JsonSerializable(nullable: true)
 class EventInfo extends Event {
   List<String> zones;

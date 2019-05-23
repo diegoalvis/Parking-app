@@ -49,7 +49,7 @@ class VehicleDao{
 
   Future<Vehicle> selected() async{
     final db = await _db;
-    var vehicle = await db.query("vehicle", where: "selected = ?", whereArgs: [1], limit: 1);
+    var vehicle = await db.query("vehicle", where: "selected = 1", limit: 1);
     return vehicle.isNotEmpty ? Vehicle.fromJson(vehicle.first) : null;
   }
 

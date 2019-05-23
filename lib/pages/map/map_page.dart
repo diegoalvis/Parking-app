@@ -1,33 +1,42 @@
 import 'dart:async';
 
+import 'package:dependencies/dependencies.dart';
 import 'package:dependencies_flutter/dependencies_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oneparking_citizen/data/models/zone.dart';
 import 'package:oneparking_citizen/pages/map/map_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:oneparking_citizen/util/dialog-util.dart';
 import 'package:oneparking_citizen/util/state-util.dart';
 
 void main() => runApp(MapPage());
 
 class MapPage extends StatelessWidget {
+  DialogUtil _dialogUtil;
   @override
   Widget build(BuildContext context) {
+    _dialogUtil = InjectorWidget.of(context).get();
     return InjectorWidget.bind(
       bindFunc: (binder) {
         binder.bindSingleton(MapBloc(InjectorWidget.of(context).get()));
+
       },
-      child: MaterialApp(debugShowCheckedModeBanner: false, home: MapContainer()),
+      child:
+          MaterialApp(debugShowCheckedModeBanner: false, home: MapContainer(_dialogUtil)),
     );
   }
 }
 
 class MapContainer extends StatefulWidget {
-  _MapContainerState createState() => _MapContainerState();
+
+  DialogUtil _dialogUtil;
+  MapContainer(this._dialogUtil);
+
+  _MapContainerState createState() => _MapContainerState(_dialogUtil);
 }
 
-class _MapContainerState extends State<MapContainer>{
-
+class _MapContainerState extends State<MapContainer> {
   MapBloc _bloc;
   GoogleMapController mapController;
   List<Zone> zones;
@@ -36,6 +45,9 @@ class _MapContainerState extends State<MapContainer>{
 
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
+  DialogUtil _dialogUtil;
+  _MapContainerState(this._dialogUtil);
+
   static final CameraPosition _initialPosition = CameraPosition(
     target: LatLng(6.151849, -75.616466),
     zoom: 17.0,
@@ -43,11 +55,12 @@ class _MapContainerState extends State<MapContainer>{
 
   @override
   Widget build(BuildContext context) {
-    _bloc = InjectorWidget.of(context).get<MapBloc>();
+    Injector injector = InjectorWidget.of(context);
+    _bloc = injector.get<MapBloc>();
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("Zonas",
-          style: TextStyle(color: Colors.black)),
+        title: Text("Zonas", style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
       ),
       body: BlocBuilder(
@@ -74,15 +87,13 @@ class _MapContainerState extends State<MapContainer>{
               Positioned(
                 bottom: 50,
                 right: 10,
-                child:
-                FloatingActionButton(
+                child: FloatingActionButton(
                     backgroundColor: Theme.of(context).accentColor,
                     child: Icon(
                       Icons.location_on,
                       color: Colors.white,
                     ),
-                    onPressed: trackGeolocation
-                ),
+                    onPressed: trackGeolocation),
               )
             ],
           );
@@ -92,8 +103,8 @@ class _MapContainerState extends State<MapContainer>{
   }
 
   void _addMarker() {
-    if(this.flagZones == true) {
-      for(var i = 0 ; i < this.zones.length ; i++) {
+    if (this.flagZones == true) {
+      for (var i = 0; i < this.zones.length; i++) {
         final MarkerId markerId = MarkerId(zones[i].idZone);
         final Marker marker = Marker(
           markerId: markerId,
@@ -109,11 +120,8 @@ class _MapContainerState extends State<MapContainer>{
   }
 
   _onMarkerTapped(Zone zoneTapped) {
-    var zone = zoneTapped;
+    _dialogUtil.open.add(zoneTapped);
   }
 
-  trackGeolocation() {
-
-  }
-
+  trackGeolocation() {}
 }

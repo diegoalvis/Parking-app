@@ -1,24 +1,61 @@
-import 'package:dependencies/dependencies.dart';
-import 'package:flutter/material.dart';
-import 'package:oneparking_citizen/data/preferences/user_session.dart';
-import 'package:oneparking_citizen/util/app_icons.dart';
+import 'dart:async';
+
 import 'package:dependencies_flutter/dependencies_flutter.dart';
-import 'package:oneparking_citizen/pages/main/main_bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:oneparking_citizen/data/repository/vehicle_repository.dart';
+import 'package:oneparking_citizen/data/repository/zone_repository.dart';
+import 'package:oneparking_citizen/pages/main/main_bloc.dart';
+import 'package:oneparking_citizen/pages/main/zone/zone_dialog.dart';
+import 'package:oneparking_citizen/util/app_icons.dart';
+import 'package:oneparking_citizen/util/dialog-util.dart';
 import 'package:oneparking_citizen/util/widget_util.dart';
-import '../vehicle/vehicle_page.dart';
-import '../map/map_page.dart';
+
 import '../bill/bill_page.dart';
 import '../info/info_page.dart';
+import '../map/map_page.dart';
+import '../vehicle/vehicle_page.dart';
 
-void main() => runApp(MainPage());
+class MainPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => MainPageState();
+}
 
-class MainPage extends StatelessWidget {
+class MainPageState extends State<MainPage> {
   MainBloc _bloc;
+  DialogUtil _dialogUtil;
+  StreamSubscription _subs;
+
+  @override
+  void initState() {
+    super.initState();
+    onWidgetDidBuild(() {
+      _subs = _dialogUtil.open.listen((s) {
+        showModalBottomSheet(
+          context: context,
+          builder: (ctx){
+            ZoneRepository repo = InjectorWidget.of(context).get();
+            VehicleRepository vehicleRepository = InjectorWidget.of(context).get();
+            return ZoneDialog(s, repo, vehicleRepository);
+          },
+        );
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _subs?.cancel();
+    _bloc?.dispose();
+    _dialogUtil.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    _bloc = InjectorWidget.of(context).get<MainBloc>();
+    _bloc = InjectorWidget.of(context).get();
+    _dialogUtil = InjectorWidget.of(context).get();
+
     return Container(
       color: Colors.white,
       child: Row(
@@ -48,7 +85,8 @@ class MainPage extends StatelessWidget {
                       return InfoPage();
                       break;
                     case MainState.logout:
-                      onWidgetDidBuild(() => Navigator.pushReplacementNamed(context, '/login'));
+                      onWidgetDidBuild(() =>
+                          Navigator.pushReplacementNamed(context, '/login'));
                       return SizedBox();
                       break;
                   }
@@ -88,7 +126,7 @@ class DrawerOnly extends StatelessWidget {
               onTap: () {},
             ),
             new MenuItem(AppIcons.zone, MainEvent.showMap),
-            new MenuItem(AppIcons.vehicle,MainEvent.showVehicles),
+            new MenuItem(AppIcons.vehicle, MainEvent.showVehicles),
             new MenuItem(AppIcons.bill, MainEvent.showBills),
             new MenuItem(AppIcons.info, MainEvent.showInfo),
             Spacer(),
@@ -97,7 +135,8 @@ class DrawerOnly extends StatelessWidget {
               child: GestureDetector(
                 child: Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 10, top: 20, bottom: 20, right: 10),
+                    padding: const EdgeInsets.only(
+                        left: 10, top: 20, bottom: 20, right: 10),
                     child: Icon(
                       AppIcons.logout,
                       color: Colors.white,
@@ -128,7 +167,8 @@ class MenuItem extends StatelessWidget {
     return GestureDetector(
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.only(left: 10, top: 20, bottom: 20, right: 10),
+          padding:
+              const EdgeInsets.only(left: 10, top: 20, bottom: 20, right: 10),
           child: Icon(
             this.icon,
             color: Colors.white,

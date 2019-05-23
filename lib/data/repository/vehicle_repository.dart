@@ -53,4 +53,6 @@ class VehicleRepository{
     return vehicle.id;
   }
 
+  Future<Vehicle> selected() async => await _dao.selected();
+
 }

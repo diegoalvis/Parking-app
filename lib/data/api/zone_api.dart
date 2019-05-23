@@ -10,7 +10,7 @@ class ZoneApi extends BaseApi{
   ZoneApi(Dio dio, UserSession session) : super(dio, session);
 
   Future<Rspn<ZoneState>> state(String id) async{
-      Response response = await get('zones/$id/state');
+      Response response = await get('/zones/$id/state');
       return validate(response, parseZoneState);
   }
 
