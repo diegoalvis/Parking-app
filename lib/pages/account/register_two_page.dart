@@ -2,16 +2,16 @@ import 'package:dependencies_flutter/dependencies_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oneparking_citizen/pages/account/register_two_bloc.dart';
-import 'package:oneparking_citizen/pages/account/widgets/account_base.dart';
 import 'package:oneparking_citizen/util/state-util.dart';
+import 'package:oneparking_citizen/pages/account/widgets/account_base.dart';
+import 'package:oneparking_citizen/pages/add_vehicle/add_vehicle_page.dart';
 import 'package:oneparking_citizen/util/widget_util.dart';
 
 class RegisterTwoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => InjectorWidget.bind(
         bindFunc: (binder) {
-          binder
-              .bindSingleton(RegisterTwoBloc(InjectorWidget.of(context).get()));
+          binder.bindSingleton(RegisterTwoBloc(InjectorWidget.of(context).get()));
         },
         child: AccountBase(child: RegisterTwoForm()),
       );
@@ -86,8 +86,7 @@ class RegisterTwoFormState extends State<RegisterTwoForm> {
                 labelText: 'Contraseña',
                 suffixIcon: GestureDetector(
                   onTap: _changeObscure,
-                  child:
-                      Icon(_obscure ? Icons.visibility : Icons.visibility_off),
+                  child: Icon(_obscure ? Icons.visibility : Icons.visibility_off),
                 ),
               ),
               textInputAction: TextInputAction.next,
@@ -110,8 +109,7 @@ class RegisterTwoFormState extends State<RegisterTwoForm> {
                 labelText: 'Confirmar Contraseña',
                 suffixIcon: GestureDetector(
                   onTap: _changeObscure,
-                  child:
-                      Icon(_obscure ? Icons.visibility : Icons.visibility_off),
+                  child: Icon(_obscure ? Icons.visibility : Icons.visibility_off),
                 ),
               ),
               obscureText: _obscure,
@@ -122,13 +120,16 @@ class RegisterTwoFormState extends State<RegisterTwoForm> {
           ),
           BlocBuilder(
             bloc: _bloc,
-            builder: (context, state){
-              if(state is ErrorState){
+            builder: (context, state) {
+              if (state is ErrorState) {
                 return Padding(
                   padding: EdgeInsets.only(bottom: 60),
-                  child: Text(state.msg, style: TextStyle(color: Theme.of(context).errorColor),),
-                ) ;
-              }else{
+                  child: Text(
+                    state.msg,
+                    style: TextStyle(color: Theme.of(context).errorColor),
+                  ),
+                );
+              } else {
                 return Spacer();
               }
             },
@@ -137,8 +138,10 @@ class RegisterTwoFormState extends State<RegisterTwoForm> {
           BlocBuilder(
             bloc: _bloc,
             builder: (context, state) {
-              if(state is SuccessState){
-                onWidgetDidBuild(() { Navigator.pushReplacementNamed(context, "/loader"); });
+              if (state is SuccessState) {
+                onWidgetDidBuild(() {
+                  Navigator.pushNamed(context, '/add-vehicle', arguments: RegisterArguments(true));
+                });
               }
 
               if (state is LoadingState) {
@@ -150,7 +153,9 @@ class RegisterTwoFormState extends State<RegisterTwoForm> {
                   children: <Widget>[
                     Expanded(
                       child: FlatButton(
-                        onPressed: () { Navigator.pop(context); },
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                         child: Text('Atras'),
                         textColor: Theme.of(context).accentColor,
                       ),
@@ -187,8 +192,7 @@ class RegisterTwoFormState extends State<RegisterTwoForm> {
   String _validatePass(String value) {
     if (value == '')
       return 'La contraseña es obligatoria';
-    else if (value.length < 5)
-      return 'La contraseña debe tener almenos 6 caracteres';
+    else if (value.length < 5) return 'La contraseña debe tener almenos 6 caracteres';
     return null;
   }
 
@@ -201,8 +205,7 @@ class RegisterTwoFormState extends State<RegisterTwoForm> {
 
   _signin() {
     if (_formKey.currentState.validate()) {
-      _bloc.dispatch(
-          RegisterTwoEvent(email: _emailCtrl.text, pass: _passCtrl.text));
+      _bloc.dispatch(RegisterTwoEvent(email: _emailCtrl.text, pass: _passCtrl.text));
     } else {
       setState(() {
         _autoValidate = true;

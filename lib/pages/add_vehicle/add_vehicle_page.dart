@@ -26,21 +26,25 @@ class AddVehicleState extends State<AddVehicle> {
   final _focusTradeMark = FocusNode();
   final _focusLicensePlate = FocusNode();
   final _formKey = GlobalKey<FormState>();
+  Vehicle vehicleBase = Vehicle();
+  final _tradeMarkCtrl = TextEditingController();
+  final _licensePlateCtrl = TextEditingController();
   AddVehicleBloc _bloc;
   bool _autoValidate = false;
   var _radioBtnDefault = -1;
-  VehicleBase vehicleBase = VehicleBase();
-
-  final _tradeMarkCtrl = TextEditingController();
-  final _licensePlateCtrl = TextEditingController();
+  var addVehicle = AddVehiclePage();
+  bool register = false;
 
   @override
   void initState() {
     super.initState();
+    _radioBtnDefault = 0;
+    vehicleBase.type = TYPE_CAR;
   }
 
   @override
   void dispose() {
+    _bloc.dispose();
     _tradeMarkCtrl.dispose();
     _licensePlateCtrl.dispose();
     super.dispose();
@@ -48,12 +52,21 @@ class AddVehicleState extends State<AddVehicle> {
 
   @override
   Widget build(BuildContext context) {
+    RegisterArguments args = ModalRoute.of(context).settings.arguments ?? RegisterArguments(false);
+    register = args.register;
+
     _bloc = InjectorWidget.of(context).get<AddVehicleBloc>();
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Agregar vehiculo",
-            style: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.w400)),
-      ),
+      appBar: args.register
+          ? AppBar(
+              title: Text("Agregar vehiculo",
+                  style: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.w400)),
+              automaticallyImplyLeading: false,
+            )
+          : AppBar(
+              title: Text("Agregar vehiculo",
+                  style: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.w400)),
+            ),
       body: Form(
         key: _formKey,
         autovalidate: _autoValidate,
@@ -63,6 +76,7 @@ class AddVehicleState extends State<AddVehicle> {
               padding: const EdgeInsets.only(left: 20, top: 60, bottom: 20, right: 20),
               child: TextFormField(
                 keyboardType: TextInputType.text,
+                textCapitalization: TextCapitalization.words,
                 focusNode: _focusTradeMark,
                 controller: _tradeMarkCtrl,
                 decoration: InputDecoration(
@@ -72,9 +86,6 @@ class AddVehicleState extends State<AddVehicle> {
                 textInputAction: TextInputAction.next,
                 validator: _validateTradeMark,
                 onFieldSubmitted: (v) {
-                  /*setState(() {
-                    vehicleBase.brand = _tradeMarkCtrl.text;
-                  });*/
                   _focusTradeMark.unfocus();
                   FocusScope.of(context).requestFocus(_focusLicensePlate);
                 },
@@ -84,14 +95,10 @@ class AddVehicleState extends State<AddVehicle> {
               padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
               child: TextFormField(
                 keyboardType: TextInputType.text,
+                textCapitalization: TextCapitalization.characters,
                 focusNode: _focusLicensePlate,
                 validator: _validateLicensePlate,
                 controller: _licensePlateCtrl,
-                /*onFieldSubmitted: (v) {
-                  setState(() {
-                    vehicleBase.plate = _licensePlateCtrl.text;
-                  });
-                },*/
                 decoration: InputDecoration(
                   labelText: 'Numero de placa',
                   border: new OutlineInputBorder(
@@ -144,11 +151,12 @@ class AddVehicleState extends State<AddVehicle> {
                 bloc: _bloc,
                 builder: (context, state) {
                   if (state is SuccessState) {
-                    onWidgetDidBuild(() {
-                      Navigator.pop(context);
-                    });
+                    if (args.register) {
+                      Navigator.pushReplacementNamed(context, '/loader');
+                    } else {
+                      Navigator.of(context).pop();
+                    }
                   }
-
                   if (state is LoadingState) {
                     return Center(
                       child: CircularProgressIndicator(),
@@ -160,12 +168,14 @@ class AddVehicleState extends State<AddVehicle> {
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 10, right: 20.0),
                           child: RaisedButton(
-                            child: Text('AGREGAR', style: TextStyle(color: Colors.white)),
-                            color: Theme.of(context).accentColor,
-                            shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(20.0)),
-                            onPressed: _add,
-                          ),
+                              child: Text('AGREGAR', style: TextStyle(color: Colors.white)),
+                              color: Theme.of(context).accentColor,
+                              shape: new RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(20.0)),
+                              onPressed: () {
+                                _add();
+                                //Navigator.pop(context);
+                              }),
                         ),
                       ),
                     );
@@ -193,7 +203,6 @@ class AddVehicleState extends State<AddVehicle> {
   void _handleRadioValueChange(int value) {
     setState(() {
       _radioBtnDefault = value;
-
       switch (_radioBtnDefault) {
         case 0:
           return vehicleBase.type = TYPE_CAR;
@@ -218,4 +227,9 @@ class AddVehicleState extends State<AddVehicle> {
       });
     }
   }
+}
+
+class RegisterArguments {
+  bool register;
+  RegisterArguments(this.register);
 }
