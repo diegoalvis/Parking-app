@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:oneparking_citizen/data/models/zone.dart';
 
 class ReportPage extends StatefulWidget {
   @override
@@ -9,6 +10,7 @@ class ReportPage extends StatefulWidget {
 
 class ReportPageState extends State<ReportPage> {
   Future<File> imageFile;
+  Zone _zone;
 
   pickImage(ImageSource source) {
     setState(() {
@@ -32,6 +34,8 @@ class ReportPageState extends State<ReportPage> {
 
   @override
   Widget build(BuildContext context) {
+    _zone = ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Reportar",

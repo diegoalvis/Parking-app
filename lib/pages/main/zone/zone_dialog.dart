@@ -72,7 +72,7 @@ class ZoneDialogContentState extends State<ZoneDialogContent> {
                 if (state is LoadingState) {
                   return ZoneLoading();
                 } else if (state is LoadedState) {
-                  return ZoneDetail(state.state, state.vehicle);
+                  return ZoneDetail(state.state, state.vehicle, _zone);
                 } else if (state is TimeOutState) {
                   return ZoneTimeOut();
                 } else if (state is EventState) {
@@ -237,8 +237,9 @@ class ZoneEvent extends StatelessWidget {
 class ZoneDetail extends StatelessWidget {
   final ZoneState _state;
   final Vehicle _vehicle;
+  final Zone _zone;
 
-  ZoneDetail(this._state, this._vehicle);
+  ZoneDetail(this._state, this._vehicle, this._zone);
 
   @override
   Widget build(BuildContext context) => Column(
@@ -326,7 +327,9 @@ class ZoneDetail extends StatelessWidget {
                 child: ReserveButton(
                   "REPORTAR",
                   icon: Icons.error_outline,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, "/report", arguments: _zone);
+                  },
                 ),
               ),
             ],
