@@ -25,3 +25,5 @@ class DeleteVehicle extends VehicleEvent {
   @override
   String toString() => 'DeleteVehicle {vehicle: $vehicle}';
 }
+
+class ReloadVehicles extends VehicleEvent{}

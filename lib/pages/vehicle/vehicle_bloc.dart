@@ -11,16 +11,18 @@ class VehicleBloc extends Bloc<VehicleEvent, VehicleState> {
   VehicleBloc(this.repository);
 
   @override
-  VehicleState get initialState => VehiclesLoading();
+  VehicleState get initialState => InitialState();
 
   @override
   Stream<VehicleState> mapEventToState(VehicleEvent event) async* {
     if (event is LoadVehicles) {
       yield* _mapLoadVehiclesToState();
     } else if (event is DeleteVehicle) {
-      yield* _mapDeleteVehiclesToState(event);
+      yield* _mapDeleteVehiclesToState(event, currentState);
     } else if (event is SelectVehicle) {
       yield* _mapSelectVehiclesToState(event);
+    } else if(event is ReloadVehicles){
+      yield* _mapReloadVehiclesToState();
     }
   }
 
@@ -35,18 +37,10 @@ class VehicleBloc extends Bloc<VehicleEvent, VehicleState> {
     }
   }
 
-  /*Stream<VehicleState> _mapDeleteVehiclesToState(VehicleState currentState, DeleteVehicle event) async* {
-    if (currentState is VehiclesLoaded) {
-      await this.repository.remove(event.vehicle);
-      //final updatedVehicles = currentState.vehicles.where((vehicle) => vehicle.id != event.vehicle.id).toList();
-      yield VehiclesLoaded(currentState.vehicles);
-    }
-  }*/
-
-  Stream<VehicleState> _mapDeleteVehiclesToState(DeleteVehicle event) async* {
+  Stream<VehicleState> _mapDeleteVehiclesToState(DeleteVehicle event, VehicleState currentState) async* {
     try {
       await this.repository.remove(event.vehicle);
-      yield VehiclesLoaded(await this.repository.all());
+      yield InitialState();
     } on Exception catch (e) {
       yield ErrorState(errorMessage(e));
       await Future.delayed(Duration(seconds: 1));
@@ -57,6 +51,19 @@ class VehicleBloc extends Bloc<VehicleEvent, VehicleState> {
   Stream<VehicleState> _mapSelectVehiclesToState(SelectVehicle event) async* {
     try {
       await this.repository.select(event.vehicle);
+      yield VehiclesLoaded(await this.repository.all());
+    } on Exception catch (e) {
+      yield ErrorState(errorMessage(e));
+      await Future.delayed(Duration(seconds: 1));
+      yield InitialState();
+    }
+  }
+
+  Stream<VehicleState> _mapReloadVehiclesToState() async* {
+    try {
+      yield VehiclesLoading();
+      final vehicles = await this.repository.reload();
+      yield VehiclesLoaded(vehicles);
     } on Exception catch (e) {
       yield ErrorState(errorMessage(e));
       await Future.delayed(Duration(seconds: 1));

@@ -1,7 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:oneparking_citizen/data/models/vehicle.dart';
 
-class VehicleState extends Equatable {}
+class VehicleState extends Equatable {
+  VehicleState([List props = const []]) : super(props);
+}
 
 class InitialState extends VehicleState {
   @override
@@ -16,7 +18,7 @@ class VehiclesLoading extends VehicleState {
 class VehiclesLoaded extends VehicleState {
   final List<Vehicle> vehicles;
 
-  VehiclesLoaded(this.vehicles);
+  VehiclesLoaded(this.vehicles):super([vehicles]);
 
   @override
   String toString() => 'VehiclesLoaded {vehicles: $vehicles}';

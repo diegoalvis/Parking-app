@@ -5,7 +5,7 @@ import 'package:oneparking_citizen/data/repository/vehicle_repository.dart';
 import 'package:oneparking_citizen/util/error_codes.dart';
 
 class AddVehicleEvent {
-  final VehicleBase vehicle;
+  final Vehicle vehicle;
 
   AddVehicleEvent(this.vehicle);
 
@@ -23,9 +23,15 @@ class AddVehicleBloc extends Bloc<AddVehicleEvent, BaseState> {
 
   @override
   Stream<BaseState> mapEventToState(AddVehicleEvent event) async* {
+    List<Vehicle> vehicles = await _repository.all();
     try {
       yield LoadingState();
-      await _repository.add(event.vehicle);
+      if (vehicles.length == 0) {
+        event.vehicle.selected = 1;
+        await _repository.add(event.vehicle);
+      } else {
+        await _repository.add(event.vehicle);
+      }
       yield SuccessState();
     } on Exception catch (e) {
       yield ErrorState(errorMessage(e));
@@ -33,4 +39,6 @@ class AddVehicleBloc extends Bloc<AddVehicleEvent, BaseState> {
       yield InitialState();
     }
   }
+
+  void vehiclesList() {}
 }

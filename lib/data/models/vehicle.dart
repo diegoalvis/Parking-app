@@ -13,7 +13,7 @@ class VehicleBase {
 
   VehicleBase({this.plate, this.brand, this.type});
 
-  Vehicle toLocal() => Vehicle(plate:this.plate, brand:this.brand, type:this.type, selected:0);
+  Vehicle toLocal() => Vehicle(plate: this.plate, brand: this.brand, type: this.type, selected: -1);
 
   factory VehicleBase.fromJson(Map<String, dynamic> json) => _$VehicleBaseFromJson(json);
   Map<String, dynamic> toJson() => _$VehicleBaseToJson(this);

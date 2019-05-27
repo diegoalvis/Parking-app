@@ -29,12 +29,6 @@ class VehicleListState extends State<VehicleList> {
   BuildContext context;
   VehicleBloc _vehicleBloc;
   List<Vehicle> vehicles = [];
-  /*final List<Vehicle> vehicles = [
-    Vehicle(plate: 'ABC 123', brand: 'Mazda', type: 'Carro'),
-    Vehicle(plate: 'ABC 123', brand: 'Mazda', type: 'Carro'),
-    Vehicle(plate: 'ABC 123', brand: 'Mazda', type: 'Carro'),
-    Vehicle(plate: 'ABC 123', brand: 'Ford', type: 'Carro'),
-  ];*/
 
   @override
   void initState() {
@@ -60,7 +54,9 @@ class VehicleListState extends State<VehicleList> {
         automaticallyImplyLeading: false,
       ),
       floatingActionButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).accentColor,
+          backgroundColor: Theme
+              .of(context)
+              .accentColor,
           child: Icon(
             Icons.add,
             color: Colors.white,
@@ -74,6 +70,10 @@ class VehicleListState extends State<VehicleList> {
       body: BlocBuilder(
           bloc: _vehicleBloc,
           builder: (context, state) {
+            if (state is InitialState) {
+              _vehicleBloc.dispatch(LoadVehicles());
+              return Container(width: 0.0, height: 0.0);
+            }
             if (state is VehiclesLoading) {
               return Center(
                 child: CircularProgressIndicator(),
@@ -84,16 +84,32 @@ class VehicleListState extends State<VehicleList> {
                 padding: EdgeInsets.only(bottom: 60),
                 child: Text(
                   state.msg,
-                  style: TextStyle(color: Theme.of(context).errorColor),
+                  style: TextStyle(color: Theme
+                      .of(context)
+                      .errorColor),
                 ),
               );
             } else if (state is VehiclesLoaded) {
               vehicles = state.vehicles;
-              return ListView.builder(
-                itemCount: vehicles.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return vehicleDetail(context, index);
-                },
+              return RefreshIndicator(onRefresh:(){
+                _vehicleBloc.dispatch(ReloadVehicles());
+              },
+                child: ListView.builder(
+                  itemCount: vehicles.length + 1,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (index == 0) {
+                      return Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Center(
+                          child: Text(
+                              'Desliza hacia abajo para recargar los vehiculos'),
+                        ),
+                      );
+                    } else {
+                      return vehicleDetail(context, index - 1);
+                    }
+                  },
+                ),
               );
             }
           }),
@@ -103,61 +119,119 @@ class VehicleListState extends State<VehicleList> {
   Widget vehicleDetail(BuildContext context, int index) {
     return Column(
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: 15.0, top: 20.0, right: 15.0),
-          child: Row(
-            children: <Widget>[
-              Center(
-                child: Icon(
-                  Icons.check,
-                  color: Theme.of(context).primaryColor,
-                  size: 30.0,
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 24.0),
-                      child: Text(vehicles[index].plate, style: Theme.of(context).textTheme.subtitle),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 24.0),
-                      child: Text(vehicles[index].brand, style: Theme.of(context).textTheme.body2),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 24.0),
-                      child: Text(vehicles[index].type,
-                          style: Theme.of(context)
-                              .textTheme
-                              .caption
-                              .merge(TextStyle(color: Theme.of(context).primaryColor))),
-                    ),
-                  ],
-                ),
-              ),
-              GestureDetector(
-                child: Container(
-                  alignment: Alignment.topRight,
-                  child: Icon(
-                    Icons.clear,
-                    color: Colors.black38,
-                    size: 20.0,
+        InkWell(
+          onTap: () {
+            _vehicleBloc.dispatch(SelectVehicle(vehicles[index]));
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(
+                left: 15.0, top: 15.0, bottom: 15.0, right: 15.0),
+            child: Row(
+              children: <Widget>[
+                selectedIcon(context, index),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(left: 24.0),
+                        child: Text(vehicles[index].plate,
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .subtitle),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 24.0),
+                        child: Text(vehicles[index].brand,
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .body2),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 24.0),
+                        child: Text(
+                            vehicles[index].type == TYPE_CAR
+                                ? 'Carro'
+                                : 'Moto',
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .caption
+                                .merge(
+                                TextStyle(
+                                    color: Theme
+                                        .of(context)
+                                        .primaryColor))),
+                      ),
+                    ],
                   ),
                 ),
-                onTap: () {
-                  _vehicleBloc.dispatch(DeleteVehicle(vehicles[index]));
-                },
-              ),
-            ],
+                GestureDetector(
+                  child: Container(
+                    alignment: Alignment.topRight,
+                    child: Icon(
+                      Icons.clear,
+                      color: Colors.black38,
+                      size: 20.0,
+                    ),
+                  ),
+                  onTap: () {
+                    if (vehicles.length > 1) {
+                      _vehicleBloc.dispatch(DeleteVehicle(vehicles[index]));
+                    } else {
+                      Scaffold.of(context).showSnackBar(new SnackBar(
+                        content: Text("Debe existir como minimo un vehiculo"),
+                        duration: Duration(milliseconds: 800),
+                      ));
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
         Divider(
-          height: 15.0,
+          height: 2.0,
           color: Colors.grey,
         ),
       ],
     );
+  }
+
+  Widget selectedIcon(BuildContext context, int index) {
+    if (vehicles[index].selected == 1) {
+      return Row(
+        children: <Widget>[
+          Center(
+            child: Icon(
+              Icons.check,
+              color: Theme
+                  .of(context)
+                  .primaryColor,
+              size: 30.0,
+            ),
+          ),
+        ],
+      );
+    } else {
+      return GestureDetector(
+          onTap: () {
+            _vehicleBloc.dispatch(SelectVehicle(vehicles[index]));
+          },
+          child: Center(
+            child: Opacity(
+              opacity: 0.0,
+              child: Icon(
+                Icons.check,
+                color: Theme
+                    .of(context)
+                    .primaryColor,
+                size: 30.0,
+              ),
+            ),
+          ));
+    }
   }
 }
