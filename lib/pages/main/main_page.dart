@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oneparking_citizen/data/repository/vehicle_repository.dart';
 import 'package:oneparking_citizen/data/repository/zone_repository.dart';
+import 'package:oneparking_citizen/data/repository/reserve_repository.dart';
 import 'package:oneparking_citizen/pages/main/main_bloc.dart';
 import 'package:oneparking_citizen/pages/main/zone/zone_dialog.dart';
 import 'package:oneparking_citizen/util/app_icons.dart';
@@ -36,7 +37,8 @@ class MainPageState extends State<MainPage> {
           builder: (ctx){
             ZoneRepository repo = InjectorWidget.of(context).get();
             VehicleRepository vehicleRepository = InjectorWidget.of(context).get();
-            return ZoneDialog(s, repo, vehicleRepository);
+            ReserveRepository reserveRepository = InjectorWidget.of(context).get();
+            return ZoneDialog(s, repo, vehicleRepository, reserveRepository);
           },
         );
       });
@@ -86,7 +88,8 @@ class MainPageState extends State<MainPage> {
                       break;
                     case MainState.logout:
                       onWidgetDidBuild(() =>
-                          Navigator.pushReplacementNamed(context, '/login'));
+                          Navigator.pushNamedAndRemoveUntil(context, "/login", (Route<dynamic> route) => false)
+                      );
                       return SizedBox();
                       break;
                   }

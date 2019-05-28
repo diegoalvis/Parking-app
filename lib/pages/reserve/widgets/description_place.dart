@@ -36,7 +36,7 @@ class DescriptionPlace extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       color: Colors.grey,
-                      fontSize: 12.0
+                      fontSize: 14.0
                     ),
                   ),
                 ),
@@ -47,7 +47,7 @@ class DescriptionPlace extends StatelessWidget {
                   child: Text(
                     this.content,
                     style: TextStyle(
-                      fontSize: 12.0
+                      fontSize: 18.0
                     ),
                   ),
                 )

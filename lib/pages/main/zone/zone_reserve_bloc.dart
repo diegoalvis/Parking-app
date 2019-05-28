@@ -25,6 +25,8 @@ class ZoneReserveBloc extends Bloc<ReserveZone, BaseState> {
       yield SuccessReserveState();
     } on Exception catch (e) {
       yield ErrorReserveState();
+      await Future.delayed(Duration(seconds: 1));
+      yield InitialState();
     }
   }
 }

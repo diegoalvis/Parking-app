@@ -140,7 +140,7 @@ class _BillContainerState extends State<BillContainer> {
                           padding: EdgeInsets.only(right: 15.0),
                           child: Icon(AppIcons.vehicle, size: 16.0),
                         ),
-                        Text(isPending ? debt.vehiclePlate : bill.vehiclePlate, style: TextStyle(fontSize: sizeTextCard)),
+                        Text(isPending ? "${debt.vehiclePlate}" : "${bill.vehiclePlate}", style: TextStyle(fontSize: sizeTextCard)),
                       ],
                     ),
                   ],

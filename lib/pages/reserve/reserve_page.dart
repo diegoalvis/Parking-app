@@ -5,6 +5,7 @@ import 'package:oneparking_citizen/data/models/reserve.dart';
 import 'package:oneparking_citizen/data/models/vehicle.dart';
 import 'package:oneparking_citizen/util/app_icons.dart';
 import 'package:oneparking_citizen/util/state-util.dart';
+import 'package:intl/intl.dart';
 
 import './widgets/counter_down.dart';
 import './widgets/description_place.dart';
@@ -29,6 +30,8 @@ class ReserveContainer extends StatefulWidget {
 
 class _ReserveContainerState extends State<ReserveContainer> {
   ReserveBloc _bloc;
+  NumberFormat _numberFormat =
+      NumberFormat.currency(decimalDigits: 0, symbol: "\$ ");
 
   @override
   void dispose() {
@@ -45,17 +48,16 @@ class _ReserveContainerState extends State<ReserveContainer> {
       appBar: AppBar(
         title: Text(
           "Reserva",
-          style: TextStyle(color: Colors.black),
         ),
-        backgroundColor: Colors.white,
       ),
       body: Builder(
         builder: (BuildContext context) {
-          _bloc.errorStream.listen((msg) => Scaffold.of(context).showSnackBar(SnackBar(content: Text(msg))));
+          _bloc.errorStream.listen((msg) =>
+              Scaffold.of(context).showSnackBar(SnackBar(content: Text(msg))));
           return Material(
             color: Colors.white,
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 30.0),
+              padding: const EdgeInsets.only(bottom: 16.0),
               child: BlocBuilder(
                 bloc: _bloc,
                 builder: (context, state) {
@@ -64,7 +66,8 @@ class _ReserveContainerState extends State<ReserveContainer> {
                   }
                   if (state is NoReservesState) {
                     goToSplash();
-                    return Center(child: Text("No posee reservas en el momento."));
+                    return Center(
+                        child: Text("No posee reservas en el momento."));
                   }
                   if (state is SuccessState<Reserve>) {
                     reserve = state.data;
@@ -82,35 +85,47 @@ class _ReserveContainerState extends State<ReserveContainer> {
                           color: Color.fromRGBO(229, 229, 229, 1),
                           child: parkingTime == null
                               ? SizedBox()
-                              : Column(
-                                  children: <Widget>[
-                                    Expanded(child: buildTimeWidget(state, parkingTime)),
-                                    Expanded(
-                                      child: StreamBuilder<int>(
+                              : Center(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      buildTimeWidget(state, parkingTime),
+                                      StreamBuilder<int>(
                                           stream: _bloc.valueStream,
                                           initialData: 0,
-                                          builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<int> snapshot) {
                                             return Text(
-                                              "\$ ${snapshot.data}",
-                                              style: TextStyle(fontSize: 30.0, color: Colors.blue),
+                                              _numberFormat
+                                                  .format(snapshot.data),
+                                              style: TextStyle(
+                                                  fontSize: 30.0,
+                                                  color: Colors.blue),
                                             );
                                           }),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                         ),
                       ),
                       DescriptionPlace(
-                          icon: reserve?.type == TYPE_MOTORCYCLE ? Icons.motorcycle : AppIcons.vehicle,
+                          icon: reserve?.type == TYPE_MOTORCYCLE
+                              ? Icons.motorcycle
+                              : AppIcons.vehicle,
                           titleDescription: "Placa",
                           content: reserve?.plate ?? ""),
                       Divider(),
-                      DescriptionPlace(icon: Icons.place, titleDescription: "Nombre de la Zona", content: reserve?.address ?? ""),
+                      DescriptionPlace(
+                          icon: Icons.place,
+                          titleDescription: "Nombre de la Zona",
+                          content: reserve?.address ?? ""),
                       Align(
                         alignment: Alignment.centerRight,
-                        child: StopButton(
-                          onPressed:
-                              state is FinishReserveState ? null : () => _bloc.dispatch(ReserveEvent(ReserveEventType.stop)),
+                        child: StopButton(state is FinishReserveState ? 'Regresar' : 'Detener',
+                          onPressed: state is FinishReserveState
+                              ? () => Navigator.pushNamedAndRemoveUntil(context, "/main", (Route<dynamic> route) => false)
+                              : () => _bloc.dispatch(
+                                  ReserveEvent(ReserveEventType.stop)),
                         ),
                       ),
                     ],
@@ -129,24 +144,44 @@ class _ReserveContainerState extends State<ReserveContainer> {
       final reserve = state.data;
       if (reserve == null) {
         return Center(
-            child: Text("Ud no tiene reservas en este momento", textAlign: TextAlign.center, style: TextStyle(fontSize: 18.0)));
+            child: Text("Ud no tiene reservas en este momento",
+                textAlign: TextAlign.center, style: TextStyle(fontSize: 18.0)));
       }
     } else if (state is FinishReserveState) {
-      return Center(
-          child: Text("Reserva finalizada.\nDirijase hacia el asistente en via para pagar.",
-              textAlign: TextAlign.center, style: TextStyle(fontSize: 18.0)));
+      return Padding(
+        padding: EdgeInsets.only(bottom: 20),
+        child: Column(
+          children: <Widget>[
+            Center(
+              child: Text(
+                "Reserva finalizada",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.title,
+              ),
+            ),
+            Center(
+              child: Text(
+                "Dirijase hacia el asistente en via para pagar.",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16.0),
+              ),
+            )
+          ],
+        ),
+      );
     }
 
     return CounterDown(
         stop: state is FinishReserveState,
         initialTime: parkingTime,
         onTimeIncremented: (minutes) {
-          _bloc.dispatch(ReserveEvent(ReserveEventType.getValue, data: minutes));
+          _bloc
+              .dispatch(ReserveEvent(ReserveEventType.getValue, data: minutes));
         });
   }
 
   void goToSplash() async {
     await Future.delayed(Duration(seconds: 2));
-    Navigator.pushReplacementNamed(context, '/');
+    Navigator.pushReplacementNamed(context, '/main');
   }
 }

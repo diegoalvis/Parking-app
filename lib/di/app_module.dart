@@ -75,7 +75,7 @@ class AppModule implements Module {
           (injector, params) => IncidentRepository(injector.get()))
       ..bindLazySingleton(
           (injector, params) => InfoRepository(injector.get(), injector.get()))
-      ..bindSingleton((injector, params) => ReserveRepository(
+      ..bindLazySingleton((injector, params) => ReserveRepository(
           injector.get(),
           injector.get(),
           injector.get(),

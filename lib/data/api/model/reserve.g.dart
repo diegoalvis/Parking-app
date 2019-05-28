@@ -12,7 +12,7 @@ ReserveReq _$ReserveReqFromJson(Map<String, dynamic> json) {
       code: json['code'] as String,
       vehicle: json['vehicle'] == null
           ? null
-          : Vehicle.fromJson(json['vehicle'] as Map<String, dynamic>),
+          : VehicleBase.fromJson(json['vehicle'] as Map<String, dynamic>),
       disability: json['disability'] as bool);
 }
 
@@ -43,3 +43,19 @@ ReserveStopRes _$ReserveStopResFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$ReserveStopResToJson(ReserveStopRes instance) =>
     <String, dynamic>{'cost': instance.cost, 'time': instance.time};
+
+ReserveDescription _$ReserveDescriptionFromJson(Map<String, dynamic> json) {
+  return ReserveDescription(
+      time: json['time'] as int,
+      totalCost: json['totalCost'] as int,
+      retired: json['retired'] as bool,
+      stopped: json['stopped'] as bool);
+}
+
+Map<String, dynamic> _$ReserveDescriptionToJson(ReserveDescription instance) =>
+    <String, dynamic>{
+      'time': instance.time,
+      'totalCost': instance.totalCost,
+      'retired': instance.retired,
+      'stopped': instance.stopped
+    };

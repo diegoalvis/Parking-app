@@ -12,9 +12,11 @@ class ReserveBloc extends Bloc<ReserveEvent, BaseState> {
   int retryIntents = STOP_INTENTS;
 
   final _valueSubject = PublishSubject<int>();
+
   Stream<int> get valueStream => _valueSubject.stream;
 
   final _errorSubject = PublishSubject<String>();
+
   Stream<String> get errorStream => _errorSubject.stream;
 
   ReserveBloc(this._repository);
@@ -35,14 +37,17 @@ class ReserveBloc extends Bloc<ReserveEvent, BaseState> {
       switch (event.event) {
         case ReserveEventType.getActive:
           yield LoadingState();
-          final reserve = await _repository.current();
-          if (reserve == null || reserve.date == null) {
+          final info = await _repository.current();
+          if (info.reserve == null || info.reserve.date == null || info.retired) {
             yield NoReservesState();
+          } else if (info.stopped) {
+            _valueSubject.add(info.value);
+            yield FinishReserveState();
           } else {
-            yield SuccessState(data: reserve);
-            final time = DateTime.now().difference(reserve.date);
-            //final time = Duration(hours: 3, minutes: 59, seconds: 52);
-            final value = await _repository.getValue(timeInMinutes: time.inMinutes);
+            yield SuccessState(data: info.reserve);
+            final time = DateTime.now().difference(info.reserve.date);
+            final value =
+                await _repository.getValue(timeInMinutes: time.inMinutes + 1);
             _valueSubject.sink.add(value);
           }
           break;
@@ -53,11 +58,13 @@ class ReserveBloc extends Bloc<ReserveEvent, BaseState> {
             yield FinishReserveState();
             break;
           }
-          await _repository.stop();
+          final stopRes = await _repository.stop();
+          _valueSubject.add(stopRes);
           yield FinishReserveState();
           break;
         case ReserveEventType.getValue:
-          final value = await _repository.getValue(timeInMinutes: event.data as int);
+          final value =
+              await _repository.getValue(timeInMinutes: event.data + 1 as int);
           _valueSubject.sink.add(value);
           break;
       }

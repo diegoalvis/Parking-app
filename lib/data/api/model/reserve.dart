@@ -8,7 +8,7 @@ class ReserveReq{
   String idZone;
   String code;
   bool disability;
-  Vehicle vehicle;
+  VehicleBase vehicle;
 
   ReserveReq({this.idZone, this.code, this.vehicle, this.disability});
 
@@ -36,4 +36,17 @@ class ReserveStopRes{
 
   factory ReserveStopRes.fromJson(Map<String, dynamic> json) => _$ReserveStopResFromJson(json);
   Map<String, dynamic> toJson() => _$ReserveStopResToJson(this);
+}
+
+@JsonSerializable(nullable: true)
+class ReserveDescription{
+  int time;
+  int totalCost;
+  bool retired;
+  bool stopped;
+
+  ReserveDescription({this.time, this.totalCost, this.retired, this.stopped});
+
+  factory ReserveDescription.fromJson(Map<String, dynamic> json) => _$ReserveDescriptionFromJson(json);
+  Map<String, dynamic> toJson() => _$ReserveDescriptionToJson(this);
 }
