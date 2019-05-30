@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oneparking_citizen/util/state-util.dart';
 import 'package:oneparking_citizen/data/models/vehicle.dart';
-import 'package:oneparking_citizen/util/widget_util.dart';
 import 'package:oneparking_citizen/pages/add_vehicle/add_vehicle_bloc.dart';
 import 'package:dependencies_flutter/dependencies_flutter.dart';
 
@@ -32,8 +31,6 @@ class AddVehicleState extends State<AddVehicle> {
   AddVehicleBloc _bloc;
   bool _autoValidate = false;
   var _radioBtnDefault = -1;
-  var addVehicle = AddVehiclePage();
-  bool register = false;
 
   @override
   void initState() {
@@ -53,7 +50,6 @@ class AddVehicleState extends State<AddVehicle> {
   @override
   Widget build(BuildContext context) {
     RegisterArguments args = ModalRoute.of(context).settings.arguments ?? RegisterArguments(false);
-    register = args.register;
 
     _bloc = InjectorWidget.of(context).get<AddVehicleBloc>();
     return Scaffold(

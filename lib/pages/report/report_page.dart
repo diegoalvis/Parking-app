@@ -1,37 +1,59 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:oneparking_citizen/pages/report/report_bloc.dart';
+import 'package:dependencies_flutter/dependencies_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:oneparking_citizen/util/state-util.dart';
+import 'package:oneparking_citizen/data/models/incident.dart';
 
-class ReportPage extends StatefulWidget {
+class ReportPage extends StatelessWidget {
   @override
-  State<StatefulWidget> createState() => ReportPageState();
+  Widget build(BuildContext context) {
+    return InjectorWidget.bind(
+        bindFunc: (binder) {
+          binder.bindSingleton(IncidentBloc(InjectorWidget.of(context).get()));
+        },
+        child: IncidentPage());
+  }
 }
 
-class ReportPageState extends State<ReportPage> {
-  Future<File> imageFile;
+class IncidentPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => IncidentPageState();
+}
+
+class IncidentPageState extends State<IncidentPage> {
+  File imageFile;
+  IncidentBloc _bloc;
+  final _obsController = TextEditingController();
+  IncidentZone zone = IncidentZone(idZone: '3', code: '1234', name: "Zona 1");
 
   pickImage(ImageSource source) {
-    setState(() {
-      imageFile = ImagePicker.pickImage(source: source);
-    });
+    ImagePicker.pickImage(source: source).then((value) => setState(() {
+          imageFile = value;
+        }));
   }
 
   Widget showImage() {
-    return FutureBuilder<File>(
-      future: imageFile,
-      builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
-        return Image.file(
-          snapshot.data,
-          fit: BoxFit.fill,
-          width: 410,
-          height: 250,
-        );
-      },
+    return Image.file(
+      imageFile,
+      fit: BoxFit.cover,
+      width: 410,
+      height: 179,
     );
   }
 
   @override
+  void dispose() {
+    _bloc.dispose();
+    _obsController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    _bloc = InjectorWidget.of(context).get<IncidentBloc>();
     return Scaffold(
       appBar: AppBar(
         title: Text("Reportar",
@@ -99,37 +121,73 @@ class ReportPageState extends State<ReportPage> {
             padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
             child: TextFormField(
               keyboardType: TextInputType.text,
+              controller: _obsController,
+              validator: _validateObs,
+              textCapitalization: TextCapitalization.words,
               decoration: InputDecoration(
                   labelText: '¿ Que ocurrio ?',
                   border: new OutlineInputBorder(
                       borderRadius: const BorderRadius.all(const Radius.circular(30.0)))),
-              validator: _validateObs,
             ),
           ),
-          Spacer(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                Expanded(
-                  child: FlatButton(
-                    child: Text('CANCELAR'),
-                    textColor: Theme.of(context).accentColor,
-                    onPressed: () {},
+          //Spacer(),
+          BlocBuilder(
+            bloc: _bloc,
+            builder: (context, state) {
+              if (state is ErrorState) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 60),
+                  child: Text(
+                    state.msg,
+                    style: TextStyle(color: Theme.of(context).errorColor),
                   ),
-                ),
-                Expanded(
-                  child: RaisedButton(
-                    child: Text('ENVIAR', style: TextStyle(color: Colors.white)),
-                    color: Theme.of(context).accentColor,
-                    shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
-                    onPressed: () {},
-                  ),
-                ),
-              ],
-            ),
+                );
+              } else {
+                return Spacer();
+              }
+            },
           ),
+          BlocBuilder(
+              bloc: _bloc,
+              builder: (context, state) {
+                if (state is SuccessState) {
+                  Scaffold.of(context).showSnackBar(new SnackBar(
+                    content: Text("Reporte enviado correctamente"),
+                    duration: Duration(milliseconds: 800),
+                  ));
+                }
+                if (state is LoadingState) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Expanded(
+                          child: FlatButton(
+                            child: Text('CANCELAR'),
+                            textColor: Theme.of(context).accentColor,
+                            onPressed: () {},
+                          ),
+                        ),
+                        Expanded(
+                          child: RaisedButton(
+                            child: Text('ENVIAR', style: TextStyle(color: Colors.white)),
+                            color: Theme.of(context).accentColor,
+                            shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(20.0)),
+                            onPressed: () {
+                              _bloc.dispatch(IncidentEvent(imageFile, _obsController.text, zone));
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+              }),
         ],
       ),
     );
