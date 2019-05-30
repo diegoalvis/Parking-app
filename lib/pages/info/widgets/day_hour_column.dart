@@ -17,7 +17,7 @@ class DayHourColumn extends StatelessWidget {
           ),
           child: Text(
             this.days,
-            style: TextStyle(fontSize: 12.0, color: Color.fromARGB(0xFF, 0x55, 0x96, 0xD6), fontWeight: FontWeight.w700),
+            style: TextStyle(fontSize: 15.0, color: Color.fromARGB(0xFF, 0x55, 0x96, 0xD6), fontWeight: FontWeight.w700),
             textAlign: TextAlign.left,
           ),
           alignment: Alignment.centerLeft,
@@ -40,7 +40,7 @@ class DayHourColumn extends StatelessWidget {
     final endTime = TimeOfDay(hour: end.inHours, minute: end.inMinutes % 60).format(context);
     return Text(
       "$initialTime a $endTime",
-      style: TextStyle(fontSize: 13.0, color: Colors.black54),
+      style: TextStyle(fontSize: 14.0, color: Colors.black54),
       textAlign: TextAlign.left,
     );
   }
