@@ -39,6 +39,4 @@ class AddVehicleBloc extends Bloc<AddVehicleEvent, BaseState> {
       yield InitialState();
     }
   }
-
-  void vehiclesList() {}
 }

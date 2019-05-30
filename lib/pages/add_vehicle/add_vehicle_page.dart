@@ -1,17 +1,16 @@
-import 'package:dependencies_flutter/dependencies_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:oneparking_citizen/util/state-util.dart';
 import 'package:oneparking_citizen/data/models/vehicle.dart';
 import 'package:oneparking_citizen/pages/add_vehicle/add_vehicle_bloc.dart';
-import 'package:oneparking_citizen/util/state-util.dart';
+import 'package:dependencies_flutter/dependencies_flutter.dart';
 
 class AddVehiclePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InjectorWidget.bind(
         bindFunc: (binder) {
-          binder
-              .bindSingleton(AddVehicleBloc(InjectorWidget.of(context).get()));
+          binder.bindSingleton(AddVehicleBloc(InjectorWidget.of(context).get()));
         },
         child: AddVehicle());
   }
@@ -32,8 +31,6 @@ class AddVehicleState extends State<AddVehicle> {
   AddVehicleBloc _bloc;
   bool _autoValidate = false;
   var _radioBtnDefault = -1;
-  var addVehicle = AddVehiclePage();
-  bool register = false;
 
   @override
   void initState() {
@@ -52,27 +49,19 @@ class AddVehicleState extends State<AddVehicle> {
 
   @override
   Widget build(BuildContext context) {
-    RegisterArguments args =
-        ModalRoute.of(context).settings.arguments ?? RegisterArguments(false);
-    register = args.register;
+    RegisterArguments args = ModalRoute.of(context).settings.arguments ?? RegisterArguments(false);
 
     _bloc = InjectorWidget.of(context).get<AddVehicleBloc>();
     return Scaffold(
       appBar: args.register
           ? AppBar(
               title: Text("Agregar vehiculo",
-                  style: TextStyle(
-                      fontSize: 22,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400)),
+                  style: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.w400)),
               automaticallyImplyLeading: false,
             )
           : AppBar(
               title: Text("Agregar vehiculo",
-                  style: TextStyle(
-                      fontSize: 22,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400)),
+                  style: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.w400)),
             ),
       body: Form(
         key: _formKey,
@@ -80,8 +69,7 @@ class AddVehicleState extends State<AddVehicle> {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 20, top: 60, bottom: 20, right: 20),
+              padding: const EdgeInsets.only(left: 20, top: 60, bottom: 20, right: 20),
               child: TextFormField(
                 keyboardType: TextInputType.text,
                 textCapitalization: TextCapitalization.words,
@@ -90,8 +78,7 @@ class AddVehicleState extends State<AddVehicle> {
                 decoration: InputDecoration(
                     labelText: 'Marca de vehiculo',
                     border: new OutlineInputBorder(
-                        borderRadius: const BorderRadius.all(
-                            const Radius.circular(30.0)))),
+                        borderRadius: const BorderRadius.all(const Radius.circular(30.0)))),
                 textInputAction: TextInputAction.next,
                 validator: _validateTradeMark,
                 onFieldSubmitted: (v) {
@@ -105,15 +92,13 @@ class AddVehicleState extends State<AddVehicle> {
               child: TextFormField(
                 keyboardType: TextInputType.text,
                 textCapitalization: TextCapitalization.characters,
-                maxLength: 6,
                 focusNode: _focusLicensePlate,
                 validator: _validateLicensePlate,
                 controller: _licensePlateCtrl,
                 decoration: InputDecoration(
                   labelText: 'Numero de placa',
                   border: new OutlineInputBorder(
-                      borderRadius:
-                          const BorderRadius.all(const Radius.circular(30.0))),
+                      borderRadius: const BorderRadius.all(const Radius.circular(30.0))),
                 ),
               ),
             ),
@@ -177,15 +162,12 @@ class AddVehicleState extends State<AddVehicle> {
                       child: Align(
                         alignment: Alignment.bottomRight,
                         child: Padding(
-                          padding:
-                              const EdgeInsets.only(bottom: 10, right: 20.0),
+                          padding: const EdgeInsets.only(bottom: 10, right: 20.0),
                           child: RaisedButton(
-                              child: Text('AGREGAR',
-                                  style: TextStyle(color: Colors.white)),
+                              child: Text('AGREGAR', style: TextStyle(color: Colors.white)),
                               color: Theme.of(context).accentColor,
                               shape: new RoundedRectangleBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(20.0)),
+                                  borderRadius: new BorderRadius.circular(20.0)),
                               onPressed: () {
                                 _add();
                                 //Navigator.pop(context);
@@ -249,6 +231,5 @@ class AddVehicleState extends State<AddVehicle> {
 
 class RegisterArguments {
   bool register;
-
   RegisterArguments(this.register);
 }
