@@ -80,6 +80,8 @@ class ZoneDialogContentState extends State<ZoneDialogContent> {
                   return ZoneDetail(state.state, state.vehicle, _zone);
                 } else if (state is TimeOutState) {
                   return ZoneTimeOut();
+                } else if (state is HolyDayState) {
+                  return ZoneHolyDay();
                 } else if (state is EventState) {
                   return ZoneEvent(state.event);
                 } else {
@@ -169,6 +171,36 @@ class ZoneTimeOut extends StatelessWidget {
         child: Column(children: <Widget>[
           Text(
             "En este momento la zona no tiene tarificación.",
+            style: Theme
+                .of(context)
+                .textTheme
+                .body1,
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: Text(
+              "Uso Gratuito",
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .headline
+                  .copyWith(color: Theme
+                  .of(context)
+                  .accentColor),
+            ),
+          ),
+        ]),
+      );
+}
+
+class ZoneHolyDay extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) =>
+      Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(children: <Widget>[
+          Text(
+            "Hoy es Festivo",
             style: Theme
                 .of(context)
                 .textTheme
@@ -370,6 +402,10 @@ class ZoneDetail extends StatelessWidget with InjectorWidgetMixin{
               onWidgetDidBuild(() {
                 Navigator.pushNamedAndRemoveUntil(context, "/reserve", (Route<dynamic> route) => false);
               });
+            }
+
+            if(state is ErrorReserveState){
+              Scaffold.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
             }
 
             if (state is LoadingReserveState) {

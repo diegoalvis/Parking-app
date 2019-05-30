@@ -9,7 +9,6 @@ import 'package:oneparking_citizen/data/api/vehicle_api.dart';
 import 'package:oneparking_citizen/data/api/zone_api.dart';
 import 'package:oneparking_citizen/data/db/app_database.dart';
 import 'package:oneparking_citizen/data/db/dao/config_dao.dart';
-import 'package:oneparking_citizen/data/db/dao/event_dao.dart';
 import 'package:oneparking_citizen/data/db/dao/reserve_dao.dart';
 import 'package:oneparking_citizen/data/db/dao/schedule_dao.dart';
 import 'package:oneparking_citizen/data/db/dao/vehicle_dao.dart';
@@ -48,7 +47,6 @@ class AppModule implements Module {
       //Database
       ..bindLazySingleton((injector, params) => VehicleDao(injector.get()))
       ..bindLazySingleton((injector, params) => ConfigDao(injector.get()))
-      ..bindLazySingleton((injector, params) => EventDao(injector.get()))
       ..bindLazySingleton((injector, params) => ReserveDao(injector.get()))
       ..bindLazySingleton((injector, params) => ScheduleDao(injector.get()))
       ..bindLazySingleton((injector, params) => ZoneDao(injector.get()))
@@ -83,7 +81,6 @@ class AppModule implements Module {
           injector.get(),
           injector.get()))
       ..bindLazySingleton((injector, params) => SetupRepository(
-          injector.get(),
           injector.get(),
           injector.get(),
           injector.get(),

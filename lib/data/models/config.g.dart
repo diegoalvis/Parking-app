@@ -62,10 +62,6 @@ ConfigComplete _$ConfigCompleteFromJson(Map<String, dynamic> json) {
       businessSchedule: (json['businessSchedule'] as List)
           ?.map((e) =>
               e == null ? null : TimeRange.fromJson(e as Map<String, dynamic>))
-          ?.toList(),
-      events: (json['events'] as List)
-          ?.map((e) =>
-              e == null ? null : EventInfo.fromJson(e as Map<String, dynamic>))
           ?.toList())
     ..userVehicles = json['userVehicles'] as int
     ..basePrice = json['basePrice'] as int
@@ -88,6 +84,5 @@ Map<String, dynamic> _$ConfigCompleteToJson(ConfigComplete instance) =>
       'fractionTime': instance.fractionTime,
       'limitTime': instance.limitTime,
       'residentialSchedule': instance.residentialSchedule,
-      'businessSchedule': instance.businessSchedule,
-      'events': instance.events
+      'businessSchedule': instance.businessSchedule
     };

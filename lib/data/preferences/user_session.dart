@@ -95,6 +95,16 @@ class UserSession{
     await prefs.setInt("version", value);
   }
 
+  Future<bool> get holyDay async{
+    final prefs = await preferences;
+    return prefs.getBool("holyDay") ?? false;
+  }
+
+  void setHolyDay(bool value) async{
+    final prefs = await preferences;
+    await prefs.setBool("holyDay", value);
+  }
+
   void init(String token, User user){
     setToken(token);
     setId(user.id);

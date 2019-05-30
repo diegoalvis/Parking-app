@@ -14,6 +14,8 @@ class SuccessReserveState extends BaseState{
 }
 
 class ErrorReserveState extends BaseState{
+  String msg;
+  ErrorReserveState(this.msg);
   @override
   String toString() => "ErrorReserve";
 }
@@ -31,6 +33,11 @@ class LoadedState extends BaseState{
 class TimeOutState extends BaseState{
   @override
   String toString() => "ZoneDialogTimeOut";
+}
+
+class HolyDayState extends BaseState{
+  @override
+  String toString() => "HolyDayState";
 }
 
 

@@ -26,6 +26,8 @@ class ZoneDialogBloc extends Bloc<ReadyZone, BaseState> {
         yield TimeOutState();
       } else if (state.des == StateZ.event) {
         yield EventState(state.event);
+      } else if(state.des == StateZ.holyday){
+        yield HolyDayState();
       }
     } on Exception catch (e) {
       yield ZoneDialogError();
