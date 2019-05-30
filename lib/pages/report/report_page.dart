@@ -5,7 +5,7 @@ import 'package:oneparking_citizen/pages/report/report_bloc.dart';
 import 'package:dependencies_flutter/dependencies_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oneparking_citizen/util/state-util.dart';
-import 'package:oneparking_citizen/data/models/incident.dart';
+import 'package:oneparking_citizen/data/models/zone.dart';
 
 class ReportPage extends StatelessWidget {
   @override
