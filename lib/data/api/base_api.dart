@@ -11,7 +11,7 @@ class BaseApi {
     final auth = await _mkAuth(session);
     return await _dio.get<Map<String, dynamic>>(path, queryParameters: query, options: auth).catchError((error) {
       if ((error as DioError).response.statusCode == 401) {
-        //session.clear();
+        session.clear();
       }
     });
   }
@@ -20,7 +20,7 @@ class BaseApi {
     final auth = await _mkAuth(session);
     return await _dio.post<Map<String, dynamic>>(path, data: body, options: auth).catchError((error) {
       if ((error as DioError).response.statusCode == 401) {
-        //session.clear();
+        session.clear();
       }
     });
   }
@@ -29,7 +29,7 @@ class BaseApi {
     final auth = await _mkAuth(session);
     return await _dio.put<Map<String, dynamic>>(path, data: body, options: auth).catchError((error) {
       if ((error as DioError).response.statusCode == 401) {
-        //session.clear();
+        session.clear();
       }
     });
   }
@@ -38,7 +38,7 @@ class BaseApi {
     final auth = await _mkAuth(session);
     return await _dio.delete<Map<String, dynamic>>(path, options: auth).catchError((error) {
       if ((error as DioError).response.statusCode == 401) {
-        //session.clear();
+        session.clear();
       }
     });
   }
