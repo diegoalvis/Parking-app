@@ -97,7 +97,7 @@ class IncidentPageState extends State<IncidentPage> {
                 ? Stack(
                     children: <Widget>[
                       Container(
-                        height: 250,
+                        height: 179,
                         color: Color.fromARGB(210, 55, 55, 55),
                         child: Center(
                           child: Icon(

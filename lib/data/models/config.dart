@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:oneparking_citizen/data/models/event.dart';
 import 'package:oneparking_citizen/data/models/schedules.dart';
 
 part 'config.g.dart';
@@ -78,10 +77,8 @@ class Config {
 class ConfigComplete extends Config {
   List<TimeRange> residentialSchedule;
   List<TimeRange> businessSchedule;
-  List<EventInfo> events;
 
-  ConfigComplete(
-      {this.residentialSchedule, this.businessSchedule, this.events});
+  ConfigComplete({this.residentialSchedule, this.businessSchedule});
 
   Config toConfig() => Config(
         basePrice: basePrice,

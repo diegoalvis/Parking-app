@@ -16,7 +16,8 @@ class InfoPage extends StatelessWidget {
       bindFunc: (binder) {
         binder.bindSingleton(InfoBloc(InjectorWidget.of(context).get()));
       },
-      child: MaterialApp(debugShowCheckedModeBanner: false, home: InfoContainer()),
+      child:
+          MaterialApp(debugShowCheckedModeBanner: false, home: InfoContainer()),
     );
   }
 }
@@ -57,24 +58,23 @@ class _InfoContainerState extends State<InfoContainer> {
                   : ListView(
                       children: <Widget>[
                         Padding(
-                            padding: EdgeInsets.only(top: 15.0, left: 25.0, right: 25.0),
-                            child: Text(
-                                "Los precios por el uso de espacio publico se establecieron por Concejo de Sabaneta en el estatuto tributario 041 del 2018",
-                                style: TextStyle(fontSize: 14.0),
-                                textAlign: TextAlign.center)),
-                        Divider(height: 36, color: Colors.black),
-                        buildPriceSection(info.config),
+                          padding: EdgeInsets.only(top: 20),
+                          child: buildPriceSection(info.config),
+                        ),
                         Divider(height: 36, color: Colors.black),
                         TitleSection(textTitle: "Zonas comerciales"),
                         Column(
-                          children:
-                              info.businessSchedules.map((item) => DayHourColumn(days: item.label, times: item.times)).toList(),
+                          children: info.businessSchedules
+                              .map((item) => DayHourColumn(
+                                  days: item.label, times: item.times))
+                              .toList(),
                         ),
                         Divider(height: 36, color: Colors.black),
                         TitleSection(textTitle: "Zonas residenciales"),
                         Column(
                           children: info.residentialSchedules
-                              .map((item) => DayHourColumn(days: item.label, times: item.times))
+                              .map((item) => DayHourColumn(
+                                  days: item.label, times: item.times))
                               .toList(),
                         ),
                       ],
@@ -93,12 +93,44 @@ class _InfoContainerState extends State<InfoContainer> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 20.0, left: 15.0),
-            child: Text(
-              "Tiempo base de parqueo es 60 min y cada fracción adicional es de 15 min.",
-              style: TextStyle(fontSize: 13.0, color: Colors.black54, fontWeight: FontWeight.w400),
+            child: RichText(
               textAlign: TextAlign.left,
+              text: TextSpan(
+                style: TextStyle(
+                    fontSize: 14.0,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.w400),
+                children: <TextSpan>[
+                  TextSpan(text: "Tiempo base de parqueo es "),
+                  TextSpan(
+                      text: "${config.baseTime} min",
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  TextSpan(text: " y cada fracción adicional es de "),
+                  TextSpan(
+                      text: "${config.fractionTime} min.",
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                ],
+              ),
             ),
-          )
+          ),
+          if (config.limitTime != 0)
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0, left: 15.0),
+              child: RichText(
+                textAlign: TextAlign.left,
+                text: TextSpan(
+                  style: TextStyle(
+                      fontSize: 14.0,
+                      color: Colors.black54,
+                      fontWeight: FontWeight.w400),
+                  children: <TextSpan>[
+                    TextSpan( text:"Si retiras tu vehiculo en los primeros "),
+                    TextSpan( text:"${config.limitTime} min", style: TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan( text:" el uso del espacio es gratuito."),
+                  ],
+                ),
+              ),
+            )
         ],
       );
 }

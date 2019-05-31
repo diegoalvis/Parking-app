@@ -123,7 +123,7 @@ class _ReserveContainerState extends State<ReserveContainer> {
                         alignment: Alignment.centerRight,
                         child: StopButton(state is FinishReserveState ? 'Regresar' : 'Detener',
                           onPressed: state is FinishReserveState
-                              ? () => Navigator.pushNamedAndRemoveUntil(context, "/main", (Route<dynamic> route) => false)
+                              ? () => Navigator.pushReplacementNamed(context, '/main')
                               : () => _bloc.dispatch(
                                   ReserveEvent(ReserveEventType.stop)),
                         ),

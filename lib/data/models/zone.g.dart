@@ -74,6 +74,17 @@ Map<String, dynamic> _$ZoneStateToJson(ZoneState instance) => <String, dynamic>{
       'usedDisabilityCells': instance.usedDisabilityCells
     };
 
+ZoneEvent _$ZoneEventFromJson(Map<String, dynamic> json) {
+  return ZoneEvent(
+      available: json['available'] as bool,
+      event: json['event'] == null
+          ? null
+          : Event.fromJson(json['event'] as Map<String, dynamic>));
+}
+
+Map<String, dynamic> _$ZoneEventToJson(ZoneEvent instance) =>
+    <String, dynamic>{'available': instance.available, 'event': instance.event};
+
 Zone _$ZoneFromJson(Map<String, dynamic> json) {
   return Zone(
       type: json['type'] as String,

@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'event.dart';
+
 part 'zone.g.dart';
 
 const String TYPE_RESIDENTIAL = 'residential';
@@ -75,6 +77,19 @@ class ZoneState {
   Map<String, dynamic> toJson() => _$ZoneStateToJson(this);
 
 
+}
+
+@JsonSerializable(nullable: true)
+class ZoneEvent{
+  bool available;
+  Event event;
+
+  ZoneEvent({this.available, this.event});
+
+  factory ZoneEvent.fromJson(Map<String, dynamic> json) =>
+      _$ZoneEventFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ZoneEventToJson(this);
 }
 
 @JsonSerializable(nullable: true)

@@ -15,7 +15,8 @@ class ReadyZone extends ZoneDialogEvent {
 
 class ReserveZone extends ZoneDialogEvent {
   Zone zone;
-  ReserveZone(this.zone);
+  bool disability;
+  ReserveZone(this.zone, this.disability);
 
   @override
   String toString() => "ReserveEvent";
