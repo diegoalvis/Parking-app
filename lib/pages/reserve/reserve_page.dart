@@ -1,11 +1,11 @@
 import 'package:dependencies_flutter/dependencies_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:oneparking_citizen/data/models/reserve.dart';
 import 'package:oneparking_citizen/data/models/vehicle.dart';
 import 'package:oneparking_citizen/util/app_icons.dart';
 import 'package:oneparking_citizen/util/state-util.dart';
-import 'package:intl/intl.dart';
 
 import './widgets/counter_down.dart';
 import './widgets/description_place.dart';
@@ -17,8 +17,9 @@ class ReservePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return InjectorWidget.bind(
       bindFunc: (binder) {
+        final inj = InjectorWidget.of(context);
         binder.bindFactory((injector, params) =>
-            ReserveBloc(InjectorWidget.of(context).get()));
+            ReserveBloc(inj.get(), inj.get()));
       },
       child: ReserveContainer(),
     );

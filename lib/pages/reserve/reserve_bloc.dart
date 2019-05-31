@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:oneparking_citizen/data/models/reserve.dart';
 import 'package:oneparking_citizen/data/repository/reserve_repository.dart';
+import 'package:oneparking_citizen/data/socket/reserve_socket.dart';
 import 'package:oneparking_citizen/util/error_codes.dart';
 import 'package:oneparking_citizen/util/state-util.dart';
 import 'package:rxdart/rxdart.dart';
@@ -9,6 +12,9 @@ class ReserveBloc extends Bloc<ReserveEvent, BaseState> {
   static const STOP_INTENTS = 3;
 
   ReserveRepository _repository;
+  ReserveSocket _socket;
+  StreamSubscription _subs;
+  String plate;
 
   int retryIntents = STOP_INTENTS;
 
@@ -20,10 +26,26 @@ class ReserveBloc extends Bloc<ReserveEvent, BaseState> {
 
   Stream<String> get errorStream => _errorSubject.stream;
 
-  ReserveBloc(this._repository);
+  ReserveBloc(this._repository, this._socket);
+
+  void _listenReserveState(String plate) async {
+    _subs?.cancel();
+    _subs = null;
+    _socket.close();
+
+    await _socket.init();
+    _subs = _socket.novelty(plate).stream.listen((stateReserve) {
+      dispatch(ReserveEvent(ReserveEventType.getActive));
+    }, onError: (e) {
+      print("hola");
+    });
+  }
 
   @override
   void dispose() {
+    _subs?.cancel();
+    _subs = null;
+    _socket.close();
     _valueSubject.close();
     _errorSubject.close();
     super.dispose();
@@ -39,13 +61,17 @@ class ReserveBloc extends Bloc<ReserveEvent, BaseState> {
         case ReserveEventType.getActive:
           yield LoadingState();
           final info = await _repository.current();
-          if (info.reserve == null || info.reserve.date == null || info.retired) {
+          if (info.reserve == null ||
+              info.reserve.date == null ||
+              info.retired) {
             yield NoReservesState();
           } else if (info.stopped) {
+            _listenReserveState(info.reserve.plate);
             _valueSubject.add(info.value);
             await _repository.forceStop();
-            yield FinishReserveState( reserve: info.reserve);
+            yield FinishReserveState(reserve: info.reserve);
           } else {
+            _listenReserveState(info.reserve.plate);
             yield SuccessState(data: info.reserve);
             final time = DateTime.now().difference(info.reserve.date);
             final value =
@@ -92,8 +118,8 @@ class ReserveEvent<T> {
 }
 
 class FinishReserveState extends BaseState {
-
   final Reserve reserve;
+
   FinishReserveState({this.reserve});
 
   @override

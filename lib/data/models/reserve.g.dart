@@ -27,3 +27,10 @@ Map<String, dynamic> _$ReserveToJson(Reserve instance) => <String, dynamic>{
       'name': instance.name,
       'address': instance.address
     };
+
+ReserveNovelty _$ReserveNoveltyFromJson(Map<String, dynamic> json) {
+  return ReserveNovelty(state: json['state'] as int);
+}
+
+Map<String, dynamic> _$ReserveNoveltyToJson(ReserveNovelty instance) =>
+    <String, dynamic>{'state': instance.state};

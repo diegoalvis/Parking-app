@@ -22,6 +22,7 @@ import 'package:oneparking_citizen/data/repository/reserve_repository.dart';
 import 'package:oneparking_citizen/data/repository/setup_repository.dart';
 import 'package:oneparking_citizen/data/repository/vehicle_repository.dart';
 import 'package:oneparking_citizen/data/repository/zone_repository.dart';
+import 'package:oneparking_citizen/data/socket/reserve_socket.dart';
 import 'package:oneparking_citizen/pages/main/main_bloc.dart';
 import 'package:oneparking_citizen/util/dialog-util.dart';
 import 'package:oneparking_citizen/util/error_codes.dart';
@@ -59,6 +60,8 @@ class AppModule implements Module {
       ..bindLazySingleton((injector, params) => SetupApi(injector.get(), injector.get()))
       ..bindLazySingleton((injector, params) => VehicleApi(injector.get(), injector.get()))
       ..bindLazySingleton((injector, params) => ZoneApi(injector.get(), injector.get()))
+      // Sockets
+      ..bindLazySingleton((injector, params)=> ReserveSocket("http://13.68.223.69/socket/reserve"))
       //Repositories
       ..bindLazySingleton((injector, params) =>
           AccountRepository(injector.get(), injector.get(), injector.get(), injector.get()))

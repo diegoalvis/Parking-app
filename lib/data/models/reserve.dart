@@ -19,3 +19,18 @@ class Reserve{
   Map<String, dynamic> toJson() => _$ReserveToJson(this);
 
 }
+
+
+const int NOVELTY_STOPPED = 0;
+const int NOVELTY_RETIRED = 1;
+
+@JsonSerializable(nullable: true)
+class ReserveNovelty{
+  int state;
+  ReserveNovelty({this.state});
+
+  factory ReserveNovelty.fromJson(Map<String, dynamic> json) => _$ReserveNoveltyFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ReserveNoveltyToJson(this);
+}
+
