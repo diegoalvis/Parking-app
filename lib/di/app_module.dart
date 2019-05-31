@@ -41,7 +41,7 @@ class AppModule implements Module {
         );
         return dio;
       })*/
-      ..bindSingleton(Dio(BaseOptions(baseUrl: "http://13.68.223.69/api/v1")))
+      ..bindSingleton(Dio(BaseOptions(baseUrl: "http://13.68.223.69/api/v1", connectTimeout: 5000, receiveTimeout: 5000)))
       ..bindSingleton('http://13.68.223.69/socket/zones', name: 'url_socket')
       ..bindSingleton(AppDatabase())
       //Database
