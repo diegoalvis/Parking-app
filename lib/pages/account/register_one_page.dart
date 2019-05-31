@@ -54,6 +54,7 @@ class RegisterOneFormState extends State<RegisterOneForm> {
               keyboardType: TextInputType.text,
               decoration: InputDecoration(filled: true, labelText: 'Nombre'),
               textInputAction: TextInputAction.next,
+              textCapitalization: TextCapitalization.words,
               controller: _nameCtrl,
               focusNode: _focusName,
               validator: _validateInput,
