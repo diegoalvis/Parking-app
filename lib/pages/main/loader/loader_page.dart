@@ -12,7 +12,8 @@ class LoaderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return InjectorWidget.bind(
       bindFunc: (binder) {
-        binder.bindSingleton(LoaderBloc(InjectorWidget.of(context).get()));
+        final injector = InjectorWidget.of(context);
+        binder.bindSingleton(LoaderBloc(injector.get(), injector.get()));
       },
       child: LoaderContainer(),
     );
@@ -40,7 +41,8 @@ class LoaderContainer extends StatelessWidget with InjectorWidgetMixin {
               CircularProgressIndicator(),
               Padding(
                 padding: EdgeInsets.only(top: 20),
-                child: Text("Cargando Configuración...", style: TextStyle(fontSize: 18, color: Colors.black)),
+                child: Text("Cargando Configuración...",
+                    style: TextStyle(fontSize: 18, color: Colors.black)),
               ),
             ],
           );
@@ -49,7 +51,7 @@ class LoaderContainer extends StatelessWidget with InjectorWidgetMixin {
     );
   }
 
-  void goToMain(BuildContext context){
+  void goToMain(BuildContext context) {
     onWidgetDidBuild(() {
       Navigator.pushReplacementNamed(context, '/main');
     });

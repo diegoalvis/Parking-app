@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:oneparking_citizen/data/models/reserve.dart';
 import 'package:oneparking_citizen/data/repository/reserve_repository.dart';
 import 'package:oneparking_citizen/util/error_codes.dart';
 import 'package:oneparking_citizen/util/state-util.dart';
@@ -11,7 +12,7 @@ class ReserveBloc extends Bloc<ReserveEvent, BaseState> {
 
   int retryIntents = STOP_INTENTS;
 
-  final _valueSubject = PublishSubject<int>();
+  final _valueSubject = BehaviorSubject<int>();
 
   Stream<int> get valueStream => _valueSubject.stream;
 
@@ -42,7 +43,8 @@ class ReserveBloc extends Bloc<ReserveEvent, BaseState> {
             yield NoReservesState();
           } else if (info.stopped) {
             _valueSubject.add(info.value);
-            yield FinishReserveState();
+            await _repository.forceStop();
+            yield FinishReserveState( reserve: info.reserve);
           } else {
             yield SuccessState(data: info.reserve);
             final time = DateTime.now().difference(info.reserve.date);
@@ -90,6 +92,10 @@ class ReserveEvent<T> {
 }
 
 class FinishReserveState extends BaseState {
+
+  final Reserve reserve;
+  FinishReserveState({this.reserve});
+
   @override
   String toString() => 'state-finish-reserve';
 }

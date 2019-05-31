@@ -17,7 +17,8 @@ class ReservePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return InjectorWidget.bind(
       bindFunc: (binder) {
-        binder.bindSingleton(ReserveBloc(InjectorWidget.of(context).get()));
+        binder.bindFactory((injector, params) =>
+            ReserveBloc(InjectorWidget.of(context).get()));
       },
       child: ReserveContainer(),
     );
@@ -36,12 +37,15 @@ class _ReserveContainerState extends State<ReserveContainer> {
   @override
   void dispose() {
     _bloc?.dispose();
+    _bloc = null;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _bloc = InjectorWidget.of(context).get<ReserveBloc>();
+    if (_bloc == null){
+      _bloc = InjectorWidget.of(context).get<ReserveBloc>();
+    }
     Reserve reserve;
     Duration parkingTime;
     return Scaffold(
@@ -57,7 +61,7 @@ class _ReserveContainerState extends State<ReserveContainer> {
           return Material(
             color: Colors.white,
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
+              padding: const EdgeInsets.only(bottom: 10.0),
               child: BlocBuilder(
                 bloc: _bloc,
                 builder: (context, state) {
@@ -74,6 +78,12 @@ class _ReserveContainerState extends State<ReserveContainer> {
                     parkingTime = DateTime.now().difference(reserve?.date);
                     //parkingTime = Duration(hours: 3, minutes: 59, seconds: 52);
                   }
+
+                  if(state is FinishReserveState && reserve == null){
+                    reserve = state.reserve;
+                    parkingTime = Duration(seconds: 10);
+                  }
+
                   if (state is LoadingState) {
                     return Center(child: CircularProgressIndicator());
                   }
@@ -119,13 +129,35 @@ class _ReserveContainerState extends State<ReserveContainer> {
                           icon: Icons.place,
                           titleDescription: "Nombre de la Zona",
                           content: reserve?.address ?? ""),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: StopButton(state is FinishReserveState ? 'Regresar' : 'Detener',
-                          onPressed: state is FinishReserveState
-                              ? () => Navigator.pushReplacementNamed(context, '/main')
-                              : () => _bloc.dispatch(
-                                  ReserveEvent(ReserveEventType.stop)),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(right: 20),
+                              child: FlatButton(
+                                child: Text(
+                                  "Refrescar",
+                                  style: TextStyle(
+                                      color: Theme.of(context).accentColor),
+                                ),
+                                onPressed: (){
+                                  _bloc.dispatch(ReserveEvent(ReserveEventType.getActive));
+                                },
+                              ),
+                            ),
+                            StopButton(
+                              state is FinishReserveState
+                                  ? 'Regresar'
+                                  : 'Detener',
+                              onPressed: state is FinishReserveState
+                                  ? () => Navigator.pushReplacementNamed(
+                                      context, '/main')
+                                  : () => _bloc.dispatch(
+                                      ReserveEvent(ReserveEventType.stop)),
+                            ),
+                          ],
                         ),
                       ),
                     ],
