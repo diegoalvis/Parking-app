@@ -140,7 +140,7 @@ class RegisterTwoFormState extends State<RegisterTwoForm> {
             builder: (context, state) {
               if (state is SuccessState) {
                 onWidgetDidBuild(() {
-                  Navigator.pushNamed(context, '/add-vehicle', arguments: RegisterArguments(true));
+                  Navigator.pushReplacementNamed(context, '/add-vehicle', arguments: RegisterArguments(true));
                 });
               }
 

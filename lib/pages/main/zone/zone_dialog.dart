@@ -83,6 +83,8 @@ class ZoneDialogContentState extends State<ZoneDialogContent> {
                 } else if (state is LoadedState) {
                   return ZoneDetail(
                       state.state, state.vehicle, _zone, state.disability);
+                } else if (state is NoVehicleState) {
+                  return ZoneNoVehicle();
                 } else if (state is TimeOutState) {
                   return ZoneTimeOut();
                 } else if (state is HolyDayState) {
@@ -158,6 +160,19 @@ class ZoneDialogTitle extends StatelessWidget {
       ),
     );
   }
+}
+
+class ZoneNoVehicle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(children: <Widget>[
+          Text(
+            "Registra un vehiculo para poder continuar.",
+            style: Theme.of(context).textTheme.body1,
+          ),
+        ]),
+      );
 }
 
 class ZoneTimeOut extends StatelessWidget {

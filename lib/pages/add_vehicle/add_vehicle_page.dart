@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:oneparking_citizen/util/state-util.dart';
 import 'package:oneparking_citizen/data/models/vehicle.dart';
 import 'package:oneparking_citizen/pages/add_vehicle/add_vehicle_bloc.dart';
+import 'package:oneparking_citizen/util/state-util.dart';
+import 'package:oneparking_citizen/util/widget_util.dart';
 import 'package:dependencies_flutter/dependencies_flutter.dart';
 
 class AddVehiclePage extends StatelessWidget {
@@ -145,14 +146,17 @@ class AddVehicleState extends State<AddVehicle> {
             ),
             BlocBuilder(
                 bloc: _bloc,
-                builder: (context, state) {
+                builder: (ctx, state) {
                   if (state is SuccessState) {
                     if (args.register) {
-                      Navigator.pushReplacementNamed(context, '/loader');
+                      onWidgetDidBuild(() {
+                        Navigator.pushReplacementNamed(context, '/loader');
+                      });
                     } else {
-                      Navigator.of(context).pop();
+                      Navigator.of(ctx).pop();
                     }
                   }
+
                   if (state is LoadingState) {
                     return Center(
                       child: CircularProgressIndicator(),
