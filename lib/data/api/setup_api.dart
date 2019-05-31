@@ -9,11 +9,7 @@ class SetupApi extends BaseApi {
   SetupApi(Dio dio, UserSession session) : super(dio, session);
 
   Future<Rspn<Setup>> loadSetup(bool onlyVersion, {int version}) async {
-    Response res = await get('/citizens/setup', query: {'onlyVersion': onlyVersion, 'version': version})
-        .catchError((error) {
-      //if ((error as Response).statusCode == 401)
-      session.clear();
-    });
+    Response res = await get('/citizens/setup', query: {'onlyVersion': onlyVersion, 'version': version});
     return validate(res, parseSetup);
   }
 }

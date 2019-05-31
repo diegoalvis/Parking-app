@@ -9,28 +9,26 @@ import 'package:oneparking_citizen/pages/map/map_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:oneparking_citizen/util/dialog-util.dart';
 import 'package:oneparking_citizen/util/state-util.dart';
+import 'package:location/location.dart';
 
 void main() => runApp(MapPage());
 
 class MapPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     DialogUtil _dialogUtil = InjectorWidget.of(context).get();
     return InjectorWidget.bind(
       bindFunc: (binder) {
         binder.bindSingleton(MapBloc(InjectorWidget.of(context).get()));
-
       },
-      child:
-          MaterialApp(debugShowCheckedModeBanner: false, home: MapContainer(_dialogUtil)),
+      child: MaterialApp(debugShowCheckedModeBanner: false, home: MapContainer(_dialogUtil)),
     );
   }
 }
 
 class MapContainer extends StatefulWidget {
-
   DialogUtil _dialogUtil;
+
   MapContainer(this._dialogUtil);
 
   _MapContainerState createState() => _MapContainerState(_dialogUtil);
@@ -40,12 +38,13 @@ class _MapContainerState extends State<MapContainer> {
   MapBloc _bloc;
   GoogleMapController mapController;
   List<Zone> zones;
-  Completer<GoogleMapController> _controller = Completer();
   bool flagZones = false;
+  bool trackingEnabled = false;
 
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
   DialogUtil _dialogUtil;
+
   _MapContainerState(this._dialogUtil);
 
   static final CameraPosition _initialPosition = CameraPosition(
@@ -60,10 +59,14 @@ class _MapContainerState extends State<MapContainer> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Injector injector = InjectorWidget.of(context);
     _bloc = injector.get<MapBloc>();
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Zonas", style: TextStyle(color: Colors.black)),
@@ -80,31 +83,25 @@ class _MapContainerState extends State<MapContainer> {
             this.flagZones = true;
             _addMarker();
           }
-          return Stack(
-            children: <Widget>[
-              GoogleMap(
-                mapType: MapType.normal,
-                initialCameraPosition: _initialPosition,
-                onMapCreated: (GoogleMapController controller) {
-                  _controller.complete(controller);
-                },
-                markers: Set<Marker>.of(markers.values),
-              ),
-              Positioned(
-                bottom: 50,
-                right: 10,
-                child: FloatingActionButton(
-                    backgroundColor: Theme.of(context).accentColor,
-                    child: Icon(
-                      Icons.location_on,
-                      color: Colors.white,
-                    ),
-                    onPressed: trackGeolocation),
-              )
-            ],
+          return GoogleMap(
+            mapType: MapType.normal,
+            initialCameraPosition: _initialPosition,
+            myLocationEnabled: true,
+            myLocationButtonEnabled: false,
+            onMapCreated: (GoogleMapController controller) {
+              setState(() => this.mapController = controller);
+            },
+            markers: Set<Marker>.of(markers.values),
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+          backgroundColor: !trackingEnabled ? Colors.white : Theme.of(context).accentColor,
+          child: Icon(
+            Icons.location_on,
+            color: trackingEnabled ? Colors.white : Theme.of(context).accentColor,
+          ),
+          onPressed: trackGeolocation),
     );
   }
 
@@ -116,7 +113,7 @@ class _MapContainerState extends State<MapContainer> {
           markerId: markerId,
           position: LatLng(zones[i].lat, zones[i].lon),
           onTap: () {
-            _onMarkerTapped(zones[i]);
+            _onTapMarker(zones[i]);
           },
         );
         // adding a new marker to map
@@ -125,9 +122,29 @@ class _MapContainerState extends State<MapContainer> {
     }
   }
 
-  _onMarkerTapped(Zone zoneTapped) {
+  _onTapMarker(Zone zoneTapped) {
     _dialogUtil.open.add(zoneTapped);
   }
 
-  trackGeolocation() {}
+  final location = new Location();
+
+  trackGeolocation() async {
+    setState(() => trackingEnabled = !trackingEnabled);
+    final hasPermission = await location.hasPermission();
+    if (hasPermission) {
+      if (trackingEnabled) {
+        final currentLocation = await location.getLocation();
+        mapController
+            .animateCamera(CameraUpdate.newLatLngZoom(LatLng(currentLocation.latitude, currentLocation.longitude), 17.0));
+      }
+      location.onLocationChanged().listen((LocationData currentLocation) {
+        if (trackingEnabled) {
+          mapController
+              .animateCamera(CameraUpdate.newLatLngZoom(LatLng(currentLocation.latitude, currentLocation.longitude), 17.0));
+        }
+      });
+    } else {
+      location.requestPermission();
+    }
+  }
 }
