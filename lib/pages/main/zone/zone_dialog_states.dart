@@ -23,8 +23,9 @@ class ErrorReserveState extends BaseState{
 class LoadedState extends BaseState{
   final ZoneState state;
   final Vehicle vehicle;
+  final bool disability;
 
-  LoadedState(this.state, this.vehicle);
+  LoadedState(this.state, this.vehicle, this.disability);
 
   @override
   String toString() => "ZoneDialogLoaded";

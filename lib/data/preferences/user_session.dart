@@ -75,6 +75,17 @@ class UserSession{
     await prefs.setBool("disability", value);
   }
 
+
+  Future<bool> get firstTimeAccessible async{
+    final prefs = await preferences;
+    return prefs.getBool("first-accessible") ?? false;
+  }
+
+  void setFirstTimeAccessible(bool value) async{
+    final prefs = await preferences;
+    await prefs.setBool("first-accessible", value);
+  }
+
   Future <bool> get isReserving async{
     final prefs = await preferences;
     return prefs.getBool("reserving") ?? false;

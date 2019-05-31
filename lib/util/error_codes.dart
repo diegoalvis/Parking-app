@@ -4,7 +4,7 @@ class ErrorCodes {
     "La cedula o el celular ya se encuentran registrados",
     "No puedes agregar mas vehiculos",
     "Recurso no encontrado",
-    "Zona no disponible",
+    "Celdas no disponibles",
     "Dinero no suficiente",
     "No hay tiempo disponible",
     "Las contraseñas no coinciden",
