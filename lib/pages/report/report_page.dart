@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oneparking_citizen/util/state-util.dart';
 import 'package:oneparking_citizen/data/models/zone.dart';
 import 'package:oneparking_citizen/data/models/incident.dart';
+import 'package:oneparking_citizen/util/widget_util.dart';
 
 class ReportPage extends StatelessWidget {
   @override
@@ -156,10 +157,15 @@ class IncidentPageState extends State<IncidentPage> {
               bloc: _bloc,
               builder: (context, state) {
                 if (state is SuccessState) {
-                  Scaffold.of(context).showSnackBar(new SnackBar(
-                    content: Text("Reporte enviado correctamente"),
-                    duration: Duration(milliseconds: 800),
-                  ));
+                  onWidgetDidBuild((){
+                    Scaffold.of(context).showSnackBar(new SnackBar(
+                      content: Text("Reporte enviado correctamente"),
+                      duration: Duration(milliseconds: 800),
+                    ));
+
+                    Navigator.pop(context);
+                  });
+
                 }
                 if (state is LoadingState) {
                   return Center(

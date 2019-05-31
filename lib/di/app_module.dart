@@ -63,13 +63,13 @@ class AppModule implements Module {
       ..bindLazySingleton((injector, params) =>
           AccountRepository(injector.get(), injector.get(), injector.get(), injector.get()))
       ..bindLazySingleton((injector, params) => BillRepository(injector.get(), injector.get()))
-      ..bindLazySingleton((injector, params) => IncidentRepository(injector.get()))
+      ..bindLazySingleton((injector, params) => IncidentRepository(injector.get(),injector.get(),injector.get()))
       ..bindLazySingleton((injector, params) => InfoRepository(injector.get(), injector.get()))
       ..bindLazySingleton((injector, params) => ReserveRepository(injector.get(), injector.get(),
           injector.get(), injector.get(), injector.get(), injector.get()))
       ..bindLazySingleton((injector, params) => SetupRepository(injector.get(), injector.get(),
           injector.get(), injector.get(), injector.get(), injector.get()))
-      ..bindLazySingleton((injector, params) => VehicleRepository(injector.get(), injector.get()))
+      ..bindLazySingleton((injector, params) => VehicleRepository(injector.get(), injector.get(), injector.get()))
       ..bindLazySingleton((injector, params) => DialogUtil())
       ..bindLazySingleton((injector, params) =>
           ZoneRepository(injector.get(), injector.get(), injector.get(), injector.get(), injector.get()))

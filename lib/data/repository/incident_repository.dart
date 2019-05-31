@@ -9,7 +9,7 @@ class IncidentRepository{
   UserSession _session;
   ErrorCodes _errors;
 
-  IncidentRepository(this._api);
+  IncidentRepository(this._api, this._session, this._errors);
 
   Future<String> report(String image, String observations, IncidentZone zone) async{
     String name = await _session.name;
