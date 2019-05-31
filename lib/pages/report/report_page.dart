@@ -6,6 +6,7 @@ import 'package:dependencies_flutter/dependencies_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oneparking_citizen/util/state-util.dart';
 import 'package:oneparking_citizen/data/models/zone.dart';
+import 'package:oneparking_citizen/data/models/incident.dart';
 
 class ReportPage extends StatelessWidget {
   @override
@@ -54,6 +55,9 @@ class IncidentPageState extends State<IncidentPage> {
   @override
   Widget build(BuildContext context) {
     _zone = ModalRoute.of(context).settings.arguments;
+
+    final _incidentZone = IncidentZone(idZone: _zone.idZone, name: _zone.name, code: _zone.code);
+
     _bloc = InjectorWidget.of(context).get<IncidentBloc>();
     return Scaffold(
       appBar: AppBar(
@@ -181,7 +185,8 @@ class IncidentPageState extends State<IncidentPage> {
                             shape: new RoundedRectangleBorder(
                                 borderRadius: new BorderRadius.circular(20.0)),
                             onPressed: () {
-                              _bloc.dispatch(IncidentEvent(imageFile, _obsController.text, _zone));
+                              _bloc.dispatch(
+                                  IncidentEvent(imageFile, _obsController.text, _incidentZone));
                             },
                           ),
                         ),
