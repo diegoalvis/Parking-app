@@ -23,8 +23,13 @@ class ZoneDialogBloc extends Bloc<ReadyZone, BaseState> {
       final state = await _zone.getState(event.id, event.type);
       if (state.des == StateZ.active) {
         final selected = await _vehicle.selected();
-        final disability = await _session.disability;
-        yield LoadedState(state.state, selected, disability);
+        yield NoVehicleState();
+        if(selected == null){
+          yield NoVehicleState();
+        }else{
+          final disability = await _session.disability;
+          yield LoadedState(state.state, selected, disability);
+        }
       } else if (state.des == StateZ.timeout) {
         yield TimeOutState();
       } else if (state.des == StateZ.event) {

@@ -55,3 +55,8 @@ class ZoneDialogError extends BaseState{
   @override
   String toString() => "ZoneDialogError";
 }
+
+class NoVehicleState extends BaseState{
+  @override
+  String toString() => "NoVehicleState";
+}
