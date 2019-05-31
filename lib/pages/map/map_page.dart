@@ -13,10 +13,10 @@ import 'package:oneparking_citizen/util/state-util.dart';
 void main() => runApp(MapPage());
 
 class MapPage extends StatelessWidget {
-  DialogUtil _dialogUtil;
+
   @override
   Widget build(BuildContext context) {
-    _dialogUtil = InjectorWidget.of(context).get();
+    DialogUtil _dialogUtil = InjectorWidget.of(context).get();
     return InjectorWidget.bind(
       bindFunc: (binder) {
         binder.bindSingleton(MapBloc(InjectorWidget.of(context).get()));
@@ -52,6 +52,12 @@ class _MapContainerState extends State<MapContainer> {
     target: LatLng(6.151849, -75.616466),
     zoom: 17.0,
   );
+
+  @override
+  void dispose() {
+    _bloc.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

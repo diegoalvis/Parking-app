@@ -51,7 +51,6 @@ class MainPageState extends State<MainPage> {
   void dispose() {
     _subs?.cancel();
     _bloc?.dispose();
-    _dialogUtil.dispose();
     super.dispose();
   }
 
