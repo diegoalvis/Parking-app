@@ -116,6 +116,16 @@ class UserSession{
     await prefs.setBool("holyDay", value);
   }
 
+  Future<String> get toDay async{
+    final prefs = await preferences;
+    return prefs.getString("toDay") ?? "";
+  }
+
+  void setToDay(int day, int month) async{
+    final prefs = await preferences;
+    await prefs.setString("toDay", "${day}_$month");
+  }
+
   void init(String token, User user){
     setToken(token);
     setId(user.id);
