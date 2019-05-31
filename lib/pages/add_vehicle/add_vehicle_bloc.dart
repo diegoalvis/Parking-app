@@ -35,7 +35,7 @@ class AddVehicleBloc extends Bloc<AddVehicleEvent, BaseState> {
       yield SuccessState();
     } on Exception catch (e) {
       yield ErrorState(errorMessage(e));
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(Duration(seconds: 1));
       yield InitialState();
     }
   }

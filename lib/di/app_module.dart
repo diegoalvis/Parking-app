@@ -88,7 +88,7 @@ class AppModule implements Module {
           injector.get(),
           injector.get()))
       ..bindLazySingleton((injector, params) =>
-          VehicleRepository(injector.get(), injector.get()))
+          VehicleRepository(injector.get(), injector.get(), injector.get()))
       ..bindLazySingleton((injector, params) => DialogUtil())
       ..bindLazySingleton((injector, params) => ZoneRepository(injector.get(),
           injector.get(), injector.get(), injector.get(), injector.get()))

@@ -8,7 +8,7 @@ class VehicleRepository {
   VehicleApi _api;
   ErrorCodes _errors;
 
-  VehicleRepository(this._api, this._dao);
+  VehicleRepository(this._api, this._dao, this._errors);
 
   Future<String> add(Vehicle vehicle) async {
     final rspn = await _api.add(vehicle);

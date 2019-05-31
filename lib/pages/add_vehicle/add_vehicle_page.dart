@@ -163,14 +163,15 @@ class AddVehicleState extends State<AddVehicle> {
                 bloc: _bloc,
                 builder: (ctx, state) {
                   if (state is SuccessState) {
-                    onWidgetDidBuild((){
-                      if (args.register) {
+                    if (args.register) {
+                      onWidgetDidBuild(() {
                         Navigator.pushReplacementNamed(context, '/loader');
-                      } else {
-                        Navigator.of(context).pop();
-                      }
-                    });
+                      });
+                    } else {
+                      Navigator.of(ctx).pop();
+                    }
                   }
+
                   if (state is LoadingState) {
                     return Center(
                       child: CircularProgressIndicator(),
