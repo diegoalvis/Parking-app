@@ -57,8 +57,13 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    _bloc = InjectorWidget.of(context).get();
-    _dialogUtil = InjectorWidget.of(context).get();
+    if(_bloc == null){
+      _bloc = InjectorWidget.of(context).get();
+    }
+
+    if(_dialogUtil == null){
+      _dialogUtil = InjectorWidget.of(context).get();
+    }
 
     return Container(
       color: Colors.white,
@@ -67,7 +72,7 @@ class MainPageState extends State<MainPage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Expanded(child: new DrawerOnly()),
+              Expanded(child: new DrawerOnly(_bloc)),
             ],
           ),
           Expanded(
@@ -105,9 +110,12 @@ class MainPageState extends State<MainPage> {
 }
 
 class DrawerOnly extends StatelessWidget {
+
+  final MainBloc _bloc;
+  DrawerOnly(this._bloc);
+
   @override
   Widget build(BuildContext context) {
-    final _bloc = InjectorWidget.of(context).get<MainBloc>();
     return Material(
       color: Color.fromARGB(0xFF, 0x19, 0x76, 0xD2),
       child: new Container(
@@ -126,10 +134,10 @@ class DrawerOnly extends StatelessWidget {
                 ),
               ),
             ),
-            new MenuItem(AppIcons.zone, MainEvent.showMap),
-            new MenuItem(AppIcons.vehicle, MainEvent.showVehicles),
-            new MenuItem(AppIcons.bill, MainEvent.showBills),
-            new MenuItem(AppIcons.info, MainEvent.showInfo),
+            new MenuItem(AppIcons.zone, MainEvent.showMap, _bloc),
+            new MenuItem(AppIcons.vehicle, MainEvent.showVehicles, _bloc),
+            new MenuItem(AppIcons.bill, MainEvent.showBills, _bloc),
+            new MenuItem(AppIcons.info, MainEvent.showInfo, _bloc),
             Spacer(),
             Material(
               color: Color.fromARGB(0xFF, 0x0A, 0x56, 0xA1),
@@ -158,13 +166,13 @@ class DrawerOnly extends StatelessWidget {
 class MenuItem extends StatelessWidget {
   final IconData icon;
   final MainEvent event;
+  final MainBloc _bloc;
 
-  MenuItem(this.icon, this.event);
+  MenuItem(this.icon, this.event, this._bloc);
 
-  MainBloc _bloc;
+
 
   Widget build(BuildContext context) {
-    _bloc = InjectorWidget.of(context).get<MainBloc>();
     return GestureDetector(
       child: Center(
         child: Padding(

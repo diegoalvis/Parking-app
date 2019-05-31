@@ -92,6 +92,6 @@ class AppModule implements Module {
       ..bindLazySingleton((injector, params) => DialogUtil())
       ..bindLazySingleton((injector, params) => ZoneRepository(injector.get(),
           injector.get(), injector.get(), injector.get(), injector.get()))
-      ..bindLazySingleton((injector, params) => MainBloc(injector.get()));
+      ..bindFactory((injector, params) => MainBloc(injector.get()));
   }
 }
