@@ -34,10 +34,12 @@ class MainPageState extends State<MainPage> {
       _subs = _dialogUtil.open.listen((s) {
         showModalBottomSheet(
           context: context,
-          builder: (ctx){
+          builder: (ctx) {
             ZoneRepository repo = InjectorWidget.of(context).get();
-            VehicleRepository vehicleRepository = InjectorWidget.of(context).get();
-            ReserveRepository reserveRepository = InjectorWidget.of(context).get();
+            VehicleRepository vehicleRepository =
+                InjectorWidget.of(context).get();
+            ReserveRepository reserveRepository =
+                InjectorWidget.of(context).get();
             return ZoneDialog(s, repo, vehicleRepository, reserveRepository);
           },
         );
@@ -87,9 +89,8 @@ class MainPageState extends State<MainPage> {
                       return InfoPage();
                       break;
                     case MainState.logout:
-                      onWidgetDidBuild(() =>
-                          Navigator.pushNamedAndRemoveUntil(context, "/login", (Route<dynamic> route) => false)
-                      );
+                      onWidgetDidBuild(() => Navigator.pushNamedAndRemoveUntil(
+                          context, "/login", (Route<dynamic> route) => false));
                       return SizedBox();
                       break;
                   }
@@ -115,18 +116,15 @@ class DrawerOnly extends StatelessWidget {
         child: Column(
           //padding: EdgeInsets.zero,
           children: <Widget>[
-            GestureDetector(
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Icon(
-                    AppIcons.logo,
-                    color: Colors.white,
-                    size: 35,
-                  ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Icon(
+                  AppIcons.logo,
+                  color: Colors.white,
+                  size: 35,
                 ),
               ),
-              onTap: () {},
             ),
             new MenuItem(AppIcons.zone, MainEvent.showMap),
             new MenuItem(AppIcons.vehicle, MainEvent.showVehicles),

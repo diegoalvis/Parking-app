@@ -399,7 +399,7 @@ class ZoneDetail extends StatelessWidget with InjectorWidgetMixin {
                       onTap: () {
                         injector
                             .get<ZoneReserveBloc>()
-                            .dispatch(ReserveZone(_zone, true));
+                            .dispatch(ReserveZone(_zone, false));
                       },
                     ),
                   ),

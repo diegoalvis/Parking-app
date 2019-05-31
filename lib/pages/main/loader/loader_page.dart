@@ -49,8 +49,7 @@ class LoaderContainer extends StatelessWidget with InjectorWidgetMixin {
     );
   }
 
-  void goToMain(BuildContext context) async {
-    await Future.delayed(Duration(seconds: 2));
+  void goToMain(BuildContext context){
     onWidgetDidBuild(() {
       Navigator.pushReplacementNamed(context, '/main');
     });
