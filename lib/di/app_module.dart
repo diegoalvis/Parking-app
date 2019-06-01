@@ -26,6 +26,7 @@ import 'package:oneparking_citizen/data/socket/reserve_socket.dart';
 import 'package:oneparking_citizen/pages/main/main_bloc.dart';
 import 'package:oneparking_citizen/util/dialog-util.dart';
 import 'package:oneparking_citizen/util/error_codes.dart';
+import 'package:oneparking_citizen/util/last_loc.dart';
 
 class AppModule implements Module {
   @override
@@ -43,7 +44,9 @@ class AppModule implements Module {
         return dio;
       })*/
       ..bindSingleton(Dio(BaseOptions(
-          baseUrl: "http://13.68.223.69/api/v1", connectTimeout: 5000, receiveTimeout: 5000)))
+          baseUrl: "http://13.68.223.69/api/v1",
+          connectTimeout: 5000,
+          receiveTimeout: 5000)))
       ..bindSingleton('http://13.68.223.69/socket/zones', name: 'url_socket')
       ..bindSingleton(AppDatabase())
       //Database
@@ -54,28 +57,50 @@ class AppModule implements Module {
       ..bindLazySingleton((injector, params) => ZoneDao(injector.get()))
       //Api
       ..bindLazySingleton((injector, params) => AccountApi(injector.get()))
-      ..bindLazySingleton((injector, params) => BillApi(injector.get(), injector.get()))
-      ..bindLazySingleton((injector, params) => IncidentApi(injector.get(), injector.get()))
-      ..bindLazySingleton((injector, params) => ReserveApi(injector.get(), injector.get()))
-      ..bindLazySingleton((injector, params) => SetupApi(injector.get(), injector.get()))
-      ..bindLazySingleton((injector, params) => VehicleApi(injector.get(), injector.get()))
-      ..bindLazySingleton((injector, params) => ZoneApi(injector.get(), injector.get()))
+      ..bindLazySingleton(
+          (injector, params) => BillApi(injector.get(), injector.get()))
+      ..bindLazySingleton(
+          (injector, params) => IncidentApi(injector.get(), injector.get()))
+      ..bindLazySingleton(
+          (injector, params) => ReserveApi(injector.get(), injector.get()))
+      ..bindLazySingleton(
+          (injector, params) => SetupApi(injector.get(), injector.get()))
+      ..bindLazySingleton(
+          (injector, params) => VehicleApi(injector.get(), injector.get()))
+      ..bindLazySingleton(
+          (injector, params) => ZoneApi(injector.get(), injector.get()))
       // Sockets
-      ..bindLazySingleton((injector, params)=> ReserveSocket("http://13.68.223.69/socket/reserve"))
+      ..bindLazySingleton((injector, params) =>
+          ReserveSocket("http://13.68.223.69/socket/reserve"))
       //Repositories
+      ..bindLazySingleton((injector, params) => LastLoc(injector.get()))
+      ..bindLazySingleton((injector, params) => AccountRepository(
+          injector.get(), injector.get(), injector.get(), injector.get()))
+      ..bindLazySingleton(
+          (injector, params) => BillRepository(injector.get(), injector.get()))
       ..bindLazySingleton((injector, params) =>
-          AccountRepository(injector.get(), injector.get(), injector.get(), injector.get()))
-      ..bindLazySingleton((injector, params) => BillRepository(injector.get(), injector.get()))
-      ..bindLazySingleton((injector, params) => IncidentRepository(injector.get(),injector.get(),injector.get()))
-      ..bindLazySingleton((injector, params) => InfoRepository(injector.get(), injector.get()))
-      ..bindLazySingleton((injector, params) => ReserveRepository(injector.get(), injector.get(),
-          injector.get(), injector.get(), injector.get(), injector.get()))
-      ..bindLazySingleton((injector, params) => SetupRepository(injector.get(), injector.get(),
-          injector.get(), injector.get(), injector.get(), injector.get()))
-      ..bindLazySingleton((injector, params) => VehicleRepository(injector.get(), injector.get(), injector.get()))
+          IncidentRepository(injector.get(), injector.get(), injector.get()))
+      ..bindLazySingleton(
+          (injector, params) => InfoRepository(injector.get(), injector.get()))
+      ..bindLazySingleton((injector, params) => ReserveRepository(
+          injector.get(),
+          injector.get(),
+          injector.get(),
+          injector.get(),
+          injector.get(),
+          injector.get()))
+      ..bindLazySingleton((injector, params) => SetupRepository(
+          injector.get(),
+          injector.get(),
+          injector.get(),
+          injector.get(),
+          injector.get(),
+          injector.get()))
+      ..bindLazySingleton((injector, params) =>
+          VehicleRepository(injector.get(), injector.get(), injector.get()))
       ..bindLazySingleton((injector, params) => DialogUtil())
-      ..bindLazySingleton((injector, params) =>
-          ZoneRepository(injector.get(), injector.get(), injector.get(), injector.get(), injector.get()))
+      ..bindLazySingleton((injector, params) => ZoneRepository(injector.get(),
+          injector.get(), injector.get(), injector.get(), injector.get()))
       ..bindFactory((injector, params) => MainBloc(injector.get()));
   }
 }

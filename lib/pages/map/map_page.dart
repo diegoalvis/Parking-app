@@ -4,13 +4,13 @@ import 'package:dependencies/dependencies.dart';
 import 'package:dependencies_flutter/dependencies_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:oneparking_citizen/data/models/zone.dart';
-import 'package:oneparking_citizen/data/preferences/user_session.dart';
-import 'package:oneparking_citizen/pages/map/map_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:oneparking_citizen/util/dialog-util.dart';
-import 'package:oneparking_citizen/util/state-util.dart';
 import 'package:location/location.dart';
+import 'package:oneparking_citizen/data/models/zone.dart';
+import 'package:oneparking_citizen/pages/map/map_bloc.dart';
+import 'package:oneparking_citizen/util/dialog-util.dart';
+import 'package:oneparking_citizen/util/last_loc.dart';
+import 'package:oneparking_citizen/util/state-util.dart';
 
 void main() => runApp(MapPage());
 
@@ -19,25 +19,25 @@ class MapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DialogUtil _dialogUtil = InjectorWidget.of(context).get();
-    final UserSession _session = InjectorWidget.of(context).get();
+    final LastLoc _lastLoc = InjectorWidget.of(context).get();
     return InjectorWidget.bind(
       bindFunc: (binder) {
         binder.bindSingleton(MapBloc(InjectorWidget.of(context).get()));
       },
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: MapContainer(_dialogUtil, _session)),
+          home: MapContainer(_dialogUtil, _lastLoc)),
     );
   }
 }
 
 class MapContainer extends StatefulWidget {
   DialogUtil _dialogUtil;
-  final UserSession _session;
+  final LastLoc _lastLoc;
 
-  MapContainer(this._dialogUtil, this._session);
+  MapContainer(this._dialogUtil, this._lastLoc);
 
-  _MapContainerState createState() => _MapContainerState(_dialogUtil, _session);
+  _MapContainerState createState() => _MapContainerState(_dialogUtil, _lastLoc);
 }
 
 class _MapContainerState extends State<MapContainer> {
@@ -47,22 +47,21 @@ class _MapContainerState extends State<MapContainer> {
   bool flagZones = false;
   bool trackingEnabled = false;
   StreamSubscription _locationStream;
-  LatLng last;
 
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
   DialogUtil _dialogUtil;
-  UserSession _session;
-  _MapContainerState(this._dialogUtil, this._session);
+  LastLoc _lastLoc;
+  _MapContainerState(this._dialogUtil, this._lastLoc);
 
-  static CameraPosition _initialPosition = CameraPosition(
+  CameraPosition _initialPosition = CameraPosition(
     target: LatLng(6.151849, -75.616466),
     zoom: 17.0,
   );
 
   @override
   void dispose() {
-    _session.setLastLoc(last);
+    _lastLoc.save();
     _bloc.dispose();
     _locationStream?.cancel();
     super.dispose();
@@ -95,18 +94,19 @@ class _MapContainerState extends State<MapContainer> {
           }
 
           return GoogleMap(
-            mapType: MapType.normal,
-            initialCameraPosition: _initialPosition,
-            myLocationEnabled: trackingEnabled,
-            myLocationButtonEnabled: false,
-            onMapCreated: (GoogleMapController controller) {
-              _startMap(controller);
-            },
-            onCameraMove: (pos){
-              last = pos.target;
-            },
-            markers: Set<Marker>.of(markers.values),
-          );
+              mapType: MapType.normal,
+              initialCameraPosition: _initialPosition,
+              myLocationEnabled: trackingEnabled,
+              myLocationButtonEnabled: false,
+              onMapCreated: (GoogleMapController controller) {
+                mapController = controller;
+                _startMap(controller);
+              },
+              onCameraMove: (pos){
+                _lastLoc.setLast(pos.target);
+              },
+              markers: Set<Marker>.of(markers.values),
+            );
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -122,14 +122,10 @@ class _MapContainerState extends State<MapContainer> {
   }
 
   _startMap(GoogleMapController controller) async{
-    final initial = await _session.lastLoc;
+    final initial = await _lastLoc.getLast();
     if(initial != null){
-      _initialPosition = CameraPosition(
-        target: initial,
-        zoom: 17.0,
-      );
+      mapController.moveCamera(CameraUpdate.newLatLng(initial));
     }
-    setState(() => this.mapController = controller);
   }
 
   void _addMarker() {
