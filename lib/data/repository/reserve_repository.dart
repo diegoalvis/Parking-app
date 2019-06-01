@@ -1,3 +1,4 @@
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:oneparking_citizen/data/api/model/reserve.dart';
 import 'package:oneparking_citizen/data/api/reserve_api.dart';
 import 'package:oneparking_citizen/data/db/dao/config_dao.dart';
@@ -39,7 +40,7 @@ class ReserveRepository {
   }
 
   Future start(String idZone, String name, String address, String code,
-      bool disability) async {
+      bool disability, LatLng pos) async {
     final selected = await _vehicleDao.selected();
 
     final rspn = await _api.reserve(ReserveReq(
@@ -50,6 +51,7 @@ class ReserveRepository {
     if (!rspn.success) _errors.validateError(rspn.error);
     final res = rspn.data;
     _session.setReserving(true);
+    _session.setLastLoc(pos);
     await _reserveDao.insert(Reserve(
         date: res.date,
         idReserve: res.idReserve,

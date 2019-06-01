@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:oneparking_citizen/data/models/zone.dart';
 import 'package:oneparking_citizen/data/repository/reserve_repository.dart';
 import 'package:oneparking_citizen/pages/main/zone/zone_dialog_events.dart';
@@ -23,7 +24,8 @@ class ZoneReserveBloc extends Bloc<ReserveZone, BaseState> {
     try {
       yield LoadingReserveState();
       await _reserve.start(
-          zone.idZone, zone.name, zone.address, zone.code, disability);
+          zone.idZone, zone.name, zone.address, zone.code, disability,
+          LatLng(zone.lat, zone.lon));
       yield SuccessReserveState();
     } on Exception catch (e) {
       if (e is AppException) {

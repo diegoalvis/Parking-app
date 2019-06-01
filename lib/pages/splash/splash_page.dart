@@ -29,18 +29,19 @@ class SplashPageState extends State<SplashPage> {
       Navigator.pushReplacementNamed(context, '/login');
     } else {
       final isReserving = await _session.isReserving;
-      if(isReserving){
-        Navigator.pushReplacementNamed(context, '/reserve' );
-      }else{
+      if (isReserving) {
+        Navigator.pushReplacementNamed(context, '/reserve');
+      } else {
         final toDay = await _session.toDay;
         final now = DateTime.now();
-        if(toDay == "${now.day}_${now.month}" ){
-          Navigator.pushReplacementNamed(context, '/main' );
-        }else{
-          Navigator.pushReplacementNamed(context, '/loader' );
+
+        _session.setLastLoc(null);
+
+        if (toDay == "${now.day}_${now.month}") {
+          Navigator.pushReplacementNamed(context, '/main');
+        } else {
+          Navigator.pushReplacementNamed(context, '/loader');
         }
-
-
       }
     }
   }

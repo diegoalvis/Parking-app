@@ -32,7 +32,7 @@ class IncidentPageState extends State<IncidentPage> {
   Zone _zone;
 
   pickImage(ImageSource source) {
-    ImagePicker.pickImage(source: source).then((value) => setState(() {
+    ImagePicker.pickImage(source: source, maxWidth: 1200, maxHeight: 1200).then((value) => setState(() {
           imageFile = value;
         }));
   }
@@ -129,7 +129,7 @@ class IncidentPageState extends State<IncidentPage> {
               keyboardType: TextInputType.text,
               controller: _obsController,
               validator: _validateObs,
-              textCapitalization: TextCapitalization.words,
+              textCapitalization: TextCapitalization.sentences,
               decoration: InputDecoration(
                   labelText: '¿ Que ocurrio ?',
                   border: new OutlineInputBorder(
