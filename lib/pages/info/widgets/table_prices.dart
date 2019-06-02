@@ -58,7 +58,7 @@ class TablePrices extends StatelessWidget {
                         child: new Text(this.baseCar,
                           style: TextStyle(
                             fontSize: 16.0,
-                            color: Color.fromARGB(0xFF, 0x55, 0x96, 0xD6),
+                            color: Theme.of(context).accentColor,
 
                           ),
                         ),
@@ -68,7 +68,7 @@ class TablePrices extends StatelessWidget {
                       new Text(this.fractionCar,
                         style: TextStyle(
                           fontSize: 16.0,
-                          color: Color.fromARGB(0xFF, 0x55, 0x96, 0xD6),
+                          color: Theme.of(context).accentColor,
                         ),
                       ),
                     ],
@@ -83,13 +83,13 @@ class TablePrices extends StatelessWidget {
                       new Text(this.baseMoto,
                         style: TextStyle(
                           fontSize: 16.0,
-                          color: Color.fromARGB(0xFF, 0x55, 0x96, 0xD6),
+                          color: Theme.of(context).accentColor,
                         ),
                       ),
                       new Text(this.fractionMoto,
                         style: TextStyle(
                           fontSize: 16.0,
-                          color: Color.fromARGB(0xFF, 0x55, 0x96, 0xD6),
+                          color: Theme.of(context).accentColor,
                         ),
                       ),
                     ],

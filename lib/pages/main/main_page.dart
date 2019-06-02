@@ -116,7 +116,7 @@ class DrawerOnly extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Color.fromARGB(0xFF, 0x19, 0x76, 0xD2),
+      color: Theme.of(context).primaryColor,
       child: new Container(
         width: 50,
         margin: EdgeInsets.only(top: 25),
@@ -139,7 +139,7 @@ class DrawerOnly extends StatelessWidget {
             new MenuItem(AppIcons.info, MainEvent.showInfo, _bloc),
             Spacer(),
             Material(
-              color: Color.fromARGB(0xFF, 0x0A, 0x56, 0xA1),
+              color: Theme.of(context).primaryColorDark,
               child: GestureDetector(
                 child: Center(
                   child: Padding(

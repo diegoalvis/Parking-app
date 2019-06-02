@@ -111,7 +111,7 @@ class _ReserveContainerState extends State<ReserveContainer> {
                                                   .format(snapshot.data),
                                               style: TextStyle(
                                                   fontSize: 30.0,
-                                                  color: Colors.blue),
+                                                  color: Theme.of(context).primaryColor),
                                             );
                                           }),
                                     ],

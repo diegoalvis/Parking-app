@@ -356,7 +356,7 @@ class ZoneDetail extends StatelessWidget with InjectorWidgetMixin {
                       style: Theme.of(context)
                           .textTheme
                           .body1
-                          .copyWith(color: Theme.of(context).primaryColor),
+                          .copyWith(color: Theme.of(context).accentColor),
                     ),
                   ],
                 ),
@@ -475,7 +475,7 @@ class ReserveButton extends StatelessWidget {
             children: <Widget>[
               Icon(
                 icon,
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).accentColor,
               ),
               Padding(
                 padding: EdgeInsets.only(top: 10),
@@ -484,7 +484,7 @@ class ReserveButton extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .button
-                      .copyWith(color: Theme.of(context).primaryColor),
+                      .copyWith(color: Theme.of(context).accentColor),
                 ),
               ),
             ],

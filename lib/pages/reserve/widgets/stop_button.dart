@@ -17,7 +17,7 @@ class StopButton extends StatelessWidget {
             color: Colors.white
           ),
         ),
-        color: Color.fromARGB(0xFF, 0x8B, 0xC3, 0x4A),
+        color: Theme.of(context).accentColor,
         onPressed: onPressed,
         shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(30.0)

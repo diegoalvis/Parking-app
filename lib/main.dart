@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Color.fromARGB(0xFF, 0x0A, 0x56, 0xA1),
+      statusBarColor: Color.fromARGB(0xFF, 0xd7, 0x66, 0x00),
     ));
     return InjectorWidget.bind(
       bindFunc: (binder) {

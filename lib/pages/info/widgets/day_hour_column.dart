@@ -17,7 +17,7 @@ class DayHourColumn extends StatelessWidget {
           ),
           child: Text(
             this.days,
-            style: TextStyle(fontSize: 15.0, color: Color.fromARGB(0xFF, 0x55, 0x96, 0xD6), fontWeight: FontWeight.w700),
+            style: TextStyle(fontSize: 15.0, color: Theme.of(context).accentColor, fontWeight: FontWeight.w700),
             textAlign: TextAlign.left,
           ),
           alignment: Alignment.centerLeft,

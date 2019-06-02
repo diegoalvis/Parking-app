@@ -163,7 +163,7 @@ class VehicleListState extends State<VehicleList> {
                                 TextStyle(
                                     color: Theme
                                         .of(context)
-                                        .primaryColor))),
+                                        .accentColor))),
                       ),
                     ],
                   ),
@@ -209,7 +209,7 @@ class VehicleListState extends State<VehicleList> {
               Icons.check,
               color: Theme
                   .of(context)
-                  .primaryColor,
+                  .accentColor,
               size: 30.0,
             ),
           ),
@@ -227,7 +227,7 @@ class VehicleListState extends State<VehicleList> {
                 Icons.check,
                 color: Theme
                     .of(context)
-                    .primaryColor,
+                    .accentColor,
                 size: 30.0,
               ),
             ),

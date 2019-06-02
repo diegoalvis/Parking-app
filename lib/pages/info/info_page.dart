@@ -16,8 +16,16 @@ class InfoPage extends StatelessWidget {
       bindFunc: (binder) {
         binder.bindSingleton(InfoBloc(InjectorWidget.of(context).get()));
       },
-      child:
-          MaterialApp(debugShowCheckedModeBanner: false, home: InfoContainer()),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "Información",
+            style: TextStyle(color: Colors.black),
+          ),
+          backgroundColor: Colors.white,
+        ),
+        body: InfoContainer(),
+      ),
     );
   }
 }
@@ -32,15 +40,7 @@ class _InfoContainerState extends State<InfoContainer> {
   @override
   Widget build(BuildContext context) {
     _bloc = InjectorWidget.of(context).get<InfoBloc>();
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Información",
-            style: TextStyle(color: Colors.black),
-          ),
-          backgroundColor: Colors.white,
-        ),
-        body: BlocBuilder(
+    return BlocBuilder(
             bloc: _bloc,
             builder: (context, state) {
               Info info;
@@ -79,7 +79,7 @@ class _InfoContainerState extends State<InfoContainer> {
                         ),
                       ],
                     );
-            }));
+            });
   }
 
   Widget buildPriceSection(Config config) => Column(
@@ -124,9 +124,11 @@ class _InfoContainerState extends State<InfoContainer> {
                       color: Colors.black54,
                       fontWeight: FontWeight.w400),
                   children: <TextSpan>[
-                    TextSpan( text:"Si retiras tu vehiculo en los primeros "),
-                    TextSpan( text:"${config.limitTime} min", style: TextStyle(fontWeight: FontWeight.bold)),
-                    TextSpan( text:" el uso del espacio es gratuito."),
+                    TextSpan(text: "Si retiras tu vehiculo en los primeros "),
+                    TextSpan(
+                        text: "${config.limitTime} min",
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: " el uso del espacio es gratuito."),
                   ],
                 ),
               ),
