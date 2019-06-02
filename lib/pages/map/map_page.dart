@@ -15,7 +15,6 @@ import 'package:oneparking_citizen/util/state-util.dart';
 void main() => runApp(MapPage());
 
 class MapPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     DialogUtil _dialogUtil = InjectorWidget.of(context).get();
@@ -24,9 +23,7 @@ class MapPage extends StatelessWidget {
       bindFunc: (binder) {
         binder.bindSingleton(MapBloc(InjectorWidget.of(context).get()));
       },
-      child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: MapContainer(_dialogUtil, _lastLoc)),
+      child: MapContainer(_dialogUtil, _lastLoc),
     );
   }
 }
@@ -52,6 +49,7 @@ class _MapContainerState extends State<MapContainer> {
 
   DialogUtil _dialogUtil;
   LastLoc _lastLoc;
+
   _MapContainerState(this._dialogUtil, this._lastLoc);
 
   CameraPosition _initialPosition = CameraPosition(
@@ -94,19 +92,19 @@ class _MapContainerState extends State<MapContainer> {
           }
 
           return GoogleMap(
-              mapType: MapType.normal,
-              initialCameraPosition: _initialPosition,
-              myLocationEnabled: trackingEnabled,
-              myLocationButtonEnabled: false,
-              onMapCreated: (GoogleMapController controller) {
-                mapController = controller;
-                _startMap(controller);
-              },
-              onCameraMove: (pos){
-                _lastLoc.setLast(pos.target);
-              },
-              markers: Set<Marker>.of(markers.values),
-            );
+            mapType: MapType.normal,
+            initialCameraPosition: _initialPosition,
+            myLocationEnabled: trackingEnabled,
+            myLocationButtonEnabled: false,
+            onMapCreated: (GoogleMapController controller) {
+              mapController = controller;
+              _startMap(controller);
+            },
+            onCameraMove: (pos) {
+              _lastLoc.setLast(pos.target);
+            },
+            markers: Set<Marker>.of(markers.values),
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -121,9 +119,9 @@ class _MapContainerState extends State<MapContainer> {
     );
   }
 
-  _startMap(GoogleMapController controller) async{
+  _startMap(GoogleMapController controller) async {
     final initial = await _lastLoc.getLast();
-    if(initial != null){
+    if (initial != null) {
       mapController.moveCamera(CameraUpdate.newLatLng(initial));
     }
   }
@@ -135,6 +133,7 @@ class _MapContainerState extends State<MapContainer> {
         final Marker marker = Marker(
           markerId: markerId,
           consumeTapEvents: true,
+          icon: BitmapDescriptor.defaultMarkerWithHue(150),
           position: LatLng(zones[i].lat, zones[i].lon),
           onTap: () {
             _onTapMarker(zones[i]);
