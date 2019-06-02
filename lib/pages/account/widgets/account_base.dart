@@ -24,17 +24,7 @@ class AccountContent extends StatelessWidget {
           children: <Widget>[
             Container(
               margin: EdgeInsets.only(top: 80, bottom: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(right: 20),
-                    child: Icon(AppIcons.logo, color: Colors.white, size: 60),
-                  ),
-                  Text('OneParking',
-                      style: Theme.of(context).textTheme.display1)
-                ],
-              ),
+              child: Icon(AppIcons.logo_white, color: Colors.white, size: 180),
             ),
             Expanded(
               child: Material(

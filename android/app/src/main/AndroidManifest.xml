@@ -21,7 +21,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="oneparking_citizen"
+        android:label="Sabaneta De Todos"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <uses-library

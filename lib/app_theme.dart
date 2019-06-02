@@ -23,7 +23,7 @@ class AppTheme {
           brightness: Brightness.dark,
           errorColor: Color.fromARGB(0xFF, 0xFF, 0x9C, 0x40),
           inputDecorationTheme: InputDecorationTheme(
-            fillColor: Color.fromARGB(0xFF, 0x0A, 0x56, 0xA1),
+            fillColor: Color.fromARGB(0xFF, 0xd7, 0x66, 0x00),
           ),
           textTheme: TextTheme(
               display3: TextStyle(color: Colors.white, fontWeight: FontWeight.w100),

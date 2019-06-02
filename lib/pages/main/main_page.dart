@@ -125,11 +125,11 @@ class DrawerOnly extends StatelessWidget {
           children: <Widget>[
             Center(
               child: Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.only(top: 10, left: 5 ,right: 5, bottom: 10),
                 child: Icon(
-                  AppIcons.logo,
+                  AppIcons.sabaneta2,
                   color: Colors.white,
-                  size: 35,
+                  size: 40,
                 ),
               ),
             ),

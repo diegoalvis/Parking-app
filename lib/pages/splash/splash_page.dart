@@ -51,18 +51,36 @@ class SplashContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBackground(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Stack(
         children: <Widget>[
-          Container(
-            margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
+          Center(
             child: Icon(
-              AppIcons.logo,
+              AppIcons.logo_white,
               color: Colors.white,
-              size: 120,
+              size: 200,
             ),
           ),
-          Text("OneParking", style: Theme.of(context).textTheme.display3),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  height: 150,
+                  child: Image(
+                    image: AssetImage('assets/images/escudo_white.png'),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10, top: 30),
+                  child: Text(
+                    "Powered By EzLife Corp",
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
