@@ -23,15 +23,15 @@ class AccountContent extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(top: 80, bottom: 20),
-              child: Icon(AppIcons.logo_white, color: Colors.white, size: 180),
+              margin: EdgeInsets.only(top: 50, bottom: 10),
+              child: Icon(AppIcons.logo_white, color: Colors.white, size: 170),
             ),
             Expanded(
               child: Material(
                 color: Colors.transparent,
                 child: Padding(
                   padding:
-                      EdgeInsets.only(left: 16, right: 16, top: 60, bottom: 20),
+                      EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 20),
                   child: child,
                 ),
               ),

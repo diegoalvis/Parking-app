@@ -6,9 +6,10 @@ part 'bill.g.dart';
 class ZoneBill{
   String idZone;
   String code;
+  String name;
   int cell;
 
-  ZoneBill({this.idZone, this.code, this.cell});
+  ZoneBill({this.idZone, this.code, this.cell, this.name});
 
   factory ZoneBill.fromJson(Map<String, dynamic> json) => _$ZoneBillFromJson(json);
   Map<String, dynamic> toJson() => _$ZoneBillToJson(this);
