@@ -4,7 +4,9 @@ import 'package:oneparking_citizen/data/api/reserve_api.dart';
 import 'package:oneparking_citizen/data/db/dao/config_dao.dart';
 import 'package:oneparking_citizen/data/db/dao/reserve_dao.dart';
 import 'package:oneparking_citizen/data/db/dao/vehicle_dao.dart';
+import 'package:oneparking_citizen/data/models/config.dart';
 import 'package:oneparking_citizen/data/models/reserve.dart';
+import 'package:oneparking_citizen/data/models/vehicle.dart';
 import 'package:oneparking_citizen/data/preferences/user_session.dart';
 import 'package:oneparking_citizen/util/error_codes.dart';
 
@@ -18,24 +20,37 @@ class ReserveRepository {
 
   Reserve reserve;
 
+  Config _config;
+  Vehicle _selected;
+
   ReserveRepository(this._session, this._api, this._reserveDao, this._errors,
       this._vehicleDao, this._configDao);
 
   Future<int> getValue({final int timeInMinutes}) async {
-    var config = await _configDao.get();
+    if(_config == null){
+      _config = await _configDao.get();
+    }
+
+    if(_selected == null){
+      _selected = await _vehicleDao.selected();
+    }
+
+    final basePrice = _selected.type == TYPE_CAR ?_config.basePrice : _config.mcBasePrice;
+    final fractionPrice = _selected.type == TYPE_CAR ?_config.fractionPrice : _config.mcFractionPrice;
+
     final reserve = this.reserve ?? await _reserveDao.get();
     if (reserve == null) {
       return 0;
     }
-    if (timeInMinutes <= config.limitTime) {
+    if (timeInMinutes <= _config.limitTime) {
       return 0;
-    } else if (timeInMinutes <= config.baseTime) {
-      return config.basePrice;
+    } else if (timeInMinutes <= _config.baseTime) {
+      return basePrice;
     } else {
-      final additionalTime = timeInMinutes - config.baseTime;
-      final fractions = (additionalTime / config.fractionTime).ceil();
+      final additionalTime = timeInMinutes - _config.baseTime;
+      final fractions = (additionalTime / _config.fractionTime).ceil();
 
-      return config.basePrice + (fractions * config.fractionPrice);
+      return basePrice + (fractions * fractionPrice);
     }
   }
 
