@@ -26,7 +26,7 @@ class AddVehicleState extends State<AddVehicle> {
   final _focusTradeMark = FocusNode();
   final _focusLicensePlate = FocusNode();
   final _formKey = GlobalKey<FormState>();
-  Vehicle vehicleBase = Vehicle();
+  Vehicle vehicleBase = Vehicle(type: TYPE_CAR);
   final _tradeMarkCtrl = TextEditingController();
   final _licensePlateCtrl = TextEditingController();
   AddVehicleBloc _bloc;
@@ -96,6 +96,7 @@ class AddVehicleState extends State<AddVehicle> {
                 focusNode: _focusLicensePlate,
                 validator: _validateLicensePlate,
                 controller: _licensePlateCtrl,
+                maxLength: 6,
                 decoration: InputDecoration(
                   labelText: 'Numero de placa',
                   border: new OutlineInputBorder(
@@ -188,10 +189,14 @@ class AddVehicleState extends State<AddVehicle> {
 
   String _validateLicensePlate(String value) {
     Pattern pattern = '[A-Z]{3}[0-9]{3}';
+    Pattern patternMoto = '[A-Z]{3}[0-9]{2}[A-Z]{1}';
     RegExp regex = new RegExp(pattern);
+    RegExp regexMoto = new RegExp(patternMoto);
     if (value == '')
       return 'La placa del vehiculo es obligatoria';
-    else if (!regex.hasMatch(value))
+    else if (!regex.hasMatch(value) && vehicleBase.type == TYPE_CAR)
+      return 'La placa tiene un formato erroneo';
+    else if(!regexMoto.hasMatch(value) && vehicleBase.type == TYPE_MOTORCYCLE)
       return 'La placa tiene un formato erroneo';
     else
       return null;
