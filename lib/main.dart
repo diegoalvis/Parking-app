@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Color.fromARGB(0xFF, 0xd7, 0x66, 0x00),
     ));
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return InjectorWidget.bind(
       bindFunc: (binder) {
         binder.install(AppModule());

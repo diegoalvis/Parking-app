@@ -21,7 +21,7 @@ class AppTheme {
           accentColor: Color.fromARGB(0xFF, 0x00, 0x95, 0x3A),
           backgroundColor: Color.fromARGB(0xFF, 0xee, 0x72, 0x03),
           brightness: Brightness.dark,
-          errorColor: Color.fromARGB(0xFF, 0xFF, 0x9C, 0x40),
+          errorColor: Color.fromARGB(0xff, 0x22, 0x00, 0x99),
           inputDecorationTheme: InputDecorationTheme(
             fillColor: Color.fromARGB(0xFF, 0xd7, 0x66, 0x00),
           ),

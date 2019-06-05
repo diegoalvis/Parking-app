@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:oneparking_citizen/data/api/model/login.dart';
 import 'package:oneparking_citizen/data/api/model/rspn.dart';
 import 'package:oneparking_citizen/data/api/model/signin.dart';
+import 'package:oneparking_citizen/util/error_codes.dart';
 import 'package:oneparking_citizen/util/http_util.dart';
 
 class AccountApi {
@@ -14,7 +15,10 @@ class AccountApi {
 
   Future<Rspn<LoginRes>> login(LoginReq req) async {
     Response<Map<String, dynamic>> response = await _dio
-        .post<Map<String, dynamic>>('/auth/login', data: req.toJson());
+        .post<Map<String, dynamic>>('/auth/login', data: req.toJson()).catchError((e){});
+
+    if(response == null) throw AppException(cause: "No hay Conexion, intenta de nuevo");
+
     return validate(response, parseLoginRes);
   }
 
@@ -22,7 +26,9 @@ class AccountApi {
     req.type = 'citizen';
     req.username = req.email;
     Response<Map<String, dynamic>> response = await _dio
-        .post<Map<String, dynamic>>('/auth/signin', data: req.toJson());
+        .post<Map<String, dynamic>>('/auth/signin', data: req.toJson()).catchError((e){});
+
+    if(response == null) throw AppException(cause: "No hay Conexion, intenta de nuevo");
     return validate(response, parseSigninRes);
   }
 }
