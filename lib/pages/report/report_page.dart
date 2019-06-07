@@ -32,9 +32,10 @@ class IncidentPageState extends State<IncidentPage> {
   Zone _zone;
 
   pickImage(ImageSource source) {
-    ImagePicker.pickImage(source: source, maxWidth: 1200, maxHeight: 1200).then((value) => setState(() {
-          imageFile = value;
-        }));
+    ImagePicker.pickImage(source: source, maxWidth: 1200, maxHeight: 1200)
+        .then((value) => setState(() {
+              imageFile = value;
+            }));
   }
 
   Widget showImage() {
@@ -57,14 +58,19 @@ class IncidentPageState extends State<IncidentPage> {
   Widget build(BuildContext context) {
     _zone = ModalRoute.of(context).settings.arguments;
 
-    final _incidentZone = IncidentZone(idZone: _zone.idZone, name: _zone.name, code: _zone.code);
+    final _incidentZone =
+        IncidentZone(idZone: _zone.idZone, name: _zone.name, code: _zone.code);
 
     _bloc = InjectorWidget.of(context).get<IncidentBloc>();
     return Scaffold(
       appBar: AppBar(
         title: Text("Reportar",
-            style: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.w400)),
+            style: TextStyle(
+                fontSize: 22,
+                color: Colors.white,
+                fontWeight: FontWeight.w400)),
       ),
+      resizeToAvoidBottomPadding: false,
       body: Column(
         children: <Widget>[
           GestureDetector(
@@ -133,7 +139,8 @@ class IncidentPageState extends State<IncidentPage> {
               decoration: InputDecoration(
                   labelText: '¿ Que ocurrio ?',
                   border: new OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(const Radius.circular(30.0)))),
+                      borderRadius:
+                          const BorderRadius.all(const Radius.circular(30.0)))),
             ),
           ),
           //Spacer(),
@@ -157,7 +164,7 @@ class IncidentPageState extends State<IncidentPage> {
               bloc: _bloc,
               builder: (context, state) {
                 if (state is SuccessState) {
-                  onWidgetDidBuild((){
+                  onWidgetDidBuild(() {
                     Scaffold.of(context).showSnackBar(new SnackBar(
                       content: Text("Reporte enviado correctamente"),
                       duration: Duration(milliseconds: 800),
@@ -165,7 +172,6 @@ class IncidentPageState extends State<IncidentPage> {
 
                     Navigator.pop(context);
                   });
-
                 }
                 if (state is LoadingState) {
                   return Center(
@@ -186,13 +192,14 @@ class IncidentPageState extends State<IncidentPage> {
                         ),
                         Expanded(
                           child: RaisedButton(
-                            child: Text('ENVIAR', style: TextStyle(color: Colors.white)),
+                            child: Text('ENVIAR',
+                                style: TextStyle(color: Colors.white)),
                             color: Theme.of(context).accentColor,
                             shape: new RoundedRectangleBorder(
                                 borderRadius: new BorderRadius.circular(20.0)),
                             onPressed: () {
-                              _bloc.dispatch(
-                                  IncidentEvent(imageFile, _obsController.text, _incidentZone));
+                              _bloc.dispatch(IncidentEvent(imageFile,
+                                  _obsController.text, _incidentZone));
                             },
                           ),
                         ),

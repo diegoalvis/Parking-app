@@ -18,6 +18,11 @@ class BillApi extends BaseApi {
     Response res = await get('/debts/self');
     return validateList(res, parseDebt);
   }
+
+  Future<Rspn<List<Debt>>> allDebtByPlate(String plate) async {
+    Response res = await get('/debts/plate/$plate');
+    return validateList(res, parseDebt);
+  }
 }
 
 List<Bill> parseBill(List<Map<String, dynamic>> json) =>

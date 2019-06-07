@@ -87,7 +87,7 @@ class ReserveBloc extends Bloc<ReserveEvent, BaseState> {
             break;
           }
           final stopRes = await _repository.stop();
-          _valueSubject.add(stopRes);
+          _valueSubject.add(stopRes.value);
           yield FinishReserveState();
           break;
         case ReserveEventType.getValue:

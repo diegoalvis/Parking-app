@@ -1,4 +1,5 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:oneparking_citizen/data/api/bill_api.dart';
 import 'package:oneparking_citizen/data/api/model/reserve.dart';
 import 'package:oneparking_citizen/data/api/reserve_api.dart';
 import 'package:oneparking_citizen/data/db/dao/config_dao.dart';
@@ -13,10 +14,12 @@ import 'package:oneparking_citizen/util/error_codes.dart';
 class ReserveRepository {
   UserSession _session;
   ReserveApi _api;
+  BillApi _apiBill;
   ReserveDao _reserveDao;
   VehicleDao _vehicleDao;
   ConfigDao _configDao;
   ErrorCodes _errors;
+
 
   Reserve reserve;
 
@@ -76,13 +79,15 @@ class ReserveRepository {
         type: selected.type));
   }
 
-  Future<int> stop() async {
+  Future<ReserveInfo> stop() async {
     final reserve = await _reserveDao.get();
     final rspn = await _api.reserveStop(reserve.idReserve);
     if (!rspn.success) _errors.validateError(rspn.error);
     await _reserveDao.remove();
     _session.setReserving(false);
-    return rspn.data.cost;
+
+    // final debt = await _debtValue(reserve.plate);
+    return ReserveInfo(value:rspn.data.cost);
   }
 
   Future forceStop() async {
@@ -97,12 +102,14 @@ class ReserveRepository {
     if(reserve != null){
       final rspn = await _api.byId(reserve.idReserve);
       if (!rspn.success) _errors.validateError(rspn.error);
-
+      int debt = 0;
       info.retired = rspn.data.retired ?? false;
       info.stopped = rspn.data.stopped ?? false;
       if(info.stopped){
         info.value = rspn.data.totalCost;
         info.time = (rspn.data.time / 60).ceil();
+        // debt = await _debtValue(info.reserve.plate);
+        // info.debt = debt;
       }
 
       if(info.retired){
@@ -112,6 +119,14 @@ class ReserveRepository {
 
     }
     return info;
+  }
+
+  Future<int> _debtValue(String plate) async{
+    final rspn = await _apiBill.allDebtByPlate(plate);
+    if (!rspn.success) _errors.validateError(rspn.error);
+    int value = 0;
+    rspn.data.forEach((e)=> value += e.value);
+    return value;
   }
 }
 
@@ -127,6 +142,7 @@ class ReserveInfo{
   bool retired;
   int time;
   int value;
+  int debt;
 
-  ReserveInfo({this.reserve, this.stopped, this.retired, this.time, this.value});
+  ReserveInfo({this.reserve, this.stopped, this.retired, this.time, this.value, this.debt});
 }
